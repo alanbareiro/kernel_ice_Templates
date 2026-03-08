@@ -3,6 +3,7 @@ import React from 'react';
 import EditableText from '../../components/common/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
 import { useTemplate } from '../../contexts/TemplateContext';
+import { defaultImages } from '../../assets/default-images';
 
 const ArchitectureHero: React.FC = () => {
     const { template } = useTemplate();
@@ -119,7 +120,7 @@ const ArchitectureHero: React.FC = () => {
                         <div className="relative z-10 rounded-2xl overflow-hidden shadow-2xl">
                             <EditableImage
                                 elementId="ar_hero_image"
-                                defaultImage=""
+                                defaultImage={defaultImages.architecture.hero}
                                 alt="Proyecto arquitectónico"
                                 className="w-full h-auto object-cover"
                                 category="architecture"

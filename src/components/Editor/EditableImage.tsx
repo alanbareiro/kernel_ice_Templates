@@ -1,3 +1,4 @@
+// src/components/Editor/EditableImage.tsx
 import { Edit2, Image as ImageIcon, Upload, X } from 'lucide-react';
 import React, { useRef, useState } from 'react';
 import { defaultImages } from '../../assets/default-images';
@@ -10,7 +11,7 @@ interface EditableImageProps {
     alt?: string;
     className?: string;
     aspectRatio?: string;
-    category?: string; // 'consulting', 'catering', etc.
+    category?: 'consulting' | 'catering' | 'accounting' | 'restaurant' | 'lawFirm' | 'medical' | 'architecture' | 'marketing' | 'coffee' | 'bakery' | 'foodtruck' | 'beauty' | 'gym' | 'realestate' | 'fashion' | 'cleaning' | 'saas' | 'digital' | 'startup';
 }
 
 const EditableImage: React.FC<EditableImageProps> = ({
@@ -26,17 +27,23 @@ const EditableImage: React.FC<EditableImageProps> = ({
     const [isHovering, setIsHovering] = useState(false);
     const [showSelector, setShowSelector] = useState(false);
     const [showGallery, setShowGallery] = useState(false);
-    const [galleryPage, setGalleryPage] = useState(0);
+    const [imageError, setImageError] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
+    // Obtener la URL de la imagen
     const imageUrl = template?.images?.[elementId] || defaultImage;
 
-    // Obtener imágenes de la categoría
+    // Si no hay imagen o hay error, mostrar placeholder
+    const displayImage = imageError || !imageUrl
+        ? `https://via.placeholder.com/800x600?text=${encodeURIComponent(category + '+' + elementId)}`
+        : imageUrl;
+
+    // Obtener imágenes de la categoría para la galería
     const categoryImages = defaultImages[category as keyof typeof defaultImages] || {};
     const galleryImages = Object.entries(categoryImages).map(([key, url]) => ({
         id: key,
-        url,
-        name: key.charAt(0).toUpperCase() + key.slice(1)
+        url: url as string,
+        name: key.charAt(0).toUpperCase() + key.slice(1).replace(/_/g, ' ')
     }));
 
     const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,6 +52,7 @@ const EditableImage: React.FC<EditableImageProps> = ({
             const reader = new FileReader();
             reader.onloadend = async () => {
                 await updateImage(elementId, file);
+                setImageError(false);
                 setShowSelector(false);
             };
             reader.readAsDataURL(file);
@@ -52,13 +60,18 @@ const EditableImage: React.FC<EditableImageProps> = ({
     };
 
     const handleSelectFromGallery = async (imageUrl: string) => {
-        // Convertir URL a File object
-        const response = await fetch(imageUrl);
-        const blob = await response.blob();
-        const file = new File([blob], `gallery-image-${Date.now()}.jpg`, { type: 'image/jpeg' });
-        await updateImage(elementId, file);
-        setShowGallery(false);
-        setShowSelector(false);
+        try {
+            // Convertir URL a File object
+            const response = await fetch(imageUrl);
+            const blob = await response.blob();
+            const file = new File([blob], `gallery-image-${Date.now()}.jpg`, { type: 'image/jpeg' });
+            await updateImage(elementId, file);
+            setImageError(false);
+            setShowGallery(false);
+            setShowSelector(false);
+        } catch (error) {
+            console.error('Error al cargar imagen de galería:', error);
+        }
     };
 
     const handleDragOver = (e: React.DragEvent) => {
@@ -70,40 +83,55 @@ const EditableImage: React.FC<EditableImageProps> = ({
         const file = e.dataTransfer.files?.[0];
         if (file && file.type.startsWith('image/')) {
             await updateImage(elementId, file);
+            setImageError(false);
             setShowSelector(false);
         }
+    };
+
+    const handleImageClick = () => {
+        if (config.isEditing) {
+            setShowSelector(true);
+        }
+    };
+
+    const handleImageError = () => {
+        setImageError(true);
     };
 
     if (!config.isEditing) {
         return (
             <img
-                src={imageUrl}
+                src={displayImage}
                 alt={alt}
                 className={className}
+                onError={handleImageError}
             />
         );
     }
 
     return (
         <div
-            id={`editable-${elementId}`}
-            data-element-id={elementId}
             className={`relative group ${aspectRatio}`}
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
+            onClick={handleImageClick}
         >
             <img
-                src={imageUrl}
+                src={displayImage}
                 alt={alt}
-                className={`${className} ${isHovering ? 'opacity-75' : ''} transition-opacity`}
+                className={`${className} ${isHovering ? 'opacity-75' : ''} transition-opacity cursor-pointer`}
+                onError={handleImageError}
             />
 
             {/* Overlay de edición */}
             {isHovering && !showSelector && (
                 <div className="absolute inset-0 flex items-center justify-center bg-black/50 transition-opacity">
                     <button
-                        onClick={() => setShowSelector(true)}
                         className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-blue-700 transition-colors"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            setShowSelector(true);
+                        }}
                     >
                         <Edit2 className="w-4 h-4" />
                         <span>Cambiar imagen</span>
@@ -113,8 +141,10 @@ const EditableImage: React.FC<EditableImageProps> = ({
 
             {/* Selector modal */}
             {showSelector && (
-                <div className="absolute inset-0 bg-white dark:bg-neutral-900 rounded-lg p-4 flex flex-col border-2 border-blue-500 z-20"
+                <div
+                    className="absolute inset-0 bg-white dark:bg-neutral-900 rounded-lg p-4 flex flex-col border-2 border-blue-500 z-20"
                     style={{ minHeight: '300px' }}
+                    onClick={(e) => e.stopPropagation()}
                 >
                     <div className="flex justify-between items-center mb-3">
                         <h4 className="font-semibold">Seleccionar imagen</h4>
@@ -169,8 +199,14 @@ const EditableImage: React.FC<EditableImageProps> = ({
 
             {/* Galería modal */}
             {showGallery && (
-                <div className="fixed inset-0 bg-black/75 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white dark:bg-neutral-900 rounded-2xl max-w-4xl w-full max-h-[80vh] flex flex-col">
+                <div
+                    className="fixed inset-0 bg-black/75 flex items-center justify-center z-50 p-4"
+                    onClick={() => setShowGallery(false)}
+                >
+                    <div
+                        className="bg-white dark:bg-neutral-900 rounded-2xl max-w-4xl w-full max-h-[80vh] flex flex-col"
+                        onClick={(e) => e.stopPropagation()}
+                    >
                         <div className="p-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
                             <h3 className="text-xl font-bold">Galería de imágenes</h3>
                             <button
@@ -193,6 +229,9 @@ const EditableImage: React.FC<EditableImageProps> = ({
                                             src={img.url}
                                             alt={img.name}
                                             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                                            onError={(e) => {
+                                                (e.target as HTMLImageElement).src = `https://via.placeholder.com/400x300?text=${img.name}`;
+                                            }}
                                         />
                                         <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                             <span className="text-white text-sm font-medium">{img.name}</span>

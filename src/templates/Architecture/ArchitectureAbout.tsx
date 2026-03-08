@@ -1,5 +1,7 @@
-import { Award, Clock, MapPin, Users } from 'lucide-react';
+// src/templates/Architecture/ArchitectureAbout.tsx
+import { Award, Calendar, MapPin, Users } from 'lucide-react';
 import React from 'react';
+import { defaultImages } from '../../assets/default-images';
 import EditableText from '../../components/common/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
 import { useTemplate } from '../../contexts/TemplateContext';
@@ -13,9 +15,9 @@ const ArchitectureAbout: React.FC = () => {
     };
 
     const stats = [
-        { icon: <Clock className="w-6 h-6" />, valueId: 'ar_about_stat_1_value', valueDefault: '15+', labelId: 'ar_about_stat_1_label', labelDefault: 'Años de experiencia' },
-        { icon: <Award className="w-6 h-6" />, valueId: 'ar_about_stat_2_value', valueDefault: '25', labelId: 'ar_about_stat_2_label', labelDefault: 'Premios recibidos' },
-        { icon: <Users className="w-6 h-6" />, valueId: 'ar_about_stat_3_value', valueDefault: '200+', labelId: 'ar_about_stat_3_label', labelDefault: 'Proyectos realizados' },
+        { icon: <Calendar className="w-6 h-6" />, valueId: 'ar_about_stat_1_value', valueDefault: '15+', labelId: 'ar_about_stat_1_label', labelDefault: 'Años' },
+        { icon: <Users className="w-6 h-6" />, valueId: 'ar_about_stat_2_value', valueDefault: '200+', labelId: 'ar_about_stat_2_label', labelDefault: 'Proyectos' },
+        { icon: <Award className="w-6 h-6" />, valueId: 'ar_about_stat_3_value', valueDefault: '12', labelId: 'ar_about_stat_3_label', labelDefault: 'Arquitectos' },
         { icon: <MapPin className="w-6 h-6" />, valueId: 'ar_about_stat_4_value', valueDefault: '5', labelId: 'ar_about_stat_4_label', labelDefault: 'Países' },
     ];
 
@@ -31,8 +33,8 @@ const ArchitectureAbout: React.FC = () => {
                         <div className="relative z-10 overflow-hidden rounded-2xl shadow-2xl">
                             <EditableImage
                                 elementId="ar_about_image"
-                                defaultImage=""
-                                alt="Estudio de arquitectura"
+                                defaultImage={defaultImages.architecture.about}
+                                alt="Nuestro estudio"
                                 className="w-full h-auto object-cover"
                                 category="architecture"
                             />

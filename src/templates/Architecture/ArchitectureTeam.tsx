@@ -1,5 +1,6 @@
 import { Linkedin, Mail } from 'lucide-react';
 import React from 'react';
+import { defaultImages } from '../../assets/default-images';
 import EditableText from '../../components/common/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
 import { useTemplate } from '../../contexts/TemplateContext';
@@ -12,18 +13,26 @@ const ArchitectureTeam: React.FC = () => {
         accent: '#292524',
     };
 
+    const teamImages = {
+        team_1: defaultImages.architecture.team1 || 'https://images.unsplash.com/photo-1560250097-0b93528c311a',
+        team_2: defaultImages.architecture.team2 || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2',
+        team_3: defaultImages.architecture.team4 || 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7',
+        team_4: defaultImages.architecture.team3 || 'https://images.unsplash.com/photo-1580489944761-15a19d654956',
+    };
+
     const team = [
-        {
-            id: 'team_1',
-            nameId: 'ar_team_1_name',
-            nameDefault: 'Arq. Martín Rodríguez',
-            roleId: 'ar_team_1_role',
-            roleDefault: 'Fundador y Director Creativo',
-            descId: 'ar_team_1_desc',
-            descDefault: 'Especialista en diseño arquitectónico y sostenibilidad. 20 años de experiencia.',
-            email: 'mrodriguez@kernelizearq.com',
-            imageId: 'ar_team_1_image',
-        },
+        // {
+        //     id: 'team_1',
+        //     nameId: 'ar_team_1_name',
+        //     nameDefault: 'Arq. Martín Rodríguez',
+        //     roleId: 'ar_team_1_role',
+        //     roleDefault: 'Fundador y Director Creativo',
+        //     descId: 'ar_team_1_desc',
+        //     descDefault: 'Especialista en diseño arquitectónico y sostenibilidad. 20 años de experiencia.',
+        //     email: 'mrodriguez@kernelizearq.com',
+        //     imageId: 'ar_team_1_image',
+        //     defaultImage: teamImages.team_1,
+        // },
         {
             id: 'team_2',
             nameId: 'ar_team_2_name',
@@ -34,6 +43,7 @@ const ArchitectureTeam: React.FC = () => {
             descDefault: 'Experta en planificación y gestión de proyectos residenciales y comerciales.',
             email: 'lmendez@kernelizearq.com',
             imageId: 'ar_team_2_image',
+            defaultImage: teamImages.team_2,
         },
         {
             id: 'team_3',
@@ -45,6 +55,7 @@ const ArchitectureTeam: React.FC = () => {
             descDefault: 'Enfocado en diseño de interiores y espacios comerciales innovadores.',
             email: 'csuarez@kernelizearq.com',
             imageId: 'ar_team_3_image',
+            defaultImage: teamImages.team_3,
         },
         {
             id: 'team_4',
@@ -56,6 +67,7 @@ const ArchitectureTeam: React.FC = () => {
             descDefault: 'Especialista en integración de espacios verdes y diseño sustentable.',
             email: 'alopez@kernelizearq.com',
             imageId: 'ar_team_4_image',
+            defaultImage: teamImages.team_4,
         },
     ];
 
@@ -87,14 +99,14 @@ const ArchitectureTeam: React.FC = () => {
                     </p>
                 </div>
 
-                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {team.map((member) => (
                         <div key={member.id} className="group text-center">
                             <div className="relative mb-4 mx-auto w-48 h-48 rounded-full overflow-hidden border-4 transition-all group-hover:scale-105 duration-300"
                                 style={{ borderColor: colors.primary }}>
                                 <EditableImage
                                     elementId={member.imageId}
-                                    defaultImage=""
+                                    defaultImage={member.defaultImage}
                                     alt={member.nameDefault}
                                     className="w-full h-full object-cover"
                                     category="architecture"

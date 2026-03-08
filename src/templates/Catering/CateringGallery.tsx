@@ -1,7 +1,6 @@
 import { ChevronLeft, ChevronRight, Heart, X } from 'lucide-react';
 import { useState } from 'react';
 import { defaultImages } from '../../assets/default-images';
-import EditableImage from '../../components/Editor/EditableImage';
 import EditableText from '../../components/common/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
 
@@ -13,10 +12,24 @@ const CateringGallery = () => {
         accent: '#b45309',
     };
     const [selectedImage, setSelectedImage] = useState<number | null>(null);
+    const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
+
+    // Función para manejar errores de imagen
+    const handleImageError = (imageId: string) => {
+        setImageErrors(prev => ({ ...prev, [imageId]: true }));
+    };
+
+    // Función para obtener URL con fallback
+    const getImageUrl = (imageId: string, defaultUrl: string) => {
+        if (imageErrors[imageId]) {
+            return `https://via.placeholder.com/800x600?text=${encodeURIComponent(imageId.replace(/_/g, ' '))}`;
+        }
+        return defaultUrl;
+    };
 
     const images = [
         {
-            url: defaultImages.catering.buffet,
+            url: defaultImages.catering?.buffet || defaultImages.catering.hero,
             titleId: 'c_gallery_1_title',
             titleDefault: 'Buffet de bodas',
             categoryId: 'c_gallery_1_category',
@@ -25,7 +38,7 @@ const CateringGallery = () => {
             id: 'c_gallery_1'
         },
         {
-            url: defaultImages.catering.plato1,
+            url: defaultImages.catering?.plato1 || defaultImages.catering.hero,
             titleId: 'c_gallery_2_title',
             titleDefault: 'Platos gourmet',
             categoryId: 'c_gallery_2_category',
@@ -34,7 +47,7 @@ const CateringGallery = () => {
             id: 'c_gallery_2'
         },
         {
-            url: defaultImages.catering.plato2,
+            url: defaultImages.catering?.plato2 || defaultImages.catering.hero,
             titleId: 'c_gallery_3_title',
             titleDefault: 'Decoración de mesas',
             categoryId: 'c_gallery_3_category',
@@ -52,7 +65,7 @@ const CateringGallery = () => {
             id: 'c_gallery_4'
         },
         {
-            url: defaultImages.catering.plato3,
+            url: defaultImages.catering?.plato3 || defaultImages.catering.hero,
             titleId: 'c_gallery_5_title',
             titleDefault: 'Cócteles de autor',
             categoryId: 'c_gallery_5_category',
@@ -61,7 +74,7 @@ const CateringGallery = () => {
             id: 'c_gallery_5'
         },
         {
-            url: defaultImages.catering.buffet,
+            url: defaultImages.catering?.buffet || defaultImages.catering.hero,
             titleId: 'c_gallery_6_title',
             titleDefault: 'Postres artesanales',
             categoryId: 'c_gallery_6_category',
@@ -126,12 +139,11 @@ const CateringGallery = () => {
                             onClick={() => openLightbox(index)}
                             className="group relative overflow-hidden rounded-2xl cursor-pointer aspect-square"
                         >
-                            <EditableImage
-                                elementId={image.id}
-                                defaultImage={image.url}
+                            <img
+                                src={getImageUrl(image.id, image.url)}
                                 alt={image.titleDefault}
                                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                                category="catering"
+                                onError={() => handleImageError(image.id)}
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                                 <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
@@ -193,9 +205,10 @@ const CateringGallery = () => {
                         )}
 
                         <img
-                            src={images[selectedImage].url}
+                            src={getImageUrl(images[selectedImage].id, images[selectedImage].url)}
                             alt={images[selectedImage].titleDefault}
                             className="max-h-[90vh] max-w-[90vw] object-contain"
+                            onError={() => handleImageError(images[selectedImage].id)}
                         />
 
                         <div className="absolute bottom-4 left-0 right-0 text-center text-white bg-black/50 backdrop-blur-sm py-4 mx-auto max-w-2xl rounded-full">

@@ -1,5 +1,6 @@
 import { ExternalLink } from 'lucide-react';
 import React, { useState } from 'react';
+import { defaultImages } from '../../assets/default-images';
 import EditableText from '../../components/common/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
 import { useTemplate } from '../../contexts/TemplateContext';
@@ -20,6 +21,16 @@ const ArchitectureProjects: React.FC = () => {
         { id: 'corporativo', name: 'Corporativo', nameId: 'ar_cat_corporativo' },
     ];
 
+    // Mapeo de imágenes para cada proyecto
+    const projectImages = {
+        project_1: defaultImages.architecture.project1,
+        project_2: defaultImages.architecture.project2,
+        project_3: defaultImages.architecture.project3,
+        project_4: defaultImages.architecture.project2, // Reutilizamos imágenes disponibles
+        project_5: defaultImages.architecture.project1,
+        project_6: defaultImages.architecture.project3,
+    };
+
     const projects = [
         {
             id: 'project_1',
@@ -33,6 +44,7 @@ const ArchitectureProjects: React.FC = () => {
             yearId: 'ar_project_1_year',
             yearDefault: '2023',
             imageId: 'ar_project_1_image',
+            defaultImage: projectImages.project_1,
         },
         {
             id: 'project_2',
@@ -46,6 +58,7 @@ const ArchitectureProjects: React.FC = () => {
             yearId: 'ar_project_2_year',
             yearDefault: '2022',
             imageId: 'ar_project_2_image',
+            defaultImage: projectImages.project_2,
         },
         {
             id: 'project_3',
@@ -59,6 +72,7 @@ const ArchitectureProjects: React.FC = () => {
             yearId: 'ar_project_3_year',
             yearDefault: '2023',
             imageId: 'ar_project_3_image',
+            defaultImage: projectImages.project_3,
         },
         {
             id: 'project_4',
@@ -72,6 +86,7 @@ const ArchitectureProjects: React.FC = () => {
             yearId: 'ar_project_4_year',
             yearDefault: '2024',
             imageId: 'ar_project_4_image',
+            defaultImage: projectImages.project_4,
         },
         {
             id: 'project_5',
@@ -85,6 +100,7 @@ const ArchitectureProjects: React.FC = () => {
             yearId: 'ar_project_5_year',
             yearDefault: '2022',
             imageId: 'ar_project_5_image',
+            defaultImage: projectImages.project_5,
         },
         {
             id: 'project_6',
@@ -98,6 +114,7 @@ const ArchitectureProjects: React.FC = () => {
             yearId: 'ar_project_6_year',
             yearDefault: '2023',
             imageId: 'ar_project_6_image',
+            defaultImage: projectImages.project_6,
         },
     ];
 
@@ -140,8 +157,8 @@ const ArchitectureProjects: React.FC = () => {
                             key={cat.id}
                             onClick={() => setActiveCategory(cat.id)}
                             className={`px-6 py-2 rounded-full font-medium transition-all ${activeCategory === cat.id
-                                    ? 'text-white'
-                                    : 'bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700'
+                                ? 'text-white'
+                                : 'bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-700'
                                 }`}
                             style={activeCategory === cat.id ? { background: colors.primary } : {}}
                         >
@@ -157,7 +174,7 @@ const ArchitectureProjects: React.FC = () => {
                             <div className="relative h-64 overflow-hidden">
                                 <EditableImage
                                     elementId={project.imageId}
-                                    defaultImage=""
+                                    defaultImage={project.defaultImage}
                                     alt={project.titleDefault}
                                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                                     category="architecture"

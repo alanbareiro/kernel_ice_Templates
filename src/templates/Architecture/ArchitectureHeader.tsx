@@ -1,5 +1,6 @@
 import { Menu, X } from 'lucide-react';
 import React, { useState } from 'react';
+import { defaultImages } from '../../assets/default-images';
 import EditableText from '../../components/common/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
 import { useTemplate } from '../../contexts/TemplateContext';
@@ -52,7 +53,7 @@ const ArchitectureHeader: React.FC = () => {
                         <div id="ar_logo" data-element-id="ar_logo">
                             <EditableImage
                                 elementId="ar_logo"
-                                defaultImage=""
+                                defaultImage={defaultImages.architecture.logo}
                                 alt="Kernelize Arquitectura"
                                 className="w-12 h-12 rounded-lg object-cover"
                                 category="architecture"
@@ -70,7 +71,6 @@ const ArchitectureHeader: React.FC = () => {
                                 defaultText="Arquitectura"
                                 tag="span"
                                 className="text-xl font-semibold text-stone-600 dark:text-stone-400 ml-1"
-                              //  style={{ color: colors.primary }}
                             />
                         </div>
                     </a>
