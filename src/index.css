@@ -1,0 +1,287 @@
+/* Tailwind v3 usa estas directivas, NO @import */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Opcional: Variables CSS personalizadas */
+
+/* Variables CSS personalizadas para el tema Kernelize */
+:root {
+  --color-primary-50: 240 253 244;
+  --color-primary-100: 220 252 231;
+  --color-primary-200: 187 247 208;
+  --color-primary-300: 134 239 172;
+  --color-primary-400: 74 222 128;
+  --color-primary-500: 34 197 94;
+  /* Verde Kernelize */
+  --color-primary-600: 22 163 74;
+  --color-primary-700: 21 128 61;
+  --color-primary-800: 22 101 52;
+  --color-primary-900: 20 83 45;
+
+  --color-secondary-50: 239 246 255;
+  --color-secondary-100: 219 234 254;
+  --color-secondary-200: 191 219 254;
+  --color-secondary-300: 147 197 253;
+  --color-secondary-400: 96 165 250;
+  --color-secondary-500: 59 130 246;
+  /* Azul */
+  --color-secondary-600: 37 99 235;
+  --color-secondary-700: 29 78 216;
+  --color-secondary-800: 30 64 175;
+  --color-secondary-900: 30 58 138;
+
+  --color-accent-50: 253 244 255;
+  --color-accent-100: 250 232 255;
+  --color-accent-200: 245 208 254;
+  --color-accent-300: 240 171 252;
+  --color-accent-400: 232 121 249;
+  --color-accent-500: 217 70 239;
+  /* Púrpura */
+  --color-accent-600: 192 38 211;
+  --color-accent-700: 162 28 175;
+  --color-accent-800: 134 25 143;
+  --color-accent-900: 112 26 117;
+
+  --color-neutral-50: 250 250 250;
+  --color-neutral-100: 245 245 245;
+  --color-neutral-200: 229 229 229;
+  --color-neutral-300: 212 212 212;
+  --color-neutral-400: 163 163 163;
+  --color-neutral-500: 115 115 115;
+  --color-neutral-600: 82 82 82;
+  --color-neutral-700: 64 64 64;
+  --color-neutral-800: 38 38 38;
+  --color-neutral-900: 23 23 23;
+  --color-neutral-950: 10 10 10;
+}
+
+/* Modo oscuro - Invertir colores */
+.dark {
+  --color-primary-50: 10 10 10;
+  --color-primary-100: 23 23 23;
+  --color-primary-200: 38 38 38;
+  --color-primary-300: 64 64 64;
+  --color-primary-400: 82 82 82;
+  --color-primary-500: 115 115 115;
+  --color-primary-600: 163 163 163;
+  --color-primary-700: 212 212 212;
+  --color-primary-800: 229 229 229;
+  --color-primary-900: 245 245 245;
+
+  --color-neutral-50: 20 83 45;
+  --color-neutral-100: 22 101 52;
+  --color-neutral-200: 21 128 61;
+  --color-neutral-300: 22 163 74;
+  --color-neutral-400: 34 197 94;
+  --color-neutral-500: 74 222 128;
+  --color-neutral-600: 134 239 172;
+  --color-neutral-700: 187 247 208;
+  --color-neutral-800: 220 252 231;
+  --color-neutral-900: 240 253 244;
+}
+
+/* Tus estilos personalizados van aquí */
+.btn-custom {
+  @apply px-6 py-3 bg-[rgb(var(--color-primary))] text-white rounded-lg hover:opacity-90;
+}
+
+/* Estilos base personalizados */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply antialiased;
+  }
+
+  ::selection {
+    @apply bg-primary-500/30 text-primary-900;
+  }
+
+  ::-webkit-scrollbar {
+    @apply w-2;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-neutral-100 dark:bg-neutral-900;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-primary-500 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-primary-600;
+  }
+}
+
+/* Componentes personalizados */
+@layer components {
+  .btn-primary {
+    @apply px-6 py-3 bg-primary-500 text-white font-semibold rounded-lg hover:bg-primary-600 transition-all duration-300 transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
+  }
+
+  .btn-secondary {
+    @apply px-6 py-3 bg-transparent border-2 border-primary-500 text-primary-500 font-semibold rounded-lg hover:bg-primary-500 hover:text-white transition-all duration-300;
+  }
+
+  .btn-accent {
+    @apply px-6 py-3 bg-gradient-to-r from-primary-500 to-accent-500 text-white font-semibold rounded-lg hover:from-primary-600 transition-all duration-300 shadow-lg hover:shadow-xl;
+  }
+
+  .card {
+    @apply bg-white dark:bg-neutral-900 rounded-2xl shadow-lg border border-neutral-200 dark:border-neutral-800 p-6 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1;
+  }
+
+  .section-padding {
+    @apply px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24;
+  }
+
+  .container-custom {
+    @apply max-w-7xl mx-auto;
+  }
+
+  .heading-1 {
+    @apply text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight;
+  }
+
+  .heading-2 {
+    @apply text-3xl sm:text-4xl lg:text-5xl font-bold;
+  }
+
+  .heading-3 {
+    @apply text-2xl sm:text-3xl font-semibold;
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary-500 to-accent-500 bg-clip-text text-transparent;
+  }
+
+  .gradient-bg {
+    @apply bg-gradient-to-br from-primary-50 via-white to-accent-50 dark:from-neutral-900 dark:via-neutral-900 dark:to-neutral-800;
+  }
+
+  /* Animaciones para el editor */
+  @keyframes slideDown {
+    from {
+      transform: translate(-50%, -100%);
+      opacity: 0;
+    }
+
+    to {
+      transform: translate(-50%, 0);
+      opacity: 1;
+    }
+  }
+
+  .animate-slideDown {
+    animation: slideDown 0.3s ease-out;
+  }
+
+  @keyframes blob {
+    0% {
+      transform: translate(0px, 0px) scale(1);
+    }
+
+    33% {
+      transform: translate(30px, -50px) scale(1.1);
+    }
+
+    66% {
+      transform: translate(-20px, 20px) scale(0.9);
+    }
+
+    100% {
+      transform: translate(0px, 0px) scale(1);
+    }
+  }
+
+  .animate-blob {
+    animation: blob 7s infinite;
+  }
+
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+
+  /* Estilos para modo edición */
+  .editable-highlight {
+    position: relative;
+  }
+
+  .editable-highlight::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border: 2px dashed #3b82f6;
+    border-radius: 4px;
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+  }
+
+  .editable-highlight:hover::after {
+    opacity: 0.5;
+  }
+
+  .editable-highlight.editing::after {
+    opacity: 1;
+    border-style: solid;
+  }
+
+  /* Tooltip personalizado */
+  [data-tooltip] {
+    position: relative;
+    cursor: help;
+  }
+
+  [data-tooltip]:before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 4px 8px;
+    background: #1f2937;
+    color: white;
+    font-size: 12px;
+    border-radius: 4px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s;
+    z-index: 60;
+  }
+
+  [data-tooltip]:hover:before {
+    opacity: 1;
+    visibility: visible;
+    bottom: 150%;
+  }
+
+  /* Para asegurar que los botones de edición estén por encima de todo */
+  .z-editor-buttons {
+    z-index: 9999 !important;
+  }
+
+  /* Animación para el modo edición */
+  @keyframes pulse-ring {
+    0% {
+      box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7);
+    }
+
+    70% {
+      box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
+    }
+
+    100% {
+      box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+    }
+  }
+
+  .editing-mode-active {
+    animation: pulse-ring 2s infinite;
+  }
+}
