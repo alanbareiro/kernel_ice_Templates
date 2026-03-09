@@ -2,15 +2,14 @@ import { Shield, Users, Zap } from 'lucide-react';
 import React from 'react';
 import EditableText from '../../components/common/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
-import { useTemplate } from '../../contexts/TemplateContext';
 
 const StartupSolution: React.FC = () => {
-    const { template } = useTemplate();
-    const colors = template?.colors || {
-        primary: '#059669',
-        secondary: '#047857',
-        accent: '#065f46',
-    };
+    // const { template } = useTemplate();
+    // const colors = template?.colors || {
+    //     primary: '#059669',
+    //     secondary: '#047857',
+    //     accent: '#065f46',
+    // };
 
     const benefits = [
         {

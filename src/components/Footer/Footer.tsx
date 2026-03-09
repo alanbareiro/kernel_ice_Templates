@@ -1,10 +1,9 @@
-import React from 'react';
-import { 
-  Facebook, 
-  Instagram, 
-  Linkedin, 
+import {
+  Facebook,
   Github,
-  Heart
+  Heart,
+  Instagram,
+  Linkedin
 } from 'lucide-react';
 import ThemeToggle from '../../Theme/ThemeToogle';
 
@@ -29,7 +28,7 @@ const Footer = () => {
             <p className="text-neutral-600 dark:text-neutral-400">
               Soluciones tecnológicas a medida para PYMES y emprendedores.
             </p>
-            
+
             {/* Redes sociales */}
             <div className="flex space-x-3">
               {[
@@ -115,7 +114,7 @@ const Footer = () => {
                 Suscribirse
               </button>
             </form>
-            
+
             {/* Toggle de tema */}
             <div className="pt-4 flex items-center justify-between">
               <span className="text-sm text-neutral-600 dark:text-neutral-400">

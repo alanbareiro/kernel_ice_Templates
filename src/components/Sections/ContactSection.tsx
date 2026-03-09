@@ -1,5 +1,5 @@
+import { CheckCircle, Mail, MapPin, Phone, Send } from 'lucide-react';
 import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Send, CheckCircle } from 'lucide-react';
 
 const ContactSection = () => {
   const [formData, setFormData] = useState({
@@ -22,7 +22,7 @@ const ContactSection = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     // Simulación de envío
     setTimeout(() => {
       setIsSubmitting(false);
@@ -34,7 +34,7 @@ const ContactSection = () => {
         company: '',
         message: '',
       });
-      
+
       // Resetear mensaje después de 5 segundos
       setTimeout(() => setIsSubmitted(false), 5000);
     }, 1500);
@@ -73,7 +73,7 @@ const ContactSection = () => {
             Solicita una consulta gratuita y recibe una propuesta personalizada.
           </p>
         </div>
-        
+
         <div className="grid lg:grid-cols-3 gap-12">
           {/* Información de contacto */}
           <div className="space-y-8">
@@ -82,11 +82,11 @@ const ContactSection = () => {
                 Información de contacto
               </h3>
               <p className="text-neutral-600 dark:text-neutral-400 mb-8">
-                Estamos aquí para ayudarte. Contáctanos por cualquier medio y te responderemos 
+                Estamos aquí para ayudarte. Contáctanos por cualquier medio y te responderemos
                 en menos de 24 horas hábiles.
               </p>
             </div>
-            
+
             <div className="space-y-6">
               {contactInfo.map((info, index) => (
                 <a
@@ -108,7 +108,7 @@ const ContactSection = () => {
                 </a>
               ))}
             </div>
-            
+
             {/* Horario de atención */}
             <div className="p-6 rounded-2xl bg-gradient-to-br from-primary-500 to-accent-500 text-white">
               <h4 className="font-semibold text-lg mb-2">Horario de atención</h4>
@@ -119,7 +119,7 @@ const ContactSection = () => {
               </div>
             </div>
           </div>
-          
+
           {/* Formulario */}
           <div className="lg:col-span-2">
             <div className="card">
@@ -132,7 +132,7 @@ const ContactSection = () => {
                     ¡Mensaje enviado con éxito!
                   </h3>
                   <p className="text-neutral-600 dark:text-neutral-400 mb-8">
-                    Te contactaremos en menos de 24 horas hábiles. Mientras tanto, 
+                    Te contactaremos en menos de 24 horas hábiles. Mientras tanto,
                     puedes explorar nuestros casos de éxito.
                   </p>
                   <button
@@ -147,7 +147,7 @@ const ContactSection = () => {
                   <h3 className="heading-3 mb-8 text-neutral-900 dark:text-white">
                     Solicita tu consulta gratuita
                   </h3>
-                  
+
                   <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="grid md:grid-cols-2 gap-6">
                       <div>
@@ -165,7 +165,7 @@ const ContactSection = () => {
                           placeholder="Tu nombre"
                         />
                       </div>
-                      
+
                       <div>
                         <label htmlFor="email" className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
                           Email *
@@ -182,7 +182,7 @@ const ContactSection = () => {
                         />
                       </div>
                     </div>
-                    
+
                     <div className="grid md:grid-cols-2 gap-6">
                       <div>
                         <label htmlFor="phone" className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
@@ -198,7 +198,7 @@ const ContactSection = () => {
                           placeholder="+54 9 11 1234-5678"
                         />
                       </div>
-                      
+
                       <div>
                         <label htmlFor="company" className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
                           Empresa
@@ -214,7 +214,7 @@ const ContactSection = () => {
                         />
                       </div>
                     </div>
-                    
+
                     <div>
                       <label htmlFor="message" className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
                         ¿En qué podemos ayudarte? *
@@ -230,7 +230,7 @@ const ContactSection = () => {
                         placeholder="Cuéntanos sobre tu proyecto, objetivos y necesidades..."
                       />
                     </div>
-                    
+
                     <div className="flex items-center justify-between pt-6">
                       <div className="text-sm text-neutral-600 dark:text-neutral-400">
                         * Campos obligatorios
@@ -250,16 +250,16 @@ const ContactSection = () => {
                         )}
                       </button>
                     </div>
-                    
+
                     <p className="text-xs text-neutral-500 dark:text-neutral-500 text-center">
-                      Al enviar este formulario, aceptas nuestra política de privacidad y recibir 
+                      Al enviar este formulario, aceptas nuestra política de privacidad y recibir
                       información relevante sobre nuestros servicios.
                     </p>
                   </form>
                 </>
               )}
             </div>
-            
+
             {/* Información adicional */}
             <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="p-4 rounded-xl bg-gradient-to-r from-primary-500 to-primary-600 text-white">

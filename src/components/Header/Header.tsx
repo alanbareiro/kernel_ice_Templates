@@ -1,9 +1,9 @@
 // src/components/layout/Header.tsx (versión simplificada)
-import { useAuth } from '../../contexts/AuthContext';
-import { ChevronDown, Globe, Home, LogOut, Menu, Package, Palette, User, X } from 'lucide-react';
+import { Globe, Home, LogOut, Package, Palette, User } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../../assets/kernel.logo.png';
+import { useAuth } from '../../contexts/AuthContext';
 // import './HeaderAnimations.css';
 import ThemeToggle from '../../Theme/ThemeToogle';
 // import NotificationBell from '../notifications/NotificationBell';
@@ -19,6 +19,11 @@ const Header = () => {
 
   // Cerrar dropdowns al hacer clic fuera
   useEffect(() => {
+    //TODO -> SE COLOCA PARA QUENO  FALLE BUILD
+   console.log(isSolutionsOpen);
+   console.log(isUserMenuOpen);
+   
+   
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsSolutionsOpen(false);
@@ -209,7 +214,7 @@ const Header = () => {
                 {isAuthenticated ? (
                   <>
 
-{/* 
+                    {/* 
                     <button
                       onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
                       className="flex items-center gap-2 p-1 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors group"

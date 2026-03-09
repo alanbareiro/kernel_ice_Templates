@@ -1,5 +1,4 @@
-import React from 'react';
-import { Star, Quote } from 'lucide-react';
+import { Quote, Star } from 'lucide-react';
 
 const TestimonialsSection = () => {
   const testimonials = [
@@ -33,7 +32,7 @@ const TestimonialsSection = () => {
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-r from-primary-500 to-accent-500 mb-6">
             <Quote className="w-8 h-8 text-white" />
           </div>
-          
+
           <h2 className="heading-2 mb-6">
             Lo que dicen nuestros{' '}
             <span className="text-gradient">clientes</span>
@@ -42,7 +41,7 @@ const TestimonialsSection = () => {
             Casos de éxito y testimonios reales de empresas que transformaron su presencia digital.
           </p>
         </div>
-        
+
         <div className="grid md:grid-cols-3 gap-8">
           {testimonials.map((testimonial, index) => (
             <div key={index} className="relative">
@@ -53,12 +52,12 @@ const TestimonialsSection = () => {
                     <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
                   ))}
                 </div>
-                
+
                 {/* Contenido */}
                 <p className="text-lg text-neutral-700 dark:text-neutral-300 italic mb-8">
                   "{testimonial.content}"
                 </p>
-                
+
                 {/* Autor */}
                 <div className="flex items-center pt-6 border-t border-neutral-200 dark:border-neutral-800">
                   <div className="w-12 h-12 rounded-full bg-gradient-to-r from-primary-500 to-accent-500 flex items-center justify-center text-white font-bold">
@@ -74,17 +73,16 @@ const TestimonialsSection = () => {
                   </div>
                 </div>
               </div>
-              
+
               {/* Decoración */}
-              <div className={`absolute -z-10 w-32 h-32 rounded-full blur-3xl opacity-30 ${
-                index === 0 ? 'bg-primary-400 -top-8 -left-8' :
-                index === 1 ? 'bg-accent-400 -top-8 -right-8' :
-                'bg-gradient-to-r from-primary-400 to-accent-400 -bottom-8 -left-8'
-              }`} />
+              <div className={`absolute -z-10 w-32 h-32 rounded-full blur-3xl opacity-30 ${index === 0 ? 'bg-primary-400 -top-8 -left-8' :
+                  index === 1 ? 'bg-accent-400 -top-8 -right-8' :
+                    'bg-gradient-to-r from-primary-400 to-accent-400 -bottom-8 -left-8'
+                }`} />
             </div>
           ))}
         </div>
-        
+
         {/* Indicadores de confianza */}
         <div className="mt-16 pt-16 border-t border-neutral-200 dark:border-neutral-800">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">

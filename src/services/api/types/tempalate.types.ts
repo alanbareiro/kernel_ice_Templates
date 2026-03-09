@@ -1,9 +1,10 @@
 // types.ts
-import { JSX } from 'react';
+// import { JSX } from 'react';
 
 export type ModuleType = {
   name: string;
-  icon: JSX.Element;
+  icon: any;
+  // icon: JSX.Element;
   description: string;
 };
 
@@ -18,7 +19,8 @@ export type TemplateType = {
   title: string;
   description: string;
   category: string;
-  icon: JSX.Element;
+  // icon: JSX.Element;
+  icon: any;
   color: string;
   gradientBg: string;
   features: string[];

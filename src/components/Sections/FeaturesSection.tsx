@@ -1,11 +1,10 @@
-import React from 'react';
-import { 
-  Zap, 
-  Smartphone, 
-  Search, 
-  Shield, 
-  Rocket, 
-  BarChart 
+import {
+  BarChart,
+  Rocket,
+  Search,
+  Shield,
+  Smartphone,
+  Zap
 } from 'lucide-react';
 
 const FeaturesSection = () => {
@@ -60,7 +59,7 @@ const FeaturesSection = () => {
             Características diseñadas para maximizar conversiones y ofrecer la mejor experiencia.
           </p>
         </div>
-        
+
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((feature, index) => (
             <div key={index} className="card group">
@@ -71,15 +70,15 @@ const FeaturesSection = () => {
                   </div>
                 </div>
               </div>
-              
+
               <h3 className="heading-3 mb-3 text-neutral-900 dark:text-white">
                 {feature.title}
               </h3>
-              
+
               <p className="text-neutral-600 dark:text-neutral-400">
                 {feature.description}
               </p>
-              
+
               <div className="mt-6 pt-6 border-t border-neutral-200 dark:border-neutral-800">
                 <span className="inline-flex items-center text-sm font-medium text-primary-500">
                   Incluido
@@ -91,7 +90,7 @@ const FeaturesSection = () => {
             </div>
           ))}
         </div>
-        
+
         {/* CTA adicional */}
         <div className="mt-16 text-center">
           <div className="inline-flex items-center space-x-4 bg-white dark:bg-neutral-900 rounded-2xl p-6 shadow-lg">

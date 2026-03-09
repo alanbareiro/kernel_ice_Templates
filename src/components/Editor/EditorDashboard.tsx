@@ -12,7 +12,6 @@ import {
     Type
 } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTemplate } from '../../contexts/TemplateContext';
 import { useTemplateEditor } from '../../contexts/TemplateEditorContext';
@@ -39,7 +38,7 @@ export const EditorDashboard: React.FC<EditorDashboardProps> = ({ onHomeClick })
     } = useTemplate();
 
     const { user, isAuthenticated } = useAuth();
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     const GUIDE_SEEN_KEY = 'template_guide_seen';
 
@@ -82,11 +81,11 @@ export const EditorDashboard: React.FC<EditorDashboardProps> = ({ onHomeClick })
         }
     };
 
-    const handleLoginRedirect = () => {
-        // Guardar la URL actual para volver después del login
-        sessionStorage.setItem('redirectAfterLogin', window.location.pathname);
-        navigate('/login');
-    };
+    // const handleLoginRedirect = () => {
+    //     // Guardar la URL actual para volver después del login
+    //     sessionStorage.setItem('redirectAfterLogin', window.location.pathname);
+    //     navigate('/login');
+    // };
 
     // Obtener textos e imágenes según el tipo de template
     const getTemplateTexts = () => {
