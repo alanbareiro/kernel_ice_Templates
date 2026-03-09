@@ -1,5 +1,6 @@
 import { Menu, X } from 'lucide-react';
 import React, { useState } from 'react';
+import { defaultImages } from '../../assets/default-images';
 import EditableText from '../../components/common/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
 import { useTemplate } from '../../contexts/TemplateContext';
@@ -51,7 +52,7 @@ const BakeryHeader: React.FC = () => {
                         <div id="bk_logo" data-element-id="bk_logo">
                             <EditableImage
                                 elementId="bk_logo"
-                                defaultImage=""
+                                defaultImage={defaultImages.bakery.logo}
                                 alt="Kernelize Bakery"
                                 className="w-12 h-12 rounded-full object-cover"
                                 category="bakery"
@@ -69,7 +70,7 @@ const BakeryHeader: React.FC = () => {
                                 defaultText="Bakery"
                                 tag="span"
                                 className="text-xl font-semibold text-rose-600 dark:text-rose-400 ml-1"
-                             //   style={{ color: colors.primary }}
+                              // style={{ color: colors.primary }}
                             />
                         </div>
                     </a>

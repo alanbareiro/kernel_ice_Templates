@@ -1,5 +1,6 @@
 import { Bike, Dumbbell, Heart, Target, Users, Zap } from 'lucide-react';
 import React from 'react';
+import { defaultImages } from '../../assets/default-images';
 import EditableText from '../../components/common/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
 import { useTemplate } from '../../contexts/TemplateContext';
@@ -12,6 +13,15 @@ const GymClasses: React.FC = () => {
         accent: '#9a3412',
     };
 
+    const classImages = {
+        class1: defaultImages.gym.class1,
+        class2: defaultImages.gym.class2,
+        class3: defaultImages.gym.class1,
+        class4: defaultImages.gym.class2,
+        class5: defaultImages.gym.class1,
+        class6: defaultImages.gym.class2,
+    };
+
     const classes = [
         {
             id: 'class_1',
@@ -20,6 +30,7 @@ const GymClasses: React.FC = () => {
             descId: 'gm_class_1_desc', descDefault: 'Entrenamiento de alta intensidad que combina fuerza, resistencia y movilidad.',
             timeId: 'gm_class_1_time', timeDefault: 'Lun-Mie-Vie 8:00',
             imageId: 'gm_class_1_image',
+            defaultImage: classImages.class1,
         },
         {
             id: 'class_2',
@@ -28,6 +39,7 @@ const GymClasses: React.FC = () => {
             descId: 'gm_class_2_desc', descDefault: 'Clase de ciclismo indoor con música motivadora y diferentes niveles.',
             timeId: 'gm_class_2_time', timeDefault: 'Mar-Jue 18:30',
             imageId: 'gm_class_2_image',
+            defaultImage: classImages.class2,
         },
         {
             id: 'class_3',
@@ -36,6 +48,7 @@ const GymClasses: React.FC = () => {
             descId: 'gm_class_3_desc', descDefault: 'Conexión cuerpo-mente, flexibilidad y relajación para todos los niveles.',
             timeId: 'gm_class_3_time', timeDefault: 'Lun-Mie 10:00',
             imageId: 'gm_class_3_image',
+            defaultImage: classImages.class3,
         },
         {
             id: 'class_4',
@@ -44,6 +57,7 @@ const GymClasses: React.FC = () => {
             descId: 'gm_class_4_desc', descDefault: 'Entrenamiento de alta intensidad con ejercicios funcionales.',
             timeId: 'gm_class_4_time', timeDefault: 'Mar-Jue-Sab 9:00',
             imageId: 'gm_class_4_image',
+            defaultImage: classImages.class4,
         },
         {
             id: 'class_5',
@@ -52,6 +66,7 @@ const GymClasses: React.FC = () => {
             descId: 'gm_class_5_desc', descDefault: 'Artes marciales y movimientos de defensa personal al ritmo de la música.',
             timeId: 'gm_class_5_time', timeDefault: 'Vie 19:00',
             imageId: 'gm_class_5_image',
+            defaultImage: classImages.class5,
         },
         {
             id: 'class_6',
@@ -60,6 +75,7 @@ const GymClasses: React.FC = () => {
             descId: 'gm_class_6_desc', descDefault: 'Entrenamiento interválico de alta intensidad para quemar calorías.',
             timeId: 'gm_class_6_time', timeDefault: 'Lun-Mie-Vie 12:00',
             imageId: 'gm_class_6_image',
+            defaultImage: classImages.class6,
         },
     ];
 
@@ -83,7 +99,13 @@ const GymClasses: React.FC = () => {
                     {classes.map((cls) => (
                         <div key={cls.id} className="group bg-gray-900 rounded-2xl overflow-hidden border border-gray-800 hover:border-orange-500 transition-all">
                             <div className="h-48 overflow-hidden">
-                                <EditableImage elementId={cls.imageId} defaultImage="" alt={cls.titleDefault} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" category="gym" />
+                                <EditableImage
+                                    elementId={cls.imageId}
+                                    defaultImage={cls.defaultImage}
+                                    alt={cls.titleDefault}
+                                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                    category="gym"
+                                />
                             </div>
                             <div className="p-6">
                                 <div className="w-12 h-12 rounded-lg mb-4 flex items-center justify-center" style={{ backgroundColor: `${colors.primary}15`, color: colors.primary }}>

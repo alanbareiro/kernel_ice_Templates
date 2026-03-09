@@ -1,5 +1,6 @@
 import { ChevronLeft, ChevronRight, Heart, X } from 'lucide-react';
 import React, { useState } from 'react';
+import { defaultImages } from '../../assets/default-images';
 import EditableText from '../../components/common/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
 import { useTemplate } from '../../contexts/TemplateContext';
@@ -13,13 +14,22 @@ const CoffeeGallery: React.FC = () => {
     };
     const [selectedImage, setSelectedImage] = useState<number | null>(null);
 
+    const galleryImages = {
+        gallery1: defaultImages.coffee.gallery1,
+        gallery2: defaultImages.coffee.gallery2,
+        gallery3: defaultImages.coffee.gallery3,
+        gallery4: defaultImages.coffee.gallery1,
+        gallery5: defaultImages.coffee.gallery2,
+        gallery6: defaultImages.coffee.gallery3,
+    };
+
     const images = [
-        { id: 'cf_gallery_1', titleId: 'cf_gallery_1_title', titleDefault: 'Espresso perfecto', categoryId: 'cf_gallery_1_cat', categoryDefault: 'Café', likes: 234 },
-        { id: 'cf_gallery_2', titleId: 'cf_gallery_2_title', titleDefault: 'Nuestro local', categoryId: 'cf_gallery_2_cat', categoryDefault: 'Ambiente', likes: 189 },
-        { id: 'cf_gallery_3', titleId: 'cf_gallery_3_title', titleDefault: 'Desayuno completo', categoryId: 'cf_gallery_3_cat', categoryDefault: 'Comidas', likes: 312 },
-        { id: 'cf_gallery_4', titleId: 'cf_gallery_4_title', titleDefault: 'Latte art', categoryId: 'cf_gallery_4_cat', categoryDefault: 'Café', likes: 267 },
-        { id: 'cf_gallery_5', titleId: 'cf_gallery_5_title', titleDefault: 'Torta de chocolate', categoryId: 'cf_gallery_5_cat', categoryDefault: 'Postres', likes: 198 },
-        { id: 'cf_gallery_6', titleId: 'cf_gallery_6_title', titleDefault: 'Evento de café', categoryId: 'cf_gallery_6_cat', categoryDefault: 'Eventos', likes: 145 },
+        { id: 'cf_gallery_1', titleId: 'cf_gallery_1_title', titleDefault: 'Espresso perfecto', categoryId: 'cf_gallery_1_cat', categoryDefault: 'Café', likes: 234, defaultImage: galleryImages.gallery1 },
+        { id: 'cf_gallery_2', titleId: 'cf_gallery_2_title', titleDefault: 'Nuestro local', categoryId: 'cf_gallery_2_cat', categoryDefault: 'Ambiente', likes: 189, defaultImage: galleryImages.gallery2 },
+        { id: 'cf_gallery_3', titleId: 'cf_gallery_3_title', titleDefault: 'Desayuno completo', categoryId: 'cf_gallery_3_cat', categoryDefault: 'Comidas', likes: 312, defaultImage: galleryImages.gallery3 },
+        { id: 'cf_gallery_4', titleId: 'cf_gallery_4_title', titleDefault: 'Latte art', categoryId: 'cf_gallery_4_cat', categoryDefault: 'Café', likes: 267, defaultImage: galleryImages.gallery4 },
+        { id: 'cf_gallery_5', titleId: 'cf_gallery_5_title', titleDefault: 'Torta de chocolate', categoryId: 'cf_gallery_5_cat', categoryDefault: 'Postres', likes: 198, defaultImage: galleryImages.gallery5 },
+        { id: 'cf_gallery_6', titleId: 'cf_gallery_6_title', titleDefault: 'Evento de café', categoryId: 'cf_gallery_6_cat', categoryDefault: 'Eventos', likes: 145, defaultImage: galleryImages.gallery6 },
     ];
 
     const openLightbox = (index: number) => setSelectedImage(index);
@@ -46,7 +56,13 @@ const CoffeeGallery: React.FC = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {images.map((img, index) => (
                         <div key={img.id} onClick={() => openLightbox(index)} className="group relative overflow-hidden rounded-2xl cursor-pointer aspect-square">
-                            <EditableImage elementId={img.id} defaultImage="" alt={img.titleDefault} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" category="coffee" />
+                            <EditableImage
+                                elementId={img.id}
+                                defaultImage={img.defaultImage}
+                                alt={img.titleDefault}
+                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                category="coffee"
+                            />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                                 <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
                                     <p className="text-lg font-bold"><EditableText elementId={img.titleId} defaultText={img.titleDefault} tag="span" /></p>
@@ -64,7 +80,7 @@ const CoffeeGallery: React.FC = () => {
                         <button onClick={closeLightbox} className="absolute top-4 right-4 text-white hover:text-amber-400 transition-colors"><X size={32} /></button>
                         {selectedImage > 0 && <button onClick={goPrevious} className="absolute left-4 text-white hover:text-amber-400"><ChevronLeft size={48} /></button>}
                         {selectedImage < images.length - 1 && <button onClick={goNext} className="absolute right-4 text-white hover:text-amber-400"><ChevronRight size={48} /></button>}
-                        <img src={images[selectedImage].id} alt={images[selectedImage].titleDefault} className="max-h-[90vh] max-w-[90vw] object-contain" />
+                        <img src={images[selectedImage].defaultImage} alt={images[selectedImage].titleDefault} className="max-h-[90vh] max-w-[90vw] object-contain" />
                     </div>
                 )}
             </div>

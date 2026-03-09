@@ -1,5 +1,6 @@
 import { Award, Instagram } from 'lucide-react';
 import React from 'react';
+import { defaultImages } from '../../assets/default-images';
 import EditableText from '../../components/common/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
 import { useTemplate } from '../../contexts/TemplateContext';
@@ -12,6 +13,13 @@ const GymTrainers: React.FC = () => {
         accent: '#9a3412',
     };
 
+    const trainerImages = {
+        trainer1: defaultImages.gym.trainer1,
+        trainer2: defaultImages.gym.trainer2,
+        trainer3: defaultImages.gym.trainer1,
+        trainer4: defaultImages.gym.trainer2,
+    };
+
     const trainers = [
         {
             id: 'trainer_1',
@@ -21,6 +29,7 @@ const GymTrainers: React.FC = () => {
             expId: 'gm_trainer_1_exp', expDefault: '10 años exp.',
             instagram: '@marcosdiaz',
             imageId: 'gm_trainer_1_image',
+            defaultImage: trainerImages.trainer1,
         },
         {
             id: 'trainer_2',
@@ -30,6 +39,7 @@ const GymTrainers: React.FC = () => {
             expId: 'gm_trainer_2_exp', expDefault: '8 años exp.',
             instagram: '@luciayoga',
             imageId: 'gm_trainer_2_image',
+            defaultImage: trainerImages.trainer2,
         },
         {
             id: 'trainer_3',
@@ -39,6 +49,7 @@ const GymTrainers: React.FC = () => {
             expId: 'gm_trainer_3_exp', expDefault: '12 años exp.',
             instagram: '@pablorodriguez',
             imageId: 'gm_trainer_3_image',
+            defaultImage: trainerImages.trainer3,
         },
         {
             id: 'trainer_4',
@@ -48,6 +59,7 @@ const GymTrainers: React.FC = () => {
             expId: 'gm_trainer_4_exp', expDefault: '6 años exp.',
             instagram: '@caroltorres',
             imageId: 'gm_trainer_4_image',
+            defaultImage: trainerImages.trainer4,
         },
     ];
 
@@ -71,7 +83,13 @@ const GymTrainers: React.FC = () => {
                     {trainers.map((trainer) => (
                         <div key={trainer.id} className="group text-center">
                             <div className="relative mb-4 mx-auto w-48 h-48 rounded-full overflow-hidden border-4 border-gray-800 group-hover:border-orange-500 transition-all">
-                                <EditableImage elementId={trainer.imageId} defaultImage="" alt={trainer.nameDefault} className="w-full h-full object-cover" category="gym" />
+                                <EditableImage
+                                    elementId={trainer.imageId}
+                                    defaultImage={trainer.defaultImage}
+                                    alt={trainer.nameDefault}
+                                    className="w-full h-full object-cover"
+                                    category="gym"
+                                />
                                 <div className="absolute top-2 right-2 bg-black/70 rounded-full p-1">
                                     <Award className="w-4 h-4" style={{ color: colors.primary }} />
                                 </div>

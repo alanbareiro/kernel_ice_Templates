@@ -1,5 +1,6 @@
 import { Menu, X } from 'lucide-react';
 import React, { useState } from 'react';
+import { defaultImages } from '../../assets/default-images';
 import EditableText from '../../components/common/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
 import { useTemplate } from '../../contexts/TemplateContext';
@@ -52,7 +53,7 @@ const AgencyHeader: React.FC = () => {
                         <div id="ag_logo" data-element-id="ag_logo">
                             <EditableImage
                                 elementId="ag_logo"
-                                defaultImage=""
+                                defaultImage={defaultImages.marketing.logo}
                                 alt="Kernelize Marketing"
                                 className="w-12 h-12 rounded-lg object-cover"
                                 category="marketing"
@@ -70,7 +71,6 @@ const AgencyHeader: React.FC = () => {
                                 defaultText="Marketing"
                                 tag="span"
                                 className="text-xl font-semibold text-purple-600 dark:text-purple-400 ml-1"
-                            //       style={{ color: colors.primary }}
                             />
                         </div>
                     </a>

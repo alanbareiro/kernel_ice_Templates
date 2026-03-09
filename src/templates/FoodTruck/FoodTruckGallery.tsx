@@ -1,5 +1,6 @@
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import React, { useState } from 'react';
+import { defaultImages } from '../../assets/default-images';
 import EditableText from '../../components/common/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
 import { useTemplate } from '../../contexts/TemplateContext';
@@ -13,13 +14,22 @@ const FoodTruckGallery: React.FC = () => {
     };
     const [selectedImage, setSelectedImage] = useState<number | null>(null);
 
+    const galleryImages = {
+        gallery1: defaultImages.foodtruck.hero,
+        gallery2: defaultImages.foodtruck.burger1,
+        gallery3: defaultImages.foodtruck.taco1,
+        gallery4: defaultImages.foodtruck.hero,
+        gallery5: defaultImages.foodtruck.burger2,
+        gallery6: defaultImages.foodtruck.side1,
+    };
+
     const images = [
-        { id: 'ft_gallery_1', titleId: 'ft_gallery_1_title', titleDefault: 'Nuestro food truck', categoryId: 'ft_gallery_1_cat', categoryDefault: 'El truck' },
-        { id: 'ft_gallery_2', titleId: 'ft_gallery_2_title', titleDefault: 'Hamburguesa clásica', categoryId: 'ft_gallery_2_cat', categoryDefault: 'Hamburguesas' },
-        { id: 'ft_gallery_3', titleId: 'ft_gallery_3_title', titleDefault: 'Preparando tacos', categoryId: 'ft_gallery_3_cat', categoryDefault: 'Tacos' },
-        { id: 'ft_gallery_4', titleId: 'ft_gallery_4_title', titleDefault: 'Noche en Plaza Italia', categoryId: 'ft_gallery_4_cat', categoryDefault: 'Eventos' },
-        { id: 'ft_gallery_5', titleId: 'ft_gallery_5_title', titleDefault: 'Cheddar & Bacon', categoryId: 'ft_gallery_5_cat', categoryDefault: 'Hamburguesas' },
-        { id: 'ft_gallery_6', titleId: 'ft_gallery_6_title', titleDefault: 'Nuestro equipo', categoryId: 'ft_gallery_6_cat', categoryDefault: 'Equipo' },
+        { id: 'ft_gallery_1', titleId: 'ft_gallery_1_title', titleDefault: 'Nuestro food truck', categoryId: 'ft_gallery_1_cat', categoryDefault: 'El truck', defaultImage: galleryImages.gallery1 },
+        { id: 'ft_gallery_2', titleId: 'ft_gallery_2_title', titleDefault: 'Hamburguesa clásica', categoryId: 'ft_gallery_2_cat', categoryDefault: 'Hamburguesas', defaultImage: galleryImages.gallery2 },
+        { id: 'ft_gallery_3', titleId: 'ft_gallery_3_title', titleDefault: 'Preparando tacos', categoryId: 'ft_gallery_3_cat', categoryDefault: 'Tacos', defaultImage: galleryImages.gallery3 },
+        { id: 'ft_gallery_4', titleId: 'ft_gallery_4_title', titleDefault: 'Noche en Plaza Italia', categoryId: 'ft_gallery_4_cat', categoryDefault: 'Eventos', defaultImage: galleryImages.gallery4 },
+        { id: 'ft_gallery_5', titleId: 'ft_gallery_5_title', titleDefault: 'Cheddar & Bacon', categoryId: 'ft_gallery_5_cat', categoryDefault: 'Hamburguesas', defaultImage: galleryImages.gallery5 },
+        { id: 'ft_gallery_6', titleId: 'ft_gallery_6_title', titleDefault: 'Nuestro equipo', categoryId: 'ft_gallery_6_cat', categoryDefault: 'Equipo', defaultImage: galleryImages.gallery6 },
     ];
 
     const openLightbox = (index: number) => setSelectedImage(index);
@@ -46,7 +56,13 @@ const FoodTruckGallery: React.FC = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {images.map((img, index) => (
                         <div key={img.id} onClick={() => openLightbox(index)} className="group relative overflow-hidden rounded-2xl cursor-pointer aspect-square">
-                            <EditableImage elementId={img.id} defaultImage="" alt={img.titleDefault} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" category="foodtruck" />
+                            <EditableImage
+                                elementId={img.id}
+                                defaultImage={img.defaultImage}
+                                alt={img.titleDefault}
+                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                category="foodtruck"
+                            />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                                 <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
                                     <p className="text-lg font-bold"><EditableText elementId={img.titleId} defaultText={img.titleDefault} tag="span" /></p>
@@ -63,7 +79,7 @@ const FoodTruckGallery: React.FC = () => {
                         <button onClick={closeLightbox} className="absolute top-4 right-4 text-white hover:text-orange-400 transition-colors"><X size={32} /></button>
                         {selectedImage > 0 && <button onClick={goPrevious} className="absolute left-4 text-white hover:text-orange-400"><ChevronLeft size={48} /></button>}
                         {selectedImage < images.length - 1 && <button onClick={goNext} className="absolute right-4 text-white hover:text-orange-400"><ChevronRight size={48} /></button>}
-                        <img src={images[selectedImage].id} alt={images[selectedImage].titleDefault} className="max-h-[90vh] max-w-[90vw] object-contain" />
+                        <img src={images[selectedImage].defaultImage} alt={images[selectedImage].titleDefault} className="max-h-[90vh] max-w-[90vw] object-contain" />
                     </div>
                 )}
             </div>

@@ -1,5 +1,6 @@
 import { ArrowRight, Heart, Sparkles } from 'lucide-react';
 import React from 'react';
+import { defaultImages } from '../../assets/default-images';
 import EditableText from '../../components/common/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
 import { useTemplate } from '../../contexts/TemplateContext';
@@ -90,7 +91,7 @@ const FashionHero: React.FC = () => {
                         <div className="relative z-10 rounded-2xl overflow-hidden shadow-2xl">
                             <EditableImage
                                 elementId="fa_hero_image"
-                                defaultImage=""
+                                defaultImage={defaultImages.fashion.hero}
                                 alt="Modelo con ropa de la colección"
                                 className="w-full h-auto object-cover"
                                 category="fashion"

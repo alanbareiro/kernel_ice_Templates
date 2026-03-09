@@ -1,5 +1,6 @@
 import { ArrowRight, Clock, Shield, Sparkles } from 'lucide-react';
 import React from 'react';
+import { defaultImages } from '../../assets/default-images';
 import EditableText from '../../components/common/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
 import { useTemplate } from '../../contexts/TemplateContext';
@@ -110,7 +111,7 @@ const CleaningHero: React.FC = () => {
                         <div className="relative z-10 rounded-2xl overflow-hidden shadow-2xl">
                             <EditableImage
                                 elementId="cl_hero_image"
-                                defaultImage=""
+                                defaultImage={defaultImages.cleaning.hero}
                                 alt="Servicio de limpieza"
                                 className="w-full h-auto object-cover"
                                 category="cleaning"

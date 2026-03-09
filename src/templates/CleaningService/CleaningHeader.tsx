@@ -1,5 +1,6 @@
 import { Menu, X } from 'lucide-react';
 import React, { useState } from 'react';
+import { defaultImages } from '../../assets/default-images';
 import EditableText from '../../components/common/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
 import { useTemplate } from '../../contexts/TemplateContext';
@@ -52,7 +53,7 @@ const CleaningHeader: React.FC = () => {
                         <div id="cl_logo" data-element-id="cl_logo">
                             <EditableImage
                                 elementId="cl_logo"
-                                defaultImage=""
+                                defaultImage={defaultImages.cleaning.logo}
                                 alt="Kernelize Cleaning"
                                 className="w-12 h-12 rounded-lg object-cover"
                                 category="cleaning"
@@ -70,7 +71,7 @@ const CleaningHeader: React.FC = () => {
                                 defaultText="Cleaning"
                                 tag="span"
                                 className="text-xl font-semibold text-sky-600 dark:text-sky-400 ml-1"
-                               //style={{ color: colors.primary }}
+                              //  style={{ color: colors.primary }}
                             />
                         </div>
                     </a>

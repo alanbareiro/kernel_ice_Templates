@@ -1,5 +1,6 @@
 import { Instagram } from 'lucide-react';
 import React from 'react';
+import { defaultImages } from '../../assets/default-images';
 import EditableText from '../../components/common/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
 import { useTemplate } from '../../contexts/TemplateContext';
@@ -12,6 +13,13 @@ const SalonTeam: React.FC = () => {
         accent: '#9d174d',
     };
 
+    const teamImages = {
+        team1: defaultImages.beauty.team1,
+        team2: defaultImages.beauty.team2,
+        team3: defaultImages.beauty.team3,
+        team4: defaultImages.beauty.team4,
+    };
+
     const team = [
         {
             id: 'team_1',
@@ -20,6 +28,7 @@ const SalonTeam: React.FC = () => {
             descId: 'sl_team_1_desc', descDefault: 'Especialista en cortes y coloración. 15 años de experiencia.',
             instagram: '@marialaura.beauty',
             imageId: 'sl_team_1_image',
+            defaultImage: teamImages.team1,
         },
         {
             id: 'team_2',
@@ -28,6 +37,7 @@ const SalonTeam: React.FC = () => {
             descId: 'sl_team_2_desc', descDefault: 'Especialista en maquillaje social y de novias.',
             instagram: '@caro.makeup',
             imageId: 'sl_team_2_image',
+            defaultImage: teamImages.team2,
         },
         {
             id: 'team_3',
@@ -36,6 +46,7 @@ const SalonTeam: React.FC = () => {
             descId: 'sl_team_3_desc', descDefault: 'Arte en uñas, semipermanente y tratamientos.',
             instagram: '@vale.nails',
             imageId: 'sl_team_3_image',
+            defaultImage: teamImages.team3,
         },
         {
             id: 'team_4',
@@ -44,11 +55,12 @@ const SalonTeam: React.FC = () => {
             descId: 'sl_team_4_desc', descDefault: 'Tratamientos faciales y corporales.',
             instagram: '@sofi.skin',
             imageId: 'sl_team_4_image',
+            defaultImage: teamImages.team4,
         },
     ];
 
     return (
-        <section id="team" className="section-padding bg-white dark:bg-neutral-900">
+        <section id="team" className="section-padding bg-pink-50 dark:bg-pink-950">
             <div className="container-custom">
                 <div className="text-center max-w-3xl mx-auto mb-16">
                     <h2 className="text-4xl md:text-5xl font-bold mb-6 text-pink-900 dark:text-pink-100">
@@ -68,7 +80,7 @@ const SalonTeam: React.FC = () => {
                         <div key={member.id} className="group text-center">
                             <div className="relative mb-4 mx-auto w-48 h-48 rounded-full overflow-hidden border-4 transition-all group-hover:scale-105 duration-300"
                                 style={{ borderColor: colors.primary }}>
-                                <EditableImage elementId={member.imageId} defaultImage="" alt={member.nameDefault} className="w-full h-full object-cover" category="beauty" />
+                                <EditableImage elementId={member.imageId} defaultImage={member.defaultImage} alt={member.nameDefault} className="w-full h-full object-cover" category="beauty" />
                             </div>
                             <h3 className="text-xl font-bold text-pink-900 dark:text-pink-100 mb-1">
                                 <EditableText elementId={member.nameId} defaultText={member.nameDefault} tag="span" />

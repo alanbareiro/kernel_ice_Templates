@@ -1,5 +1,6 @@
 import { Menu, X } from 'lucide-react';
 import React, { useState } from 'react';
+import { defaultImages } from '../../assets/default-images';
 import EditableText from '../../components/common/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
 import { useTemplate } from '../../contexts/TemplateContext';
@@ -52,7 +53,7 @@ const RealEstateHeader: React.FC = () => {
                         <div id="re_logo" data-element-id="re_logo">
                             <EditableImage
                                 elementId="re_logo"
-                                defaultImage=""
+                                defaultImage={defaultImages.realestate.logo}
                                 alt="Kernelize Real Estate"
                                 className="w-12 h-12 rounded-lg object-cover"
                                 category="realestate"
@@ -70,7 +71,7 @@ const RealEstateHeader: React.FC = () => {
                                 defaultText="Propiedades"
                                 tag="span"
                                 className="text-xl font-semibold text-emerald-600 dark:text-emerald-400 ml-1"
-                             //   style={{ color: colors.primary }}
+                               // style={{ color: colors.primary }}
                             />
                         </div>
                     </a>

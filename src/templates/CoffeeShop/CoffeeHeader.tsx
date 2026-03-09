@@ -1,5 +1,6 @@
 import { Menu, X } from 'lucide-react';
 import React, { useState } from 'react';
+import { defaultImages } from '../../assets/default-images';
 import EditableText from '../../components/common/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
 import { useTemplate } from '../../contexts/TemplateContext';
@@ -51,7 +52,7 @@ const CoffeeHeader: React.FC = () => {
                         <div id="cf_logo" data-element-id="cf_logo">
                             <EditableImage
                                 elementId="cf_logo"
-                                defaultImage=""
+                                defaultImage={defaultImages.coffee.logo}
                                 alt="Kernelize Coffee"
                                 className="w-12 h-12 rounded-full object-cover"
                                 category="coffee"

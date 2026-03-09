@@ -1,5 +1,6 @@
 import { Menu, X } from 'lucide-react';
 import React, { useState } from 'react';
+import { defaultImages } from '../../assets/default-images';
 import EditableText from '../../components/common/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
 import { useTemplate } from '../../contexts/TemplateContext';
@@ -52,7 +53,7 @@ const GymHeader: React.FC = () => {
                         <div id="gm_logo" data-element-id="gm_logo">
                             <EditableImage
                                 elementId="gm_logo"
-                                defaultImage=""
+                                defaultImage={defaultImages.gym.logo}
                                 alt="Kernelize Gym"
                                 className="w-12 h-12 rounded-lg object-cover"
                                 category="gym"

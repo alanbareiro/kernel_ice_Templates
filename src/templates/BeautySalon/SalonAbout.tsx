@@ -1,5 +1,6 @@
 import { Award, Heart, Sparkles, Users } from 'lucide-react';
 import React from 'react';
+import { defaultImages } from '../../assets/default-images';
 import EditableText from '../../components/common/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
 import { useTemplate } from '../../contexts/TemplateContext';
@@ -23,8 +24,41 @@ const SalonAbout: React.FC = () => {
         <section className="section-padding bg-white dark:bg-neutral-900">
             <div className="container-custom">
                 <div className="grid lg:grid-cols-2 gap-12 items-center">
+                    {/* Imagen */}
+                    <div className="relative group order-2 lg:order-1">
+                        <div className="absolute -inset-4 rounded-3xl opacity-20 group-hover:opacity-30 transition-opacity duration-500 blur-xl"
+                            style={{ background: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }} />
+
+                        <div className="relative z-10 overflow-hidden rounded-2xl shadow-2xl">
+                            <EditableImage
+                                elementId="sl_about_image"
+                                defaultImage={defaultImages.beauty.about}
+                                alt="Nuestro salón"
+                                className="w-full h-auto object-cover"
+                                category="beauty"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-pink-900/80 via-transparent to-transparent" />
+                            <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
+                                <h3 className="text-2xl font-bold mb-2">
+                                    <EditableText
+                                        elementId="sl_founder_name"
+                                        defaultText="María Laura"
+                                        tag="span"
+                                    />
+                                </h3>
+                                <p className="opacity-90">
+                                    <EditableText
+                                        elementId="sl_founder_title"
+                                        defaultText="Fundadora y Directora"
+                                        tag="span"
+                                    />
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
                     {/* Contenido */}
-                    <div className="space-y-8">
+                    <div className="space-y-8 order-1 lg:order-2">
                         <div>
                             <span className="inline-block px-4 py-2 rounded-full text-sm font-medium mb-4"
                                 style={{ backgroundColor: `${colors.primary}15`, color: colors.primary }}>
@@ -64,21 +98,6 @@ const SalonAbout: React.FC = () => {
                                     </div>
                                 </div>
                             ))}
-                        </div>
-                    </div>
-
-                    {/* Imagen */}
-                    <div className="relative group">
-                        <div className="absolute -inset-4 rounded-3xl opacity-20 group-hover:opacity-30 transition-opacity duration-500 blur-xl"
-                            style={{ background: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }} />
-
-                        <div className="relative z-10 overflow-hidden rounded-2xl shadow-2xl">
-                            <EditableImage elementId="sl_about_image" defaultImage="" alt="Nuestro salón" className="w-full h-auto object-cover" category="beauty" />
-                            <div className="absolute inset-0 bg-gradient-to-t from-pink-900/80 via-transparent to-transparent" />
-                            <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
-                                <h3 className="text-2xl font-bold mb-2"><EditableText elementId="sl_founder_name" defaultText="María Laura" tag="span" /></h3>
-                                <p className="opacity-90"><EditableText elementId="sl_founder_title" defaultText="Fundadora y Directora" tag="span" /></p>
-                            </div>
                         </div>
                     </div>
                 </div>

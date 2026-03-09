@@ -1,5 +1,6 @@
 import { Menu, X } from 'lucide-react';
 import React, { useState } from 'react';
+import { defaultImages } from '../../assets/default-images';
 import EditableText from '../../components/common/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
 import { useTemplate } from '../../contexts/TemplateContext';
@@ -52,7 +53,7 @@ const SalonHeader: React.FC = () => {
                         <div id="sl_logo" data-element-id="sl_logo">
                             <EditableImage
                                 elementId="sl_logo"
-                                defaultImage=""
+                                defaultImage={defaultImages.beauty.logo}
                                 alt="Kernelize Beauty Salon"
                                 className="w-12 h-12 rounded-full object-cover"
                                 category="beauty"
@@ -70,7 +71,7 @@ const SalonHeader: React.FC = () => {
                                 defaultText="Beauty"
                                 tag="span"
                                 className="text-xl font-semibold text-pink-600 dark:text-pink-400 ml-1"
-                             //   style={{ color: colors.primary }}
+                            //style={{ color: colors.primary }}
                             />
                         </div>
                     </a>

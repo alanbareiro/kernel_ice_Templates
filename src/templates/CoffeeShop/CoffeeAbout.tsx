@@ -1,5 +1,6 @@
 import { Award, Coffee, Heart, Users } from 'lucide-react';
 import React from 'react';
+import { defaultImages } from '../../assets/default-images';
 import EditableText from '../../components/common/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
 import { useTemplate } from '../../contexts/TemplateContext';
@@ -13,9 +14,9 @@ const CoffeeAbout: React.FC = () => {
     };
 
     const stats = [
-        { icon: <Coffee className="w-6 h-6" />, valueId: 'cf_about_stat_1_value', valueDefault: '10+', labelId: 'cf_about_stat_1_label', labelDefault: 'Años de experiencia' },
+        { icon: <Coffee className="w-6 h-6" />, valueId: 'cf_about_stat_1_value', valueDefault: '10+', labelId: 'cf_about_stat_1_label', labelDefault: 'Años' },
         { icon: <Users className="w-6 h-6" />, valueId: 'cf_about_stat_2_value', valueDefault: '50k+', labelId: 'cf_about_stat_2_label', labelDefault: 'Clientes' },
-        { icon: <Heart className="w-6 h-6" />, valueId: 'cf_about_stat_3_value', valueDefault: '100%', labelId: 'cf_about_stat_3_label', labelDefault: 'Café orgánico' },
+        { icon: <Heart className="w-6 h-6" />, valueId: 'cf_about_stat_3_value', valueDefault: '100%', labelId: 'cf_about_stat_3_label', labelDefault: 'Orgánico' },
         { icon: <Award className="w-6 h-6" />, valueId: 'cf_about_stat_4_value', valueDefault: '5', labelId: 'cf_about_stat_4_label', labelDefault: 'Premios' },
     ];
 
@@ -103,7 +104,7 @@ const CoffeeAbout: React.FC = () => {
                         <div className="relative z-10 overflow-hidden rounded-2xl shadow-2xl">
                             <EditableImage
                                 elementId="cf_about_image"
-                                defaultImage=""
+                                defaultImage={defaultImages.coffee.about}
                                 alt="Nuestra cafetería"
                                 className="w-full h-auto object-cover"
                                 category="coffee"

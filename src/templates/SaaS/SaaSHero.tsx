@@ -1,5 +1,6 @@
 import { ArrowRight, Check, Cpu } from 'lucide-react';
 import React from 'react';
+import { defaultImages } from '../../assets/default-images';
 import EditableText from '../../components/common/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
 import { useTemplate } from '../../contexts/TemplateContext';
@@ -94,7 +95,7 @@ const SaaSHero: React.FC = () => {
                         <div className="relative z-10 rounded-2xl overflow-hidden shadow-2xl border border-violet-200 dark:border-violet-800">
                             <EditableImage
                                 elementId="sa_hero_image"
-                                defaultImage=""
+                                defaultImage={defaultImages.saas.hero}
                                 alt="Dashboard SaaS"
                                 className="w-full h-auto object-cover"
                                 category="saas"

@@ -1,5 +1,6 @@
 import { ArrowRight, Dumbbell, Trophy } from 'lucide-react';
 import React from 'react';
+import { defaultImages } from '../../assets/default-images';
 import EditableText from '../../components/common/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
 import { useTemplate } from '../../contexts/TemplateContext';
@@ -16,7 +17,13 @@ const GymHero: React.FC = () => {
         <section className="relative section-padding overflow-hidden bg-black text-white">
             {/* Imagen de fondo con overlay */}
             <div className="absolute inset-0">
-                <EditableImage elementId="gm_hero_bg" defaultImage="" alt="Gimnasio" className="w-full h-full object-cover opacity-40" category="gym" />
+                <EditableImage
+                    elementId="gm_hero_bg"
+                    defaultImage={defaultImages.gym.hero}
+                    alt="Gimnasio"
+                    className="w-full h-full object-cover opacity-40"
+                    category="gym"
+                />
             </div>
 
             <div className="container-custom relative z-10">
@@ -111,7 +118,7 @@ const GymHero: React.FC = () => {
                         <div className="relative z-10 rounded-2xl overflow-hidden shadow-2xl">
                             <EditableImage
                                 elementId="gm_hero_image"
-                                defaultImage=""
+                                defaultImage={defaultImages.gym.class1}
                                 alt="Entrenamiento"
                                 className="w-full h-auto object-cover"
                                 category="gym"

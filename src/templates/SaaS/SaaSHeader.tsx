@@ -1,5 +1,6 @@
 import { Menu, X } from 'lucide-react';
 import React, { useState } from 'react';
+import { defaultImages } from '../../assets/default-images';
 import EditableText from '../../components/common/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
 import { useTemplate } from '../../contexts/TemplateContext';
@@ -52,7 +53,7 @@ const SaaSHeader: React.FC = () => {
                         <div id="sa_logo" data-element-id="sa_logo">
                             <EditableImage
                                 elementId="sa_logo"
-                                defaultImage=""
+                                defaultImage={defaultImages.saas.logo}
                                 alt="Kernelize SaaS"
                                 className="w-12 h-12 rounded-lg object-cover"
                                 category="saas"
@@ -70,7 +71,7 @@ const SaaSHeader: React.FC = () => {
                                 defaultText="SaaS"
                                 tag="span"
                                 className="text-xl font-semibold text-violet-600 dark:text-violet-400 ml-1"
-                               // style={{ color: colors.primary }}
+                         //       style={{ color: colors.primary }}
                             />
                         </div>
                     </a>

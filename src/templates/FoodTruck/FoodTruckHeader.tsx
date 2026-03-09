@@ -1,5 +1,6 @@
 import { Menu, X } from 'lucide-react';
 import React, { useState } from 'react';
+import { defaultImages } from '../../assets/default-images';
 import EditableText from '../../components/common/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
 import { useTemplate } from '../../contexts/TemplateContext';
@@ -51,7 +52,7 @@ const FoodTruckHeader: React.FC = () => {
                         <div id="ft_logo" data-element-id="ft_logo">
                             <EditableImage
                                 elementId="ft_logo"
-                                defaultImage=""
+                                defaultImage={defaultImages.foodtruck.logo}
                                 alt="Kernelize Food Truck"
                                 className="w-12 h-12 rounded-lg object-cover"
                                 category="foodtruck"
@@ -69,7 +70,7 @@ const FoodTruckHeader: React.FC = () => {
                                 defaultText="Food Truck"
                                 tag="span"
                                 className="text-xl font-semibold text-orange-600 dark:text-orange-400 ml-1"
-                               // style={{ color: colors.primary }}
+                           //     style={{ color: colors.primary }}
                             />
                         </div>
                     </a>

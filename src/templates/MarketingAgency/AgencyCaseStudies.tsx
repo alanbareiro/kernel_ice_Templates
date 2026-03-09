@@ -1,5 +1,6 @@
 import { ExternalLink, ShoppingCart, TrendingUp, Users } from 'lucide-react';
 import React, { useState } from 'react';
+import { defaultImages } from '../../assets/default-images';
 import EditableText from '../../components/common/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
 import { useTemplate } from '../../contexts/TemplateContext';
@@ -12,6 +13,12 @@ const AgencyCaseStudies: React.FC = () => {
         accent: '#86198f',
     };
     const [activeCase, setActiveCase] = useState(0);
+
+    const caseImages = {
+        case_1: defaultImages.marketing.case1,
+        case_2: defaultImages.marketing.case2,
+        case_3: defaultImages.marketing.case3,
+    };
 
     const cases = [
         {
@@ -30,6 +37,7 @@ const AgencyCaseStudies: React.FC = () => {
                 { icon: <ShoppingCart className="w-4 h-4" />, id: 'ag_case_1_result_3', text: '+45% ventas', default: '+45% ventas' },
             ],
             imageId: 'ag_case_1_image',
+            defaultImage: caseImages.case_1,
         },
         {
             id: 'case_2',
@@ -47,6 +55,7 @@ const AgencyCaseStudies: React.FC = () => {
                 { icon: <ShoppingCart className="w-4 h-4" />, id: 'ag_case_2_result_3', text: '+90% ventas', default: '+90% ventas' },
             ],
             imageId: 'ag_case_2_image',
+            defaultImage: caseImages.case_2,
         },
         {
             id: 'case_3',
@@ -64,6 +73,7 @@ const AgencyCaseStudies: React.FC = () => {
                 { icon: <Users className="w-4 h-4" />, id: 'ag_case_3_result_3', text: '+150% leads', default: '+150% leads' },
             ],
             imageId: 'ag_case_3_image',
+            defaultImage: caseImages.case_3,
         },
     ];
 
@@ -102,8 +112,8 @@ const AgencyCaseStudies: React.FC = () => {
                             key={item.id}
                             onClick={() => setActiveCase(index)}
                             className={`px-6 py-3 rounded-full font-semibold transition-all ${activeCase === index
-                                    ? 'text-white shadow-lg'
-                                    : 'bg-white dark:bg-purple-800 text-purple-700 dark:text-purple-300 hover:bg-purple-100 dark:hover:bg-purple-700'
+                                ? 'text-white shadow-lg'
+                                : 'bg-white dark:bg-purple-800 text-purple-700 dark:text-purple-300 hover:bg-purple-100 dark:hover:bg-purple-700'
                                 }`}
                             style={activeCase === index ? { background: colors.primary } : {}}
                         >
@@ -150,7 +160,7 @@ const AgencyCaseStudies: React.FC = () => {
                         <div className="rounded-2xl overflow-hidden shadow-2xl">
                             <EditableImage
                                 elementId={cases[activeCase].imageId}
-                                defaultImage=""
+                                defaultImage={cases[activeCase].defaultImage}
                                 alt={cases[activeCase].clientDefault}
                                 className="w-full h-auto object-cover"
                                 category="marketing"

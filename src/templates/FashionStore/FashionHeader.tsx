@@ -1,6 +1,6 @@
-
 import { Menu, X } from 'lucide-react';
 import React, { useState } from 'react';
+import { defaultImages } from '../../assets/default-images';
 import EditableText from '../../components/common/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
 import { useTemplate } from '../../contexts/TemplateContext';
@@ -53,7 +53,7 @@ const FashionHeader: React.FC = () => {
                         <div id="fa_logo" data-element-id="fa_logo">
                             <EditableImage
                                 elementId="fa_logo"
-                                defaultImage=""
+                                defaultImage={defaultImages.fashion.logo}
                                 alt="Kernelize Fashion"
                                 className="w-12 h-12 rounded-lg object-cover"
                                 category="fashion"
@@ -71,7 +71,7 @@ const FashionHeader: React.FC = () => {
                                 defaultText="Fashion"
                                 tag="span"
                                 className="text-xl font-semibold text-gray-700 dark:text-gray-300 ml-1"
-                              //  style={{ color: colors.primary }}
+                            //   style={{ color: colors.primary }}
                             />
                         </div>
                     </a>

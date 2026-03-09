@@ -1,5 +1,6 @@
 import { Instagram, Linkedin, Mail, Phone } from 'lucide-react';
 import React from 'react';
+import { defaultImages } from '../../assets/default-images';
 import EditableText from '../../components/common/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
 import { useTemplate } from '../../contexts/TemplateContext';
@@ -12,6 +13,13 @@ const RealEstateAgents: React.FC = () => {
         accent: '#0d2f24',
     };
 
+    const agentImages = {
+        agent1: defaultImages.realestate.agent1,
+        agent2: defaultImages.realestate.agent2,
+        agent3: defaultImages.realestate.agent3,
+        agent4: defaultImages.realestate.agent4,
+    };
+
     const agents = [
         {
             id: 'agent_1',
@@ -20,6 +28,7 @@ const RealEstateAgents: React.FC = () => {
             phoneId: 're_agent_1_phone', phoneDefault: '+54 11 5678-9012',
             emailId: 're_agent_1_email', emailDefault: 'amartinez@kernelize.com',
             imageId: 're_agent_1_image',
+            defaultImage: agentImages.agent1,
         },
         {
             id: 'agent_2',
@@ -28,6 +37,7 @@ const RealEstateAgents: React.FC = () => {
             phoneId: 're_agent_2_phone', phoneDefault: '+54 11 5678-9013',
             emailId: 're_agent_2_email', emailDefault: 'cperez@kernelize.com',
             imageId: 're_agent_2_image',
+            defaultImage: agentImages.agent2,
         },
         {
             id: 'agent_3',
@@ -36,6 +46,7 @@ const RealEstateAgents: React.FC = () => {
             phoneId: 're_agent_3_phone', phoneDefault: '+54 11 5678-9014',
             emailId: 're_agent_3_email', emailDefault: 'mrodriguez@kernelize.com',
             imageId: 're_agent_3_image',
+            defaultImage: agentImages.agent3,
         },
         {
             id: 'agent_4',
@@ -44,6 +55,7 @@ const RealEstateAgents: React.FC = () => {
             phoneId: 're_agent_4_phone', phoneDefault: '+54 11 5678-9015',
             emailId: 're_agent_4_email', emailDefault: 'lsanchez@kernelize.com',
             imageId: 're_agent_4_image',
+            defaultImage: agentImages.agent4,
         },
     ];
 
@@ -68,7 +80,13 @@ const RealEstateAgents: React.FC = () => {
                         <div key={agent.id} className="group text-center">
                             <div className="relative mb-4 mx-auto w-48 h-48 rounded-full overflow-hidden border-4 transition-all group-hover:scale-105 duration-300"
                                 style={{ borderColor: colors.primary }}>
-                                <EditableImage elementId={agent.imageId} defaultImage="" alt={agent.nameDefault} className="w-full h-full object-cover" category="realestate" />
+                                <EditableImage
+                                    elementId={agent.imageId}
+                                    defaultImage={agent.defaultImage}
+                                    alt={agent.nameDefault}
+                                    className="w-full h-full object-cover"
+                                    category="realestate"
+                                />
                             </div>
                             <h3 className="text-xl font-bold text-emerald-900 dark:text-emerald-100 mb-1">
                                 <EditableText elementId={agent.nameId} defaultText={agent.nameDefault} tag="span" />

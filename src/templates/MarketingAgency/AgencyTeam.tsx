@@ -1,5 +1,6 @@
 import { Linkedin, Mail } from 'lucide-react';
 import React from 'react';
+import { defaultImages } from '../../assets/default-images';
 import EditableText from '../../components/common/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
 import { useTemplate } from '../../contexts/TemplateContext';
@@ -10,6 +11,13 @@ const AgencyTeam: React.FC = () => {
         primary: '#c026d3',
         secondary: '#a21caf',
         accent: '#86198f',
+    };
+
+    const teamImages = {
+        team1: defaultImages.marketing.team1,
+        team2: defaultImages.marketing.team2,
+        team3: defaultImages.marketing.team3,
+        team4: defaultImages.marketing.team4,
     };
 
     const team = [
@@ -23,6 +31,7 @@ const AgencyTeam: React.FC = () => {
             descDefault: 'Especialista en estrategia digital y growth marketing.',
             email: 'pmartinez@kernelizemarketing.com',
             imageId: 'ag_team_1_image',
+            defaultImage: teamImages.team1,
         },
         {
             id: 'team_2',
@@ -34,6 +43,7 @@ const AgencyTeam: React.FC = () => {
             descDefault: 'Experta en posicionamiento orgánico y estrategias de contenido.',
             email: 'lsanchez@kernelizemarketing.com',
             imageId: 'ag_team_2_image',
+            defaultImage: teamImages.team2,
         },
         {
             id: 'team_3',
@@ -45,6 +55,7 @@ const AgencyTeam: React.FC = () => {
             descDefault: 'Especialista en community management y publicidad en redes.',
             email: 'mgomez@kernelizemarketing.com',
             imageId: 'ag_team_3_image',
+            defaultImage: teamImages.team3,
         },
         {
             id: 'team_4',
@@ -56,6 +67,7 @@ const AgencyTeam: React.FC = () => {
             descDefault: 'Experta en data science y optimización de conversiones.',
             email: 'cdiaz@kernelizemarketing.com',
             imageId: 'ag_team_4_image',
+            defaultImage: teamImages.team4,
         },
     ];
 
@@ -94,7 +106,7 @@ const AgencyTeam: React.FC = () => {
                                 style={{ borderColor: colors.primary }}>
                                 <EditableImage
                                     elementId={member.imageId}
-                                    defaultImage=""
+                                    defaultImage={member.defaultImage}
                                     alt={member.nameDefault}
                                     className="w-full h-full object-cover"
                                     category="marketing"

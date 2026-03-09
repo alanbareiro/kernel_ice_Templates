@@ -1,5 +1,6 @@
 import { Calendar, Clock, Users } from 'lucide-react';
 import React from 'react';
+import { defaultImages } from '../../assets/default-images';
 import EditableText from '../../components/common/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
 import { useTemplate } from '../../contexts/TemplateContext';
@@ -12,6 +13,12 @@ const CoffeeEvents: React.FC = () => {
         accent: '#78350f',
     };
 
+    const eventImages = {
+        event1: defaultImages.coffee.event1,
+        event2: defaultImages.coffee.event2,
+        event3: defaultImages.coffee.event3,
+    };
+
     const events = [
         {
             id: 'event_1',
@@ -21,6 +28,7 @@ const CoffeeEvents: React.FC = () => {
             descId: 'cf_event_1_desc', descDefault: 'Aprendé a dibujar en tu café. Taller práctico para principiantes.',
             capacityId: 'cf_event_1_capacity', capacityDefault: '15 personas',
             imageId: 'cf_event_1_image',
+            defaultImage: eventImages.event1,
         },
         {
             id: 'event_2',
@@ -30,6 +38,7 @@ const CoffeeEvents: React.FC = () => {
             descId: 'cf_event_2_desc', descDefault: 'Descubrí cafés de diferentes orígenes y sus perfiles de sabor.',
             capacityId: 'cf_event_2_capacity', capacityDefault: '12 personas',
             imageId: 'cf_event_2_image',
+            defaultImage: eventImages.event2,
         },
         {
             id: 'event_3',
@@ -39,6 +48,7 @@ const CoffeeEvents: React.FC = () => {
             descId: 'cf_event_3_desc', descDefault: 'Disfrutá de música acústica mientras degustás nuestros cafés.',
             capacityId: 'cf_event_3_capacity', capacityDefault: '40 personas',
             imageId: 'cf_event_3_image',
+            defaultImage: eventImages.event3,
         },
     ];
 
@@ -62,7 +72,13 @@ const CoffeeEvents: React.FC = () => {
                     {events.map((event) => (
                         <div key={event.id} className="bg-white dark:bg-amber-900/30 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all">
                             <div className="relative h-48">
-                                <EditableImage elementId={event.imageId} defaultImage="" alt={event.titleDefault} className="w-full h-full object-cover" category="coffee" />
+                                <EditableImage
+                                    elementId={event.imageId}
+                                    defaultImage={event.defaultImage}
+                                    alt={event.titleDefault}
+                                    className="w-full h-full object-cover"
+                                    category="coffee"
+                                />
                             </div>
                             <div className="p-6">
                                 <h3 className="text-xl font-bold mb-3 text-amber-900 dark:text-amber-100">
