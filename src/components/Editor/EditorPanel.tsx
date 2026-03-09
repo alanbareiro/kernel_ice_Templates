@@ -34,7 +34,7 @@ interface EditorPanelProps {
 }
 
 export const EditorPanel: React.FC<EditorPanelProps> = ({
-    onSendEmail,
+    // onSendEmail,
     onSaveToUser,
     userLoggedIn = false
 }) => {
@@ -49,7 +49,7 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
         canUndo,
         canRedo,
         applyPreset,
-        editorConfig,
+        // editorConfig,
         setEditorConfig
     } = useTemplate();
 
@@ -57,16 +57,16 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
     const [activeTab, setActiveTab] = useState<'colors' | 'texts' | 'images' | 'presets'>('colors');
     const [email, setEmail] = useState('');
     const [showEmailModal, setShowEmailModal] = useState(false);
-    const [showPresets, setShowPresets] = useState(false);
+    // const [showPresets, setShowPresets] = useState(false);
 
     if (!config.showEditor) return null;
 
-    const NotificationIcon = {
-        success: Check,
-        error: AlertCircle,
-        warning: AlertTriangle,
-        info: Info
-    };
+    // const NotificationIcon = {
+    //     success: Check,
+    //     error: AlertCircle,
+    //     warning: AlertTriangle,
+    //     info: Info
+    // };
 
     const handleSendEmail = async () => {
         if (!template || !email) return;
