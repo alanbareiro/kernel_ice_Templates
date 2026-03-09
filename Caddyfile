@@ -1,5 +1,8 @@
-{$PORT} {
+:${PORT} {
     root * /app/dist
     file_server
     encode gzip
+    
+    # Deshabilitar completamente TLS
+    tls off
 }
