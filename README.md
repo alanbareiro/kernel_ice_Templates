@@ -71,3 +71,6 @@ export default defineConfig([
   },
 ])
 ```
+
+
+<!-- Este Proyecto se desarrolla para poder mostrar nuestros templates de landing page -->

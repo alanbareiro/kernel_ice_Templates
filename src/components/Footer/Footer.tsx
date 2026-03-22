@@ -1,174 +1,188 @@
-import {
-  Facebook,
-  Github,
-  Heart,
-  Instagram,
-  Linkedin
-} from 'lucide-react';
-import ThemeToggle from '../../Theme/ThemeToogle';
+import { ChevronDown, ChevronUp, Heart, Instagram, Mail, MapPin, Phone, Twitter } from 'lucide-react';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import Logo from '../../assets/icon.png'
+
 
 const Footer = () => {
-  const currentYear = new Date().getFullYear();
+  const [expandedSections, setExpandedSections] = useState({
+    soluciones: false,
+    contacto: false
+  });
+
+  const toggleSection = (section: 'soluciones' | 'contacto') => {
+    setExpandedSections(prev => ({
+      ...prev,
+      [section]: !prev[section]
+    }));
+  };
 
   return (
-    <footer className="bg-white dark:bg-neutral-900 border-t border-neutral-200 dark:border-neutral-800">
-      <div className="container-custom px-4 sm:px-6 lg:px-8">
-        {/* Sección principal */}
-        <div className="py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* Información de la empresa */}
-          <div className="space-y-4">
-            <div className="flex items-center space-x-2">
-              <div className="w-10 h-10 bg-gradient-to-r from-primary-500 to-accent-500 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">K</span>
+    <footer id="contacto" className="bg-neutral-900 text-white">
+      <div className="container-custom px-4 sm:px-6 py-12 sm:py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-40">
+          {/* Brand - Siempre centrado en mobile */}
+          <div className="text-center">
+            <Link to="/" className="inline-flex flex-col items-center mb-6">
+              <div className="flex items-center gap-3 mb-3">
+                {/* <img
+                  src={KernelMinecraft}
+                  alt="Kernel-Ice Logo"
+                  className="h-12 sm:h-14 w-auto"
+                /> */}
+                <div className="text-left">
+                  <div className="flex items-center gap-1.5 sm:gap-2 text-center">
+                    <span className="text-xl sm:text-2xl font-bold text-gradient dark:text-gradient">Kernel-</span>
+                    <span className="text-xl sm:text-2xl font-bold text-primary-400 dark:text-gradient">Eyes</span>
+                    {/* <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-accent-500" /> */}
+                    {/* Badge Innovador */}
+                    {/* <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 mb-6 animate-fade-in"> */}
+                    <span className="relative flex h-6 w-6">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-400 opacity-75"></span>
+                      <img
+                        src={Logo}
+                        alt="KernelEyes Logo"
+                        className="h-6 w-auto p-0"
+                      />
+                      {/* <span className="relative inline-flex rounded-full h-2 w-2 bg-accent-500"></span> */}
+                    </span>
+
+                    {/* </div> */}
+                  </div>
+                  <p className="text-xs text-neutral-400 mt-1 text-center">🚀 Soluciones Digitales</p>
+                </div>
               </div>
-              <h2 className="text-2xl font-bold bg-gradient-to-r from-primary-600 to-accent-500 bg-clip-text text-transparent">
-                Kernelize
-              </h2>
-            </div>
-            <p className="text-neutral-600 dark:text-neutral-400">
-              Soluciones tecnológicas a medida para PYMES y emprendedores.
+            </Link>
+            <p className="text-sm sm:text-base text-neutral-400 mb-6 sm:mb-8 leading-relaxed px-2">
+              💎 Soluciones digitales frescas, rápidas y sin complicaciones para <span className='text-gradient'>tu negocio.  </span>
             </p>
-
-            {/* Redes sociales */}
-            <div className="flex space-x-3">
-              {[
-                { icon: <Facebook className="w-5 h-5" />, label: 'Facebook' },
-                { icon: <Instagram className="w-5 h-5" />, label: 'Instagram' },
-                { icon: <Linkedin className="w-5 h-5" />, label: 'LinkedIn' },
-                { icon: <Github className="w-5 h-5" />, label: 'GitHub' },
-              ].map((social) => (
-                <a
-                  key={social.label}
-                  href="#"
-                  className="p-2 bg-neutral-100 dark:bg-neutral-800 rounded-lg text-neutral-600 dark:text-neutral-400 hover:text-primary-500 dark:hover:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all"
-                  aria-label={social.label}
-                >
-                  {social.icon}
-                </a>
-              ))}
+            <div className="flex justify-center space-x-4 sm:space-x-6 mb-6 sm:mb-0">
+              <a href="#" className="text-neutral-400 hover:text-primary-400 transition-all duration-300 transform hover:scale-110">
+                <Twitter size={20} className="sm:w-6 sm:h-6" />
+              </a>
+              {/* <a href="#" className="text-neutral-400 hover:text-primary-400 transition-all duration-300 transform hover:scale-110">
+                <Linkedin size={20} className="sm:w-6 sm:h-6" />
+              </a> */}
+              <a href="#" className="text-neutral-400 hover:text-primary-400 transition-all duration-300 transform hover:scale-110">
+                <Instagram size={20} className="sm:w-6 sm:h-6" />
+              </a>
             </div>
           </div>
 
-          {/* Enlaces rápidos */}
-          <div>
-            <h3 className="text-lg font-semibold text-neutral-900 dark:text-white mb-4">
-              Enlaces Rápidos
-            </h3>
-            <ul className="space-y-2">
-              {['Inicio', 'Servicios', 'Portafolio', 'Precios', 'Contacto'].map((item) => (
-                <li key={item}>
-                  <a
-                    href={`#${item.toLowerCase()}`}
-                    className="text-neutral-600 dark:text-neutral-400 hover:text-primary-500 dark:hover:text-primary-400 transition-colors"
-                  >
-                    {item}
-                  </a>
+
+
+          {/* Contacto - Expandible en mobile */}
+          <div className='md:text-center border-b border-neutral-800 md:border-none pb-4 md:pb-0'>
+            <button
+              onClick={() => toggleSection('contacto')}
+              className="w-full flex items-center justify-center md:justify-center gap-2 text-lg font-semibold mb-4 md:mb-8"
+            >
+              <Mail className="w-5 h-5 text-primary-400" />
+              Contacto
+              <span className="md:hidden ml-2">
+                {expandedSections.contacto ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+              </span>
+            </button>
+
+            <div className={`${expandedSections.contacto ? 'block' : 'hidden md:block'}`}>
+              <ul className="space-y-4 sm:space-y-6">
+                <li className="flex items-center justify-center md:justify-center gap-3 group">
+                  <div className="p-1.5 sm:p-2 rounded-full bg-primary-500/10 group-hover:bg-primary-500/20 transition-colors">
+                    <Mail size={16} className="sm:w-5 sm:h-5 text-primary-400" />
+                  </div>
+                  <span className="text-sm sm:text-base text-neutral-400 group-hover:text-white transition-colors">📧 info@kerneleyes.com</span>
                 </li>
-              ))}
-            </ul>
+                <li className="flex items-center justify-center md:justify-center gap-3 group">
+                  <div className="p-1.5 sm:p-2 rounded-full bg-primary-500/10 group-hover:bg-primary-500/20 transition-colors">
+                    <Phone size={16} className="sm:w-5 sm:h-5 text-primary-400" />
+                  </div>
+                  <span className="text-sm sm:text-base text-neutral-400 group-hover:text-white transition-colors">📱 +54 11 1234-5678</span>
+                </li>
+                <li className="flex items-center justify-center md:justify-center gap-3 group">
+                  <div className="p-1.5 sm:p-2 rounded-full bg-primary-500/10 group-hover:bg-primary-500/20 transition-colors">
+                    <MapPin size={16} className="sm:w-5 sm:h-5 text-primary-400" />
+                  </div>
+                  <span className="text-sm sm:text-base text-neutral-400 group-hover:text-white transition-colors">📍 Buenos Aires, Argentina</span>
+                </li>
+              </ul>
+            </div>
           </div>
 
-          {/* Servicios */}
-          <div>
-            <h3 className="text-lg font-semibold text-neutral-900 dark:text-white mb-4">
-              Servicios
-            </h3>
-            <ul className="space-y-2">
-              {[
-                'Landing Pages',
-                'E-commerce',
-                'Sistemas CRM',
-                'Gestión de Inventario',
-                'Panel de Control',
-              ].map((service) => (
-                <li key={service}>
-                  <a
-                    href="#services"
-                    className="text-neutral-600 dark:text-neutral-400 hover:text-primary-500 dark:hover:text-primary-400 transition-colors"
-                  >
-                    {service}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Newsletter */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-neutral-900 dark:text-white mb-4">
+          {/* Newsletter - Siempre visible */}
+          {/* <div className="text-center md:text-left">
+            <h4 className="text-lg font-semibold mb-6 sm:mb-8 flex items-center justify-center md:justify-start gap-2">
+              <Rocket className="w-5 h-5 text-accent-500" />
               Newsletter
-            </h3>
-            <p className="text-sm text-neutral-600 dark:text-neutral-400">
-              Suscríbete para recibir tips y ofertas especiales.
+            </h4>
+            <p className="text-sm sm:text-base text-neutral-400 mb-4 sm:mb-6 leading-relaxed px-2 md:px-0">
+              ✨ Suscribite para recibir tips de digitalización y ofertas especiales.
             </p>
-            <form className="space-y-3">
-              <input
-                type="email"
-                placeholder="tu@email.com"
-                className="w-full px-4 py-2 bg-neutral-100 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-              />
+            <form className="space-y-3 sm:space-y-4">
+              <div className="relative">
+                <input
+                  type="email"
+                  placeholder="📨 tu@email.com"
+                  className="w-full px-4 py-3 sm:px-6 sm:py-4 bg-neutral-800/50 border border-neutral-700/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-white placeholder:text-neutral-500 text-sm sm:text-base"
+                />
+                <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                  <Cpu className="w-4 h-4 sm:w-5 sm:h-5 text-neutral-500" />
+                </div>
+              </div>
               <button
                 type="submit"
-                className="w-full px-4 py-2 bg-primary-500 text-white font-medium rounded-lg hover:bg-primary-600 transition-colors"
+                className="btn-primary w-full bg-gradient-to-r from-primary-500 to-accent-500 hover:from-primary-600 hover:to-accent-600 py-3 sm:py-4 rounded-xl font-semibold text-sm sm:text-lg shadow-lg hover:shadow-xl transition-all duration-300"
               >
-                Suscribirse
+                🚀 Suscribirme
               </button>
             </form>
+          </div> */}
+        </div>
 
-            {/* Toggle de tema */}
-            <div className="pt-4 flex items-center justify-between">
-              <span className="text-sm text-neutral-600 dark:text-neutral-400">
-                Tema:
+        {/* Divider */}
+        <div className="my-8 sm:my-12">
+          <div className="h-px bg-gradient-to-r from-transparent via-neutral-700 to-transparent"></div>
+        </div>
+
+        {/* Footer Bottom */}
+        <div className="text-center">
+          <div className="mb-4 sm:mb-8">
+            <p className="text-sm sm:text-lg text-neutral-500">
+              © {new Date().getFullYear()} <span className="text-gradient font-semibold dark:text-gradient">
+                <span className="mx-1 sm:mx-2 text-gradient dark:text-gradient">•</span>
+                KernelEyes
+                <span className="mx-1 sm:mx-2 text-gradient dark:text-gradient">•</span>
               </span>
-              <ThemeToggle />
-            </div>
-          </div>
-        </div>
 
-        {/* Línea divisoria */}
-        <div className="border-t border-neutral-200 dark:border-neutral-800"></div>
-
-        {/* Sección inferior */}
-        <div className="py-8 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-          {/* Derechos de autor */}
-          <div className="text-center md:text-left">
-            <p className="text-neutral-600 dark:text-neutral-400">
-              © {currentYear} Kernelize Template 01. Todos los derechos reservados.
+              <span className="block sm:inline mt-1 sm:mt-0">Todos los derechos reservados.</span>
             </p>
-            <p className="text-sm text-neutral-500 dark:text-neutral-500 mt-1 flex items-center justify-center md:justify-start">
-              Hecho con <Heart className="mx-1 w-4 h-4 text-red-500" /> en Argentina
+            <p className="text-xs sm:text-sm text-neutral-500 mt-2 sm:mt-3">
+              ⚡ Transformando negocios con tecnología de vanguardia
             </p>
           </div>
 
-          {/* Enlaces legales */}
-          <div className="flex flex-wrap justify-center md:justify-end gap-4">
-            {['Términos', 'Privacidad', 'Cookies'].map((link) => (
-              <a
-                key={link}
-                href="#"
-                className="text-sm text-neutral-600 dark:text-neutral-400 hover:text-primary-500 dark:hover:text-primary-400 transition-colors"
-              >
-                {link}
-              </a>
-            ))}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 md:gap-12 mt-6 sm:mt-8">
+            <Link to="/privacidad" className="text-neutral-400 hover:text-primary-400 transition-colors text-xs sm:text-sm py-1">
+              🔐 Política de Privacidad
+            </Link>
+            <span className="hidden sm:inline text-neutral-600 dark:text-gradient">|</span>
+            <Link to="/terminos" className="text-neutral-400 hover:text-primary-400 transition-colors text-xs sm:text-sm py-1">
+              📄 Términos de Servicio
+            </Link>
+            <span className="hidden sm:inline text-neutral-600 dark:text-gradient">|</span>
+            <Link to="/contacto" className="text-neutral-400 hover:text-primary-400 transition-colors text-xs sm:text-sm py-1">
+              💬 Soporte
+            </Link>
           </div>
-        </div>
 
-        {/* Badge de tecnología */}
-        <div className="pb-8 pt-4 border-t border-neutral-200 dark:border-neutral-800">
-          <div className="flex flex-wrap items-center justify-center gap-3 text-sm">
-            <span className="px-3 py-1 bg-neutral-100 dark:bg-neutral-800 rounded-full border border-neutral-200 dark:border-neutral-700">
-              React 19
-            </span>
-            <span className="px-3 py-1 bg-neutral-100 dark:bg-neutral-800 rounded-full border border-neutral-200 dark:border-neutral-700">
-              TypeScript
-            </span>
-            <span className="px-3 py-1 bg-neutral-100 dark:bg-neutral-800 rounded-full border border-neutral-200 dark:border-neutral-700">
-              Tailwind CSS
-            </span>
-            <span className="px-3 py-1 bg-neutral-100 dark:bg-neutral-800 rounded-full border border-neutral-200 dark:border-neutral-700">
-              Vite
-            </span>
+          <div className="mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-neutral-800/50">
+            <p className="text-xs sm:text-sm text-neutral-500 flex flex-col items-center justify-center gap-1 sm:gap-2">
+              <span className="flex items-center">
+                Hecho con
+                <Heart className="mx-1 sm:mx-2 w-4 h-4 sm:w-5 sm:h-5 text-red-500" />
+                en
+                <span className="ml-1 sm:ml-2 font-semibold text-white">🇦🇷 Argentina</span>
+              </span>
+            </p>
           </div>
         </div>
       </div>
