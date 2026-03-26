@@ -1,6 +1,6 @@
 // src/layouts/EditorLayout.tsx
 import { useEffect, useRef } from 'react';
-import EditorDashboard from '../components/Editor/EditorDashboard';
+// import EditorDashboard from '../components/Editor/EditorDashboard';
 import { TemplateProvider, useTemplate } from '../contexts/TemplateContext';
 import { TemplateEditorProvider } from '../contexts/TemplateEditorContext';
 
@@ -11,7 +11,7 @@ interface EditorLayoutProps {
 }
 
 // Componente interno que usa el contexto
-const EditorContent = ({ templateData, onClose, children }: { templateData: any; onClose: () => void; children: React.ReactNode }) => {
+const EditorContent = ({ templateData,/* onClose,*/ children }: { templateData: any; onClose: () => void; children: React.ReactNode }) => {
     const { setTemplate, /*template*/ } = useTemplate();
     const initialized = useRef(false);
     const lastTemplateId = useRef<string | null>(null);

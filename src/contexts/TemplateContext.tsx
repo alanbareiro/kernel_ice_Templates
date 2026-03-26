@@ -8,36 +8,36 @@ import { colorPresets } from '../types/template.types';
 import { useAuth } from './AuthContext';
 
 // Colores por defecto
-const defaultColors: Record<string, TemplateColors> = {
-    consulting: {
-        primary: '#2563eb',
-        secondary: '#475569',
-        accent: '#1e293b',
-        background: '#ffffff',
-        text: '#0f172a',
-    },
-    catering: {
-        primary: '#f59e0b',
-        secondary: '#ea580c',
-        accent: '#b45309',
-        background: '#ffffff',
-        text: '#422006',
-    },
-    accounting: {
-        primary: '#059669',
-        secondary: '#047857',
-        accent: '#064e3b',
-        background: '#ffffff',
-        text: '#022c22',
-    },
-    restaurant: {
-        primary: '#dc2626',
-        secondary: '#b91c1c',
-        accent: '#7f1d1d',
-        background: '#ffffff',
-        text: '#450a0a',
-    },
-};
+// const defaultColors: Record<string, TemplateColors> = {
+//     consulting: {
+//         primary: '#2563eb',
+//         secondary: '#475569',
+//         accent: '#1e293b',
+//         background: '#ffffff',
+//         text: '#0f172a',
+//     },
+//     catering: {
+//         primary: '#f59e0b',
+//         secondary: '#ea580c',
+//         accent: '#b45309',
+//         background: '#ffffff',
+//         text: '#422006',
+//     },
+//     accounting: {
+//         primary: '#059669',
+//         secondary: '#047857',
+//         accent: '#064e3b',
+//         background: '#ffffff',
+//         text: '#022c22',
+//     },
+//     restaurant: {
+//         primary: '#dc2626',
+//         secondary: '#b91c1c',
+//         accent: '#7f1d1d',
+//         background: '#ffffff',
+//         text: '#450a0a',
+//     },
+// };
 
 // const isDev = import.meta.env.DEV;
 

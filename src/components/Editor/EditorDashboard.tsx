@@ -34,7 +34,7 @@ const EditorDashboard: React.FC<EditorDashboardProps> = ({
   const {
     template,
     resetTemplate,
-    saveDraft,
+    /*saveDraft,*/
     hasUnsavedChanges,
     undo,
     redo,
