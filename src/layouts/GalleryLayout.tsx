@@ -27,8 +27,8 @@ export const GalleryLayout = ({
   onBackToMyTemplates,
   onLogout,
   onLogin,
-  user,
-  isAuthenticated,
+  /*user,
+  isAuthenticated,*/
   favorites,
   onToggleFavorite
 }: GalleryLayoutProps) => {

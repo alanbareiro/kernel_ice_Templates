@@ -38,7 +38,7 @@ const StartupLanding = lazy(() => import('./templates/Startup/StartupLanding'));
 
 // Tipos
 type ViewMode = 'ownTemplate' | 'myTemplates' | 'gallery' | 'editor';
-type TemplateType = 'consulting' | 'catering' | 'accounting' | 'restaurant' | 'lawFirm' | 'medical' | 'architecture' | 'marketingAgency' | 'coffeeShop' | 'bakery' | 'foodTruck' | 'beautySalon' | 'gym' | 'realEstate' | 'fashion' | 'cleaning' | 'saas' | 'digitalAgency' | 'startup';
+// type TemplateType = 'consulting' | 'catering' | 'accounting' | 'restaurant' | 'lawFirm' | 'medical' | 'architecture' | 'marketingAgency' | 'coffeeShop' | 'bakery' | 'foodTruck' | 'beautySalon' | 'gym' | 'realEstate' | 'fashion' | 'cleaning' | 'saas' | 'digitalAgency' | 'startup';
 
 // Plantillas públicas para la galería
 const templatesInfo = [
@@ -75,7 +75,7 @@ const categories = [
 function AppContent() {
   const { user, isAuthenticated, logout } = useAuth();
   const { isLoading, getLoadingMessage, tokenFromUrl } = useAuthHandler();
-  const { userTemplate, userTemplatesList, loading: loadingTemplates, loadTemplateForEdit, reloadUserTemplates, saveNewTemplate } = useUserTemplates(isAuthenticated, user);
+  const { userTemplate, userTemplatesList, loading: loadingTemplates, loadTemplateForEdit, reloadUserTemplates,/* saveNewTemplate*/ } = useUserTemplates(isAuthenticated, user);
   const [viewMode, setViewMode] = useState<ViewMode>('ownTemplate');
   const [selectedTemplateForEdit, setSelectedTemplateForEdit] = useState<any>(null);
   const [favorites, setFavorites] = useState<string[]>(() => {
