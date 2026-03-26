@@ -1,5 +1,5 @@
 // src/layouts/MyTemplatesLayout.tsx
-import { ArrowRight, Edit3, Package, Sparkles } from 'lucide-react';
+import { ArrowRight, Edit3, Lock, Package, Sparkles } from 'lucide-react';
 import { UserHeader } from './UserHeader';
 
 interface MyTemplatesLayoutProps {
@@ -18,14 +18,12 @@ export const MyTemplatesLayout = ({
     onEditTemplate,
     onBackToOwn,
     onExploreGallery,
-    onLogout,
-    onLogin,
     /* user,
      isAuthenticated*/
 }: MyTemplatesLayoutProps) => {
     return (
         <div className="min-h-screen bg-gradient-to-b from-white to-neutral-50 dark:from-neutral-950 dark:to-neutral-900">
-            <UserHeader onLogout={onLogout} onLogin={onLogin} />
+            <UserHeader />
 
             <div className="text-center pt-32 pb-16 px-4">
                 <div className="inline-flex items-center gap-2 bg-purple-500/10 px-4 py-2 rounded-full mb-6 border border-purple-500/20">
@@ -74,7 +72,7 @@ export const MyTemplatesLayout = ({
                         {templates.map((template) => (
                             <div
                                 key={template.id}
-                                className="card group hover:shadow-2xl transition-all duration-300 relative overflow-hidden cursor-pointer"
+                                className="card active group hover:shadow-2xl transition-all duration-300 relative overflow-hidden cursor-pointer"
                                 onClick={() => onEditTemplate(template.id)}
                             >
                                 <div className="relative h-48 bg-gradient-to-r from-primary-500 to-accent-500 flex items-center justify-center">
@@ -110,7 +108,50 @@ export const MyTemplatesLayout = ({
                                 </div>
                             </div>
                         ))}
+
+                        <div
+
+                            className="card group hover:shadow-2xl transition-all duration-300 relative overflow-hidden cursor-pointer"
+
+                        >
+                            <div className="relative h-48 bg-gradient-to-r from-primary-200 to-accent-500 flex items-center justify-center">
+                                {/* No disponible */}
+                                <div className="text-center">
+                                    <div className="text-white text-4xl mb-2">➕</div>
+                                    <div className="text-white font-semibold">No disponible </div>
+                                </div>
+                            </div>
+                            <div className="p-5">
+                                <div className="flex items-center justify-between mb-2">
+                                    <h3 className="font-bold text-xl dark:text-white group-hover:text-primary-500 transition-colors">
+                                       Mi Nuevo template 
+                                    </h3>
+                                    <span className="text-xs px-2 py-1 bg-neutral-100 dark:bg-neutral-800 rounded-full">
+
+                                    </span>
+                                </div>
+                                <p className="text-sm text-neutral-600 dark:text-neutral-400 line-clamp-2 mb-4">
+
+                                </p>
+                                <div className="flex justify-between items-center pt-3 border-t border-neutral-200 dark:border-neutral-800">
+                                    <button
+
+                                        className="btn-light text-sm px-4 py-2 flex items-center gap-2 group/btn"
+                                    >
+                                        <Lock className="w-4 h-4" />
+                                        Crear
+                                    </button>
+                                    <span className="text-xs text-neutral-400">
+                                        Nuevo
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
+                    // nueva
+
+
                 )}
 
                 <div className="text-center mt-12">

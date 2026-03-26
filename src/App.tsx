@@ -1,10 +1,11 @@
-// src/App.tsx - Versión corregida para manejar selección de plantilla
+// src/App.tsx - Versión optimizada con useRef para evitar bucles
 import { Grid3X3, Heart, LayoutGrid, Sparkles, Star } from 'lucide-react';
-import React, { lazy, Suspense, useEffect, useState } from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import React, { lazy, Suspense, useEffect, useRef, useState } from 'react';
+import { BrowserRouter, Route, Routes, useSearchParams } from 'react-router-dom';
 import { LoadingScreen } from './components/LoadingScreen/LoadingScreen';
 import { useAuth } from './contexts/AuthContext';
 import { templateImages } from './data/templateImages';
+import { templateDefaultColors } from './data/types/templateDefaultColors';
 import { useAuthHandler } from './hooks/useAuthHandler';
 import { useUserTemplates } from './hooks/useUserTemplates';
 import './index.css';
@@ -13,7 +14,7 @@ import { GalleryLayout } from './layouts/GalleryLayout';
 import { MyTemplatesLayout } from './layouts/MyTemplatesLayout';
 import { OwnTemplateLayout } from './layouts/OwnTemplateLayout';
 import LoginPage from './pages/LoginPage';
-import { templateDefaultColors } from './data/types/templateDefaultColors';
+// import Header from './components/Header/Header';
 
 // Lazy loading de templates
 const AccountingLanding = lazy(() => import('./templates/Accounting/AccountingLanding'));
@@ -38,7 +39,6 @@ const StartupLanding = lazy(() => import('./templates/Startup/StartupLanding'));
 
 // Tipos
 type ViewMode = 'ownTemplate' | 'myTemplates' | 'gallery' | 'editor';
-// type TemplateType = 'consulting' | 'catering' | 'accounting' | 'restaurant' | 'lawFirm' | 'medical' | 'architecture' | 'marketingAgency' | 'coffeeShop' | 'bakery' | 'foodTruck' | 'beautySalon' | 'gym' | 'realEstate' | 'fashion' | 'cleaning' | 'saas' | 'digitalAgency' | 'startup';
 
 // Plantillas públicas para la galería
 const templatesInfo = [
@@ -75,21 +75,72 @@ const categories = [
 function AppContent() {
   const { user, isAuthenticated, logout } = useAuth();
   const { isLoading, getLoadingMessage, tokenFromUrl } = useAuthHandler();
-  const { userTemplate, userTemplatesList, loading: loadingTemplates, loadTemplateForEdit, reloadUserTemplates,/* saveNewTemplate*/ } = useUserTemplates(isAuthenticated, user);
+  const { userTemplate, userTemplatesList, loading: loadingTemplates, loadTemplateForEdit, reloadUserTemplates } = useUserTemplates(isAuthenticated, user);
+  const [searchParams] = useSearchParams();
+  // const navigate = useNavigate();
+
+  // ✅ useRef para evitar múltiples ejecuciones
+  const hasProcessedUrlParams = useRef(false);
+
+  // Leer parámetros de URL
+  const templateIdFromUrl = searchParams.get('templateId');
+  const previewMode = searchParams.get('preview') === 'true';
+  const viewFromUrl = searchParams.get('view');
+
   const [viewMode, setViewMode] = useState<ViewMode>('ownTemplate');
   const [selectedTemplateForEdit, setSelectedTemplateForEdit] = useState<any>(null);
   const [favorites, setFavorites] = useState<string[]>(() => {
     const saved = localStorage.getItem('favoriteTemplates');
     return saved ? JSON.parse(saved) : [];
   });
+  const [isPreviewMode, setIsPreviewMode] = useState(false);
+  const [isLoadingTemplate, setIsLoadingTemplate] = useState(false);
 
-  // ✅ Efecto para redirigir a galería cuando no hay template
+  // ✅ Efecto para manejar parámetros de URL - SOLO UNA VEZ
   useEffect(() => {
-    if (!loadingTemplates && !userTemplate && viewMode === 'ownTemplate') {
-      console.log('📦 No hay template guardado, redirigiendo a galería');
-      setViewMode('gallery');
-    }
-  }, [loadingTemplates, userTemplate, viewMode]);
+    const handleUrlParams = async () => {
+      // Evitar múltiples ejecuciones
+      if (hasProcessedUrlParams.current) {
+        return;
+      }
+
+      // Si hay un templateId en la URL y estamos autenticados
+      if (templateIdFromUrl && isAuthenticated) {
+        hasProcessedUrlParams.current = true;
+        setIsLoadingTemplate(true);
+
+        console.log('📝 Cargando template desde URL:', templateIdFromUrl);
+
+        if (previewMode) {
+          setIsPreviewMode(true);
+        }
+
+        const templateData = await loadTemplateForEdit(templateIdFromUrl);
+        if (templateData) {
+          setSelectedTemplateForEdit(templateData);
+          setViewMode('editor');
+        }
+        setIsLoadingTemplate(false);
+
+        // Limpiar URL después de procesar
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
+      // Si hay vista "my-templates" en la URL
+      else if (viewFromUrl === 'my-templates') {
+        hasProcessedUrlParams.current = true;
+        console.log('📁 Mostrando vista de mis plantillas');
+        setViewMode('myTemplates');
+        // Limpiar URL después de procesar
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
+      // Si no hay template guardado, mostrar galería
+      else if (!loadingTemplates && !userTemplate && viewMode === 'ownTemplate') {
+        setViewMode('gallery');
+      }
+    };
+
+    handleUrlParams();
+  }, [templateIdFromUrl, previewMode, viewFromUrl, isAuthenticated, loadingTemplates, userTemplate, viewMode, loadTemplateForEdit]);
 
   const handleLogout = async () => {
     await logout();
@@ -107,13 +158,11 @@ function AppContent() {
     localStorage.setItem('favoriteTemplates', JSON.stringify(newFavorites));
   };
 
-  // ✅ Función para seleccionar una plantilla de la galería y empezar a editarla
   const handleSelectTemplateFromGallery = (templateId: string) => {
     console.log('📝 Seleccionando plantilla de galería:', templateId);
-    
-    // Crear un template base con los colores por defecto
+
     const defaultColors = templateDefaultColors[templateId as keyof typeof templateDefaultColors] || templateDefaultColors.consulting;
-    
+
     const newTemplate = {
       id: `temp-${Date.now()}`,
       name: `Mi template de ${templateId}`,
@@ -125,7 +174,7 @@ function AppContent() {
       updatedAt: new Date(),
       version: 1
     };
-    
+
     setSelectedTemplateForEdit(newTemplate);
     setViewMode('editor');
   };
@@ -133,13 +182,13 @@ function AppContent() {
   const handleBackToOwn = () => {
     reloadUserTemplates();
     setViewMode('ownTemplate');
+    setIsPreviewMode(false);
   };
 
   const handleEditTemplate = async (templateId: string) => {
     console.log('📝 Editando template con ID:', templateId);
     const templateData = await loadTemplateForEdit(templateId);
     if (templateData) {
-      console.log('✅ Template cargado para editar:', templateData);
       setSelectedTemplateForEdit(templateData);
       setViewMode('editor');
     }
@@ -149,13 +198,13 @@ function AppContent() {
   const handleExploreGallery = () => setViewMode('gallery');
 
   // Mostrar loading
-  if (isLoading || loadingTemplates || (tokenFromUrl && !isAuthenticated)) {
-    return <LoadingScreen message={getLoadingMessage()} />;
+  if (isLoading || loadingTemplates || isLoadingTemplate || (tokenFromUrl && !isAuthenticated)) {
+    return <LoadingScreen message={isLoadingTemplate ? "Cargando template..." : getLoadingMessage()} />;
   }
 
   if (!isAuthenticated) return null;
 
-  // ✅ Si no hay template guardado y estamos en ownTemplate, mostrar galería
+  // Si no hay template guardado y estamos en ownTemplate, mostrar galería
   if (!userTemplate && viewMode === 'ownTemplate') {
     return (
       <GalleryLayout
@@ -174,7 +223,7 @@ function AppContent() {
     );
   }
 
-  // Modo editor (desde galería o desde edición de template guardado)
+  // Modo editor
   if (viewMode === 'editor' && selectedTemplateForEdit) {
     const TemplateComponent = (() => {
       switch (selectedTemplateForEdit.type) {
@@ -201,12 +250,13 @@ function AppContent() {
       }
     })();
 
-    console.log('🎨 Renderizando editor con template:', selectedTemplateForEdit);
-    console.log('🎨 Colores:', selectedTemplateForEdit.colors);
-
     return (
-      <EditorLayout templateData={selectedTemplateForEdit} onClose={handleBackToOwn}>
-        <Suspense fallback={<LoadingScreen message="Cargando template..." />}>
+      <EditorLayout
+        templateData={selectedTemplateForEdit}
+        onClose={handleBackToOwn}
+        isPreview={isPreviewMode}
+      >
+        <Suspense fallback={<LoadingScreen message={isPreviewMode ? "Cargando previsualización..." : "Cargando template..."} />}>
           <TemplateComponent onHomeClick={handleBackToOwn} />
         </Suspense>
       </EditorLayout>
@@ -248,7 +298,7 @@ function AppContent() {
     );
   }
 
-  // Modo plantilla principal (solo si hay template)
+  // Modo plantilla principal
   if (userTemplate) {
     return (
       <OwnTemplateLayout
@@ -285,6 +335,7 @@ function AppContent() {
 export default function App() {
   return (
     <BrowserRouter>
+      {/* <Header /> */}
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/*" element={<AppContent />} />

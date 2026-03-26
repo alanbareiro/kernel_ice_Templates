@@ -3,7 +3,8 @@ import { useAuth } from '../contexts/AuthContext';
 import { AlertCircle, Eye, EyeOff, Lock, Mail } from 'lucide-react';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-
+// Configuración
+const API_BASE_URL = import.meta.env.LEADING_PAGE || 'http://localhost:5173';
 const LoginPage = () => {
     const { login } = useAuth();
     const navigate = useNavigate();
@@ -22,7 +23,7 @@ const LoginPage = () => {
 
         try {
             await login(formData);
-            navigate('/mi-cuenta');
+            navigate(`${API_BASE_URL}/mi-cuenta`);
         } catch (err: any) {
             setError(err.message || 'Error al iniciar sesión');
         } finally {
