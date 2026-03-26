@@ -20,17 +20,15 @@ interface GalleryLayoutProps {
 }
 
 export const GalleryLayout = ({
-  templates,
-  categories,
-  onSelectTemplate,
-  onBackToOwn,
-  onBackToMyTemplates,
-  onLogout,
-  onLogin,
-  /*user,
-  isAuthenticated,*/
-  favorites,
-  onToggleFavorite
+    templates,
+    categories,
+    onSelectTemplate,
+    onBackToOwn,
+    onBackToMyTemplates,
+    /*user,
+    isAuthenticated,*/
+    favorites,
+    onToggleFavorite
 }: GalleryLayoutProps) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState<TemplateCategory>('todos');
@@ -52,7 +50,7 @@ export const GalleryLayout = ({
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-white to-neutral-50 dark:from-neutral-950 dark:to-neutral-900">
-            <UserHeader onLogout={onLogout} onLogin={onLogin} />
+            <UserHeader />
 
             <div className="text-center pt-32 pb-16 px-4">
                 <div className="inline-flex items-center gap-2 bg-amber-500/10 px-4 py-2 rounded-full mb-6 border border-amber-500/20">
