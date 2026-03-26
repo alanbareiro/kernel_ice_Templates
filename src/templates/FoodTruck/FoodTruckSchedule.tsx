@@ -1,7 +1,7 @@
 
 import { Clock, MapPin } from 'lucide-react';
 import React from 'react';
-import EditableText from '../../components/common/EditableText';
+import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
 
 const FoodTruckSchedule: React.FC = () => {

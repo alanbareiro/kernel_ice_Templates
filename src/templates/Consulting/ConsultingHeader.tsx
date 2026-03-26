@@ -1,9 +1,8 @@
 import { Menu, X } from 'lucide-react';
 import React, { useState } from 'react';
-import ThemeToggle from '../../Theme/ThemeToogle';
-import logoDefault from '../../assets/kernel.logo.png';
+import logoDefault from '../../assets/logo.png';
 import EditableImage from '../../components/Editor/EditableImage';
-import EditableText from '../../components/common/EditableText';
+import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
 import { useTemplateEditor } from '../../contexts/TemplateEditorContext';
 
@@ -16,12 +15,18 @@ const ConsultingHeader: React.FC<ConsultingHeaderProps> = ({ className = '' }) =
     const { config } = useTemplateEditor();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+
+    // ✅ Log para ver qué template está usando
+    // console.log('🎨 ConsultingHeader - useTemplate() llamado, resultado:', template);
+    // console.log('🎨 ConsultingHeader - colors:', template?.colors);
+
+
     const colors = template?.colors || {
-        primary: '#2563eb',
+        primary: '#a7b1c7',
         secondary: '#475569',
         accent: '#1e293b',
         background: '#ffffff',
-        text: '#0f172a'
+        text: '#424652'
     };
 
     // Navegación editable
@@ -82,7 +87,7 @@ const ConsultingHeader: React.FC<ConsultingHeaderProps> = ({ className = '' }) =
                         <div className="text-2xl font-bold">
                             <EditableText
                                 elementId="header_brand_1"
-                                defaultText="Kernelize"
+                                defaultText="KE"
                                 tag="span"
                                 className="text-blue-600 dark:text-blue-400"
                             />
@@ -127,12 +132,12 @@ const ConsultingHeader: React.FC<ConsultingHeaderProps> = ({ className = '' }) =
                                 tag="span"
                             />
                         </a>
-                        <ThemeToggle />
+                        {/* <ThemeToggle /> */}
                     </nav>
 
                     {/* Mobile menu button */}
                     <div className="md:hidden flex items-center space-x-4">
-                        <ThemeToggle />
+                        {/* <ThemeToggle /> */}
                         <button
                             onClick={() => setIsMenuOpen(!isMenuOpen)}
                             className="p-2 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400"

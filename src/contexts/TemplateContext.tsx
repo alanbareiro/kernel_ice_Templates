@@ -1,8 +1,10 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+// src/contexts/TemplateContext.tsx - con logs reducidos
+import React, { createContext, useContext, useState } from 'react';
+import { getDefaultTemplateColors } from '../data/types/templateDefaultColors';
+import { templateApi } from '../services/api/templateApi.service';
 import { storageService } from '../services/storageService';
 import type { EditorConfig, Template, TemplateColors } from '../types/template.types';
 import { colorPresets } from '../types/template.types';
-import { templateApi } from '../services/api/templateApi.service';
 import { useAuth } from './AuthContext';
 
 // Colores por defecto
@@ -37,6 +39,8 @@ const defaultColors: Record<string, TemplateColors> = {
     },
 };
 
+// const isDev = import.meta.env.DEV;
+
 interface TemplateContextType {
     template: Template | null;
     setTemplate: (template: Template) => void;
@@ -48,9 +52,9 @@ interface TemplateContextType {
     saveDraft: () => void;
     loadDraft: () => void;
     exportTemplate: () => void;
-    saveToBackend: () => Promise<any>; // Nueva función
-    loadFromBackend: (templateId: string) => Promise<void>; // Cargar template específico
-    getUserTemplates: () => Promise<any>; // Obtener templates del usuario
+    saveToBackend: () => Promise<any>;
+    loadFromBackend: (templateId: string) => Promise<void>;
+    getUserTemplates: () => Promise<any>;
     hasUnsavedChanges: boolean;
     undo: () => void;
     redo: () => void;
@@ -64,29 +68,10 @@ const TemplateContext = createContext<TemplateContextType | undefined>(undefined
 
 export const TemplateProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const { isAuthenticated } = useAuth();
-    
-    const [template, setTemplate] = useState<Template | null>(() => {
-        // Intentar cargar del localStorage primero
-        const draft = storageService.loadDraft();
-        if (draft) return draft;
 
-        // Si no hay draft, crear un template por defecto de consultoría
-        return {
-            id: Date.now().toString(),
-            name: 'Mi template de consultoría',
-            type: 'consulting',
-            colors: defaultColors.consulting,
-            texts: {},
-            images: {},
-            createdAt: new Date(),
-            updatedAt: new Date(),
-            version: 1
-        };
-    });
-    
+    const [template, setTemplateState] = useState<Template | null>(null);
     const [history, setHistory] = useState<Template[]>([]);
     const [historyIndex, setHistoryIndex] = useState(-1);
-    const [autoSaveTimeout, setAutoSaveTimeout] = useState<ReturnType<typeof setTimeout>>();
     const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
     const [editorConfig, setEditorConfigState] = useState<EditorConfig>({
         isEditing: false,
@@ -95,61 +80,11 @@ export const TemplateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         notifications: null
     });
 
-    // Cargar borrador al iniciar
-    useEffect(() => {
-        const draft = storageService.loadDraft();
-        if (draft) {
-            setTemplate(draft);
-            addToHistory(draft);
-        }
-    }, []);
-
-    // Escuchar eventos de guardado
-    useEffect(() => {
-        const handleSaveEvent = (event: CustomEvent) => {
-            showNotification(event.detail.message, event.detail.type);
-        };
-
-        window.addEventListener('template-saved', handleSaveEvent as EventListener);
-
-        return () => {
-            window.removeEventListener('template-saved', handleSaveEvent as EventListener);
-        };
-    }, []);
-
-    // Auto-guardado mejorado
-    useEffect(() => {
-        if (template && hasUnsavedChanges) {
-            if (autoSaveTimeout) clearTimeout(autoSaveTimeout);
-
-            const timeout = setTimeout(() => {
-                storageService.saveAutoSave(template);
-                setHasUnsavedChanges(false);
-                showNotification('Cambios guardados automáticamente', 'success');
-            }, 3000);
-
-            setAutoSaveTimeout(timeout);
-        }
-
-        return () => {
-            if (autoSaveTimeout) {
-                clearTimeout(autoSaveTimeout);
-            }
-        };
-    }, [template, hasUnsavedChanges]);
-
-    const showNotification = (message: string, type: 'success' | 'error' | 'info' | 'warning' = 'info') => {
-        setEditorConfigState(prev => ({
-            ...prev,
-            notifications: { show: true, message, type }
-        }));
-
-        setTimeout(() => {
-            setEditorConfigState(prev => ({
-                ...prev,
-                notifications: null
-            }));
-        }, 3000);
+    const setTemplate = (newTemplate: Template) => {
+        setTemplateState(newTemplate);
+        setHistory([newTemplate]);
+        setHistoryIndex(0);
+        setHasUnsavedChanges(false);
     };
 
     const addToHistory = (newTemplate: Template) => {
@@ -175,7 +110,7 @@ export const TemplateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
             updatedAt: new Date()
         };
 
-        setTemplate(updatedTemplate);
+        setTemplateState(updatedTemplate);
         addToHistory(updatedTemplate);
         setHasUnsavedChanges(true);
     };
@@ -189,7 +124,7 @@ export const TemplateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
             updatedAt: new Date()
         };
 
-        setTemplate(updatedTemplate);
+        setTemplateState(updatedTemplate);
         addToHistory(updatedTemplate);
         setHasUnsavedChanges(true);
     };
@@ -206,22 +141,23 @@ export const TemplateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
                     updatedAt: new Date()
                 };
 
-                setTemplate(updatedTemplate);
+                setTemplateState(updatedTemplate);
                 addToHistory(updatedTemplate);
                 setHasUnsavedChanges(true);
-                showNotification('Imagen actualizada', 'success');
                 resolve();
             };
             reader.readAsDataURL(file);
         });
     };
 
+    // En resetTemplate, usar getDefaultTemplateColors
     const resetTemplate = (type: string) => {
+        const defaultColors = getDefaultTemplateColors(type);
         const newTemplate: Template = {
             id: Date.now().toString(),
             name: `Mi ${type} template`,
             type: type as any,
-            colors: defaultColors[type] || defaultColors.consulting,
+            colors: defaultColors,
             texts: {},
             images: {},
             createdAt: new Date(),
@@ -229,12 +165,11 @@ export const TemplateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
             version: 1
         };
 
-        setTemplate(newTemplate);
+        setTemplateState(newTemplate);
         setHistory([newTemplate]);
         setHistoryIndex(0);
         setHasUnsavedChanges(true);
-        showNotification('Template restablecido', 'info');
-    };
+    }
 
     const applyPreset = (presetName: string) => {
         if (!template) return;
@@ -244,9 +179,6 @@ export const TemplateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
         if (preset) {
             updateColors(preset.colors);
-            showNotification(`Preset "${presetName}" aplicado`, 'success');
-        } else {
-            showNotification(`Preset "${presetName}" no encontrado`, 'warning');
         }
     };
 
@@ -254,16 +186,32 @@ export const TemplateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         if (template) {
             storageService.saveDraft(template);
             setHasUnsavedChanges(false);
-            showNotification('Borrador guardado', 'success');
+
+            // ✅ Disparar evento para notificar que se guardó el borrador
+            window.dispatchEvent(new CustomEvent('template-saved', {
+                detail: {
+                    message: 'Borrador guardado',
+                    type: 'success',
+                    template: template
+                }
+            }));
+
+            // Notificación visual
+            setEditorConfig({
+                notifications: {
+                    show: true,
+                    message: 'Borrador guardado',
+                    type: 'success'
+                }
+            });
         }
     };
 
     const loadDraft = () => {
         const draft = storageService.loadDraft();
         if (draft) {
-            setTemplate(draft);
+            setTemplateState(draft);
             addToHistory(draft);
-            showNotification('Borrador cargado', 'success');
         }
     };
 
@@ -278,79 +226,92 @@ export const TemplateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         linkElement.setAttribute('href', dataUri);
         linkElement.setAttribute('download', exportFileDefaultName);
         linkElement.click();
-
-        showNotification('Template exportado', 'success');
     };
 
-    // NUEVAS FUNCIONES PARA BACKEND
     const saveToBackend = async () => {
-        if (!template) {
-            showNotification('No hay template para guardar', 'warning');
-            return;
-        }
-
-        if (!isAuthenticated) {
-            showNotification('Debes iniciar sesión para guardar en tu cuenta', 'warning');
-            return;
-        }
+        if (!template || !isAuthenticated) return;
 
         try {
-            const result : any = await templateApi.saveTemplate({
-                name: template.name,
-                type: template.type,
-                colors: /*template.colors ??*/ '',
-                texts: template.texts,
-                images: template.images
+            const typeUpper = template.type.toUpperCase();
+
+            const colorsToSend: Record<string, string> = {
+                primary: template.colors.primary || '#2563eb',
+                secondary: template.colors.secondary || '#475569',
+                accent: template.colors.accent || '#1e293b',
+                background: template.colors.background || '#ffffff',
+                text: template.colors.text || '#0f172a'
+            };
+
+            Object.entries(template.colors).forEach(([key, value]) => {
+                if (!colorsToSend[key]) {
+                    colorsToSend[key] = value;
+                }
             });
 
-            showNotification('Template guardado en tu cuenta', 'success');
-            
-            // Actualizar el ID del template con el devuelto por el backend
+            const result = await templateApi.saveTemplate({
+                name: template.name,
+                type: typeUpper,
+                colors: colorsToSend,
+                texts: template.texts || {},
+                images: template.images || {}
+            });
+
             if (result.template?.id) {
-                setTemplate({
+                const updatedTemplate = {
                     ...template,
-                    id: result.template.id
-                });
+                    id: result.template.id,
+                    updatedAt: new Date()
+                };
+                setTemplateState(updatedTemplate);
+
+                // ✅ Disparar evento con los datos actualizados del template
+                window.dispatchEvent(new CustomEvent('template-saved', {
+                    detail: {
+                        templateId: result.template.id,
+                        success: true,
+                        template: updatedTemplate
+                    }
+                }));
             }
-            
+
             return result;
         } catch (error) {
             console.error('Error guardando template:', error);
-            showNotification('Error al guardar en tu cuenta', 'error');
         }
     };
 
     const loadFromBackend = async (templateId: string) => {
-        if (!isAuthenticated) {
-            showNotification('Debes iniciar sesión', 'warning');
-            return;
-        }
+        if (!isAuthenticated) return;
 
         try {
-            const result : any = await templateApi.getTemplate(templateId);
+            const result = await templateApi.getTemplate(templateId);
             if (result.template) {
-                setTemplate(result.template);
-                addToHistory(result.template);
-                showNotification('Template cargado', 'success');
+                const templateData = {
+                    id: result.template.id,
+                    name: result.template.name,
+                    type: result.template.type.toLowerCase(),
+                    colors: result.template.colors,
+                    texts: result.template.texts || {},
+                    images: result.template.images || {},
+                    createdAt: new Date(result.template.createdAt),
+                    updatedAt: new Date(result.template.updatedAt),
+                    version: result.template.version || 1
+                };
+                setTemplateState(templateData);
+                addToHistory(templateData);
             }
         } catch (error) {
             console.error('Error cargando template:', error);
-            showNotification('Error al cargar el template', 'error');
         }
     };
 
     const getUserTemplates = async () => {
-        if (!isAuthenticated) {
-            showNotification('Debes iniciar sesión', 'warning');
-            return [];
-        }
-
+        if (!isAuthenticated) return [];
         try {
-            const result : any = await templateApi.getUserTemplates();
+            const result = await templateApi.getUserTemplates();
             return result.templates || [];
         } catch (error) {
             console.error('Error obteniendo templates:', error);
-            showNotification('Error al obtener tus templates', 'error');
             return [];
         }
     };
@@ -358,16 +319,14 @@ export const TemplateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     const undo = () => {
         if (historyIndex > 0) {
             setHistoryIndex(prev => prev - 1);
-            setTemplate(history[historyIndex - 1]);
-            showNotification('Deshacer', 'info');
+            setTemplateState(history[historyIndex - 1]);
         }
     };
 
     const redo = () => {
         if (historyIndex < history.length - 1) {
             setHistoryIndex(prev => prev + 1);
-            setTemplate(history[historyIndex + 1]);
-            showNotification('Rehacer', 'info');
+            setTemplateState(history[historyIndex + 1]);
         }
     };
 

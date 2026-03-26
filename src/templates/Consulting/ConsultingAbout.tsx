@@ -1,6 +1,6 @@
 import { Award, Briefcase, MapPin, Users } from 'lucide-react';
 import consultingImage from '../../assets/corpo.jpg';
-import EditableText from '../../components/common/EditableText';
+import EditableText from '../../components/Editor/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
 import { useTemplate } from '../../contexts/TemplateContext';
 

@@ -1,6 +1,6 @@
 import { Calendar, CheckCircle, Clock, Mail, Phone, Send, Users } from 'lucide-react';
 import React, { useState } from 'react';
-import EditableText from '../../components/common/EditableText';
+import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
 
 const RestaurantReservations = () => {

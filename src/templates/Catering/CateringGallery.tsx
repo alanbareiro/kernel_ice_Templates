@@ -1,7 +1,7 @@
 import { ChevronLeft, ChevronRight, Heart, X } from 'lucide-react';
 import { useState } from 'react';
 import { defaultImages } from '../../assets/default-images';
-import EditableText from '../../components/common/EditableText';
+import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
 
 const CateringGallery = () => {

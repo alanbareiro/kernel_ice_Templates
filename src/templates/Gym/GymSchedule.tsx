@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Clock } from 'lucide-react';
-import EditableText from '../../components/common/EditableText';
+import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
 
 const GymSchedule: React.FC = () => {

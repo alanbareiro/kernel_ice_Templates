@@ -1,6 +1,6 @@
 import { Coffee, Droplet, Eye, Scissors, Sparkles, Wand2 } from 'lucide-react';
 import React from 'react';
-import EditableText from '../../components/common/EditableText';
+import EditableText from '../../components/Editor/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
 import { useTemplate } from '../../contexts/TemplateContext';
 

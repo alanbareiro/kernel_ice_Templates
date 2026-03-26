@@ -4,7 +4,7 @@ import type { AxiosResponse } from 'axios';
 import type { RequestConfig } from './types';
 
 // Configuración
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'kerneliceapi-production.up.railway.app'/*'http://localhost:3000/api'*/;
 const API_TIMEOUT = parseInt(import.meta.env.VITE_API_TIMEOUT || '10000');
 
 // Instancia de axios
@@ -107,7 +107,8 @@ api.interceptors.response.use(
             localStorage.removeItem('user');
             localStorage.removeItem('refreshToken');
             if (!window.location.pathname.includes('/login')) {
-              window.location.href = '/login';
+              // window.location.href = '/login';
+              window.dispatchEvent(new CustomEvent('auth:logout'));
             }
           }
         }
@@ -120,7 +121,8 @@ api.interceptors.response.use(
         localStorage.removeItem('user');
         localStorage.removeItem('refreshToken');
         if (!window.location.pathname.includes('/login')) {
-          window.location.href = '/login';
+          // window.location.href = '/login';
+          window.dispatchEvent(new CustomEvent('auth:logout'));
         }
         break;
 

@@ -1,5 +1,5 @@
 import { Beef, Coffee, Fish, Flame, Leaf, Wine } from 'lucide-react';
-import EditableText from '../../components/common/EditableText';
+import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
 
 const RestaurantSpecialties = () => {

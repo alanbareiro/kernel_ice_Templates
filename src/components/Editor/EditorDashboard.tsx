@@ -1,728 +1,535 @@
+// src/components/Editor/EditorDashboard.tsx
 import {
-    Check,
-    ChevronLeft,
-    ChevronRight,
-    Edit3,
-    Image as ImageIcon,
-    LogIn,
-    Palette,
-    RotateCcw,
-    Save,
-    Sparkles,
-    Type
+  AlertCircle,
+  Check,
+  ChevronLeft,
+  ChevronRight,
+  Edit3,
+  Eye,
+  Home,
+  Info,
+  LogOut,
+  Save,
+  Sparkles,
+  User
 } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
-import { useAuth } from '../../contexts/AuthContext';
+import React, { useState } from 'react';
 import { useTemplate } from '../../contexts/TemplateContext';
 import { useTemplateEditor } from '../../contexts/TemplateEditorContext';
-import { ACCOUNTING_IMAGES, ACCOUNTING_TEXTS } from '../../data/accounting-texts';
-import { CATERING_IMAGES, CATERING_TEXTS } from '../../data/catering-texts';
-import { CONSULTING_IMAGES, CONSULTING_TEXTS } from '../../data/consulting-texts';
-import { RESTAURANT_IMAGES, RESTAURANT_TEXTS } from '../../data/restaurant-texts';
+import { getDefaultTemplateColors } from '../../data/types/templateDefaultColors';
+import { useTutorial } from '../../hooks/useTutorial';
 import { colorPresets } from '../../types/template.types';
-import LoginModal from './LoginModal';
+import ColorPicker from './ColorPicker';
+import TutorialOverlay from './TutorialOverlay';
 
 interface EditorDashboardProps {
-    onHomeClick?: () => void;
+  onHomeClick?: () => void;
+  userLoggedIn?: boolean;
 }
 
-export const EditorDashboard: React.FC<EditorDashboardProps> = ({ onHomeClick }) => {
-    const {
-        template,
-        updateColors,
-        resetTemplate,
-        hasUnsavedChanges,
-        saveDraft,
-        setEditorConfig,
-        saveToBackend
-    } = useTemplate();
+const EditorDashboard: React.FC<EditorDashboardProps> = ({
+  onHomeClick,
+  userLoggedIn = false,
+}) => {
+  const {
+    template,
+    resetTemplate,
+    saveDraft,
+    hasUnsavedChanges,
+    undo,
+    redo,
+    canUndo,
+    canRedo,
+    applyPreset,
+    saveToBackend,
+    setEditorConfig
+  } = useTemplate();
 
-    const { user, isAuthenticated } = useAuth();
-    // const navigate = useNavigate();
+  const { config, toggleEditing } = useTemplateEditor();
+  const [activeTab, setActiveTab] = useState<'colors' | 'texts'>('colors');
+  const [isSaving, setIsSaving] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [showSupportModal, setShowSupportModal] = useState(false);
 
-    const GUIDE_SEEN_KEY = 'template_guide_seen';
+  // Tutorial
+  const tutorial = useTutorial();
 
-    const { config, toggleEditing } = useTemplateEditor();
-    const [isOpen, setIsOpen] = useState(false);
-    const [activeSection, setActiveSection] = useState<'colors' | 'texts' | 'presets' | 'images'>('colors');
-    const [selectedCategory, setSelectedCategory] = useState<string>('Todos');
-    const [showGuide, setShowGuide] = useState(() => {
-        return !localStorage.getItem(GUIDE_SEEN_KEY);
-    });
-    const [showLoginModal, setShowLoginModal] = useState(false);
-    const [isSaving, setIsSaving] = useState(false);
+  const defaultColors = template
+    ? getDefaultTemplateColors(template.type)
+    : getDefaultTemplateColors('consulting');
 
-    const handleSaveToAccount = async () => {
-        if (!isAuthenticated) {
-            setShowLoginModal(true);
-            return;
+  const handleSave = async () => {
+    setIsSaving(true);
+    try {
+      await saveToBackend();
+      setEditorConfig({
+        notifications: {
+          show: true,
+          message: 'Cambios guardados exitosamente',
+          type: 'success'
         }
-
-        setIsSaving(true);
-        try {
-            await saveToBackend();
-            setEditorConfig({
-                notifications: {
-                    show: true,
-                    message: 'Template guardado en tu cuenta',
-                    type: 'success'
-                }
-            });
-        } catch (error) {
-            setEditorConfig({
-                notifications: {
-                    show: true,
-                    message: 'Error al guardar el template',
-                    type: 'error'
-                }
-            });
-        } finally {
-            setIsSaving(false);
+      });
+    } catch (error) {
+      setEditorConfig({
+        notifications: {
+          show: true,
+          message: 'Error al guardar cambios',
+          type: 'error'
         }
-    };
+      });
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
-    // const handleLoginRedirect = () => {
-    //     // Guardar la URL actual para volver después del login
-    //     sessionStorage.setItem('redirectAfterLogin', window.location.pathname);
-    //     navigate('/login');
-    // };
+  const handleFinishEditing = async () => {
+    if (hasUnsavedChanges) {
+      await handleSave();
+    }
+    if (onHomeClick) {
+      onHomeClick();
+    }
+  };
 
-    // Obtener textos e imágenes según el tipo de template
-    const getTemplateTexts = () => {
-        switch (template?.type) {
-            case 'consulting': return CONSULTING_TEXTS;
-            case 'catering': return CATERING_TEXTS;
-            case 'accounting': return ACCOUNTING_TEXTS;
-            case 'restaurant': return RESTAURANT_TEXTS;
-            default: return [];
+  const handleSaveToAccount = async () => {
+    setIsSaving(true);
+    try {
+      await saveToBackend();
+      setEditorConfig({
+        notifications: {
+          show: true,
+          message: 'Template guardado en tu cuenta',
+          type: 'success'
         }
-    };
-
-    const getTemplateImages = () => {
-        switch (template?.type) {
-            case 'consulting': return CONSULTING_IMAGES;
-            case 'catering': return CATERING_IMAGES;
-            case 'accounting': return ACCOUNTING_IMAGES;
-            case 'restaurant': return RESTAURANT_IMAGES;
-            default: return [];
+      });
+    } catch (error) {
+      setEditorConfig({
+        notifications: {
+          show: true,
+          message: 'Error al guardar',
+          type: 'error'
         }
-    };
+      });
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
-    const templateTexts = getTemplateTexts();
-    const templateImages = getTemplateImages();
+  return (
+    <>
+      {/* Tutorial Overlay */}
+      {tutorial.showTutorial && tutorial.currentStepData && (
+        <TutorialOverlay
+          targetElementId={tutorial.currentStepData.targetElement}
+          step={tutorial.currentStep}
+          onNext={tutorial.nextStep}
+          onPrevious={tutorial.previousStep}
+          onSkip={tutorial.skipTutorial}
+          onClose={tutorial.skipTutorial}
+          title={tutorial.currentStepData.title}
+          description={tutorial.currentStepData.description}
+          position={tutorial.currentStepData.position}
+          showSkip={tutorial.currentStepData.showSkip}
+          totalSteps={tutorial.totalSteps}
+          currentStep={tutorial.currentStep}
+        />
+      )}
 
-    // Agrupar por sección
-    const textsBySection = templateTexts.reduce((acc, text) => {
-        if (!acc[text.section]) {
-            acc[text.section] = [];
-        }
-        acc[text.section].push(text);
-        return acc;
-    }, {} as Record<string, typeof templateTexts>);
+      {/* Notificaciones */}
+      {config.notifications && (
+        <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-[60] animate-slideDown">
+          <div className={`
+            flex items-center space-x-2 px-4 py-2.5 rounded-lg shadow-lg text-sm
+            ${config.notifications.type === 'success' ? 'bg-gradient-to-r from-green-500 to-emerald-600 text-white' : ''}
+            ${config.notifications.type === 'error' ? 'bg-gradient-to-r from-red-500 to-rose-600 text-white' : ''}
+            ${config.notifications.type === 'warning' ? 'bg-gradient-to-r from-amber-500 to-orange-600 text-white' : ''}
+            ${config.notifications.type === 'info' ? 'bg-gradient-to-r from-blue-500 to-indigo-600 text-white' : ''}
+          `}>
+            {config.notifications.type === 'success' && <Check className="w-4 h-4" />}
+            {config.notifications.type === 'error' && <AlertCircle className="w-4 h-4" />}
+            {config.notifications.type === 'warning' && <AlertCircle className="w-4 h-4" />}
+            {config.notifications.type === 'info' && <Info className="w-4 h-4" />}
+            <span>{config.notifications.message}</span>
+          </div>
+        </div>
+      )}
 
-    const imagesBySection = templateImages.reduce((acc, image) => {
-        if (!acc[image.section]) {
-            acc[image.section] = [];
-        }
-        acc[image.section].push(image);
-        return acc;
-    }, {} as Record<string, typeof templateImages>);
+      {/* Sidebar fijo a la izquierda */}
+      <div
+        id="editor-sidebar"
+        className={`fixed left-0 top-20 h-[calc(100vh-5rem)] bg-white dark:bg-neutral-900 shadow-2xl border-r border-neutral-200 dark:border-neutral-800 transition-all duration-300 z-40 flex flex-col
+        ${isCollapsed ? 'w-12' : 'w-72'}`}>
 
-    useEffect(() => {
-        if (template && showGuide) {
-            localStorage.setItem(GUIDE_SEEN_KEY, 'true');
-            const timer = setTimeout(() => setShowGuide(false), 10000);
-            return () => clearTimeout(timer);
-        }
-    }, [template, showGuide]);
-
-    if (!template) return null;
-
-    const colors = template.colors;
-
-    const handleColorChange = (colorType: string, value: string) => {
-        if (/^#[0-9A-F]{6}$/i.test(value) || /^#[0-9A-F]{3}$/i.test(value)) {
-            updateColors({ [colorType]: value });
-        }
-    };
-
-    const handleHomeClick = () => {
-        if (onHomeClick) {
-            onHomeClick();
-        } else {
-            window.location.href = '/';
-        }
-    };
-
-    const scrollToElement = (elementId: string) => {
-        const element = document.getElementById(elementId) ||
-            document.querySelector(`[data-element-id="${elementId}"]`);
-
-        if (element) {
-            element.scrollIntoView({
-                behavior: 'smooth',
-                block: 'center'
-            });
-
-            element.classList.add('ring-4', 'ring-blue-500', 'ring-opacity-50', 'transition-all', 'duration-300');
-            setTimeout(() => {
-                element.classList.remove('ring-4', 'ring-blue-500', 'ring-opacity-50');
-            }, 2000);
-
-            if (config.isEditing) {
-                setTimeout(() => {
-                    (element as HTMLElement).click();
-                }, 500);
-            }
-        } else {
-            console.log(`Elemento no encontrado: ${elementId}`);
-            setEditorConfig({
-                notifications: {
-                    show: true,
-                    message: `No se encontró el elemento: ${elementId}`,
-                    type: 'warning'
-                }
-            });
-        }
-    };
-
-    const getUniqueSections = (items: any[]) => {
-        const sections = ['Todos', ...new Set(items.map(item => item.section))];
-        return sections;
-    };
-
-
-
-    return (
-        <>
-            {/* Guía rápida modal (igual que antes) */}
-            {showGuide && (
-                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[60] p-4">
-                    {/* ... contenido de la guía ... */}
+        {/* Header del sidebar */}
+        <div className={`px-3 py-2 bg-gradient-to-r from-primary-500 to-accent-500 text-white flex items-center justify-between
+          ${isCollapsed ? 'justify-center' : ''}`}>
+          {!isCollapsed && (
+            <div className="flex items-center gap-2">
+              <h4 className="font-medium text-xs">Editor</h4>
+              {hasUnsavedChanges && (
+                <div className="flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 bg-yellow-300 rounded-full animate-pulse"></span>
+                  <p className="text-[10px] opacity-90">Sin guardar</p>
                 </div>
-            )}
+              )}
+            </div>
+          )}
+          <button
+            onClick={() => setIsCollapsed(!isCollapsed)}
+            className="p-1 rounded hover:bg-white/20 transition-colors"
+            title={isCollapsed ? 'Expandir editor' : 'Colapsar editor'}
+          >
+            {isCollapsed ? <ChevronRight className="w-3.5 h-3.5" /> : <ChevronLeft className="w-3.5 h-3.5" />}
+          </button>
+        </div>
 
-            {/* Botón para abrir/cerrar el dashboard */}
-            <button
-                onClick={() => setIsOpen(!isOpen)}
-                className="fixed left-4 top-1/2 transform -translate-y-1/2 z-50 bg-gradient-to-r from-blue-600 to-blue-700 text-white p-3 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-110"
-                title={isOpen ? 'Cerrar panel' : 'Abrir panel de personalización'}
-            >
-                {isOpen ? <ChevronLeft className="w-5 h-5" /> : <ChevronRight className="w-5 h-5" />}
-            </button>
+        {/* Contenido del sidebar */}
+        {!isCollapsed && (
+          <>
+            {/* Modo edición toggle con botón de tutorial */}
+            <div id="edit-mode-button" className="p-3 border-b border-neutral-200 dark:border-neutral-800">
+              <div className="flex gap-2">
+                <button
+                  onClick={toggleEditing}
+                  className={`flex-1 py-1.5 rounded-lg text-xs font-medium transition-all flex items-center justify-center gap-2
+                    ${config.isEditing
+                      ? 'bg-gradient-to-r from-green-500 to-emerald-600 text-white ring-2 ring-green-300'
+                      : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700'}`}
+                >
+                  <Eye className="w-3.5 h-3.5" />
+                  {config.isEditing ? "✓ Modo edición activo" : "Activar modo edición"}
+                </button>
 
-            {/* Dashboard lateral */}
-            <div className={`fixed left-0 top-0 h-full w-96 mt-14 bg-white dark:bg-neutral-900 shadow-2xl z-40 transition-transform duration-300 flex flex-col ${isOpen ? 'translate-x-0' : '-translate-x-full'
-                }`}>
-                {/* Header */}
-                <div className="p-5 mt-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white flex-shrink-0">
-                    <div className="flex items-center justify-between mb-3">
-                        <h2 className="text-lg font-bold">Personalizar</h2>
+                {/* Botón para ver tutorial otra vez */}
+                <button
+                  onClick={tutorial.startTutorial}
+                  className="px-2 py-1.5 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg text-xs font-medium transition-all hover:bg-blue-200 dark:hover:bg-blue-800/30 flex items-center gap-1"
+                  title="Ver tutorial otra vez"
+                >
+                  <Info className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">Ayuda</span>
+                </button>
+              </div>
+              {config.isEditing && (
+                <p className="text-[10px] text-green-600 dark:text-green-400 text-center mt-1.5">
+                  ✨ Ahora podés hacer doble clic en cualquier texto para editarlo
+                </p>
+              )}
+            </div>
+
+            {/* Tabs compactos */}
+            <div className="flex border-b border-neutral-200 dark:border-neutral-800">
+              <button
+                id="colors-tab"
+                onClick={() => setActiveTab('colors')}
+                className={`flex-1 py-2 text-[11px] font-medium transition-all flex items-center justify-center gap-1.5
+                  ${activeTab === 'colors'
+                    ? 'text-primary-600 dark:text-primary-400 border-b-2 border-primary-500'
+                    : 'text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300'}`}
+              >
+                <Sparkles className="w-3 h-3" />
+                Colores
+              </button>
+              <button
+                id="texts-tab"
+                onClick={() => setActiveTab('texts')}
+                className={`flex-1 py-2 text-[11px] font-medium transition-all flex items-center justify-center gap-1.5
+                  ${activeTab === 'texts'
+                    ? 'text-primary-600 dark:text-primary-400 border-b-2 border-primary-500'
+                    : 'text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300'}`}
+              >
+                <Edit3 className="w-3 h-3" />
+                Textos
+              </button>
+            </div>
+
+            {/* Contenido scrollable */}
+            <div className="flex-1 overflow-y-auto p-3">
+              {activeTab === 'colors' && template && (
+                <div className="space-y-4">
+                  {/* Color Picker compacto */}
+                  <div className="space-y-2">
+                    <ColorPicker colorKey="primary" label="Principal" defaultColor={defaultColors.primary} compact />
+                    <ColorPicker colorKey="secondary" label="Secundario" defaultColor={defaultColors.secondary} compact />
+                    <ColorPicker colorKey="accent" label="Acento" defaultColor={defaultColors.accent} compact />
+                    <ColorPicker colorKey="background" label="Fondo" defaultColor={defaultColors.background} compact />
+                    <ColorPicker colorKey="text" label="Texto" defaultColor={defaultColors.text} compact />
+                  </div>
+
+                  {/* Presets siempre visibles */}
+                  <div id="presets-section" className="mt-4 pt-3 border-t border-neutral-200 dark:border-neutral-800">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-[10px] font-medium text-primary-600 dark:text-primary-400 flex items-center gap-1">
+                        <Sparkles className="w-3 h-3" />
+                        Presets de colores
+                      </span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-1.5">
+                      {colorPresets[template.type]?.map((preset, index) => (
                         <button
-                            onClick={handleHomeClick}
-                            className="p-2 bg-white/20 rounded-lg hover:bg-white/30 transition-colors"
-                            title="Volver al inicio"
+                          key={index}
+                          onClick={() => applyPreset(preset.name)}
+                          className="p-1.5 bg-neutral-50 dark:bg-neutral-800 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-all text-left"
                         >
-                            🏠
-                        </button>
-                        {/* En el Header del dashboard, después del botón home */}
-                        <div className="flex items-center space-x-2">
-                            {isAuthenticated ? (
-                                <div className="flex items-center space-x-2 bg-white/20 rounded-lg px-3 py-1.5">
-                                    <div className="w-6 h-6 rounded-full bg-green-400 flex items-center justify-center text-xs font-bold">
-                                        {user?.email?.charAt(0).toUpperCase()}
-                                    </div>
-                                    <span className="text-xs truncate max-w-[100px]">
-                                        {user?.email?.split('@')[0]}
-                                    </span>
-                                </div>
-                            ) : (
-                                <button
-                                    onClick={() => setShowLoginModal(true)}
-                                    className="flex items-center space-x-1 bg-white/20 hover:bg-white/30 rounded-lg px-3 py-1.5 transition-colors text-xs"
-                                >
-                                    <LogIn className="w-3 h-3" />
-                                    <span>Iniciar sesión</span>
-                                </button>
-                            )}
-                        </div>
-                    </div>
-                    <div className="flex items-center justify-between">
-                        <p className="text-xs opacity-90">
-                            Modificá todos los elementos
-                        </p>
-                        {hasUnsavedChanges && (
-                            <span className="bg-yellow-500 text-white text-xs px-2 py-1 rounded-full animate-pulse">
-                                Sin guardar
-                            </span>
-                        )}
-                    </div>
-                </div>
-
-                {/* Tabs principales */}
-                <div className="flex border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
-                    <TabButton
-                        active={activeSection === 'colors'}
-                        onClick={() => setActiveSection('colors')}
-                        icon={<Palette className="w-3 h-3" />}
-                        label="Colores"
-                    />
-                    <TabButton
-                        active={activeSection === 'presets'}
-                        onClick={() => setActiveSection('presets')}
-                        icon={<Sparkles className="w-3 h-3" />}
-                        label="Estilos"
-                    />
-                    <TabButton
-                        active={activeSection === 'texts'}
-                        onClick={() => setActiveSection('texts')}
-                        icon={<Type className="w-3 h-3" />}
-                        label="Textos"
-                    />
-                    <TabButton
-                        active={activeSection === 'images'}
-                        onClick={() => setActiveSection('images')}
-                        icon={<ImageIcon className="w-3 h-3" />}
-                        label="Imágenes"
-                    />
-                </div>
-
-                {/* Contenido scrolleable */}
-                <div className="flex-1 overflow-y-auto p-4">
-                    {/* Sección de Colores (igual que antes) */}
-                    {activeSection === 'colors' && (
-                        <div className="space-y-4">
-                            <InstructionBadge
-                                icon={<Palette className="w-3 h-3" />}
-                                text="Hacé clic en cada color para personalizar"
-                                color="blue"
-                            />
-
-                            <ColorSection
-                                title="Principal"
-                                description="Botones y elementos destacados"
-                                color={colors.primary}
-                                onChange={(value) => handleColorChange('primary', value)}
-                            />
-                            <ColorSection
-                                title="Secundario"
-                                description="Fondos de apoyo"
-                                color={colors.secondary}
-                                onChange={(value) => handleColorChange('secondary', value)}
-                            />
-                            <ColorSection
-                                title="Acento"
-                                description="Detalles especiales"
-                                color={colors.accent}
-                                onChange={(value) => handleColorChange('accent', value)}
-                            />
-                            <ColorSection
-                                title="Fondo"
-                                description="Fondo de página"
-                                color={colors.background}
-                                onChange={(value) => handleColorChange('background', value)}
-                            />
-                            <ColorSection
-                                title="Texto"
-                                description="Textos principales"
-                                color={colors.text}
-                                onChange={(value) => handleColorChange('text', value)}
-                            />
-                        </div>
-                    )}
-
-                    {/* Sección de Presets (igual que antes) */}
-                    {activeSection === 'presets' && (
-                        <div className="space-y-3">
-                            <InstructionBadge
-                                icon={<Sparkles className="w-3 h-3" />}
-                                text="Elegí un estilo predefinido"
-                                color="purple"
-                            />
-                            {colorPresets[template.type as keyof typeof colorPresets]?.map((preset, index) => (
-                                <PresetCard
-                                    key={index}
-                                    name={preset.name}
-                                    colors={preset.colors}
-                                    onApply={() => updateColors(preset.colors)}
-                                />
+                          <div className="flex space-x-1">
+                            {Object.values(preset.colors).map((color, i) => (
+                              <div
+                                key={i}
+                                className="w-5 h-5 rounded-full border border-neutral-300 dark:border-neutral-600"
+                                style={{ backgroundColor: color as string }}
+                                title={color as string}
+                              />
                             ))}
-                        </div>
-                    )}
-
-                    {/* Sección de Textos - AHORA USA LOS TEXTOS DEL TEMPLATE */}
-                    {activeSection === 'texts' && (
-                        <div className="space-y-4">
-                            <InstructionBadge
-                                icon={<Edit3 className="w-3 h-3" />}
-                                text="Activá el modo edición y hacé clic en cualquier texto"
-                                color="green"
-                            />
-
-                            {/* Botón de modo edición */}
-                            <button
-                                onClick={toggleEditing}
-                                className={`w-full p-4 rounded-lg border-2 transition-all flex items-center justify-between ${config.isEditing
-                                    ? 'border-green-500 bg-green-50 dark:bg-green-900/30'
-                                    : 'border-gray-200 dark:border-gray-700 hover:border-blue-500 bg-gray-50 dark:bg-neutral-800'
-                                    }`}
-                            >
-                                <div className="flex items-center">
-                                    {config.isEditing ? (
-                                        <Check className="w-5 h-5 text-green-500 mr-3" />
-                                    ) : (
-                                        <Edit3 className="w-5 h-5 text-gray-400 mr-3" />
-                                    )}
-                                    <div className="text-left">
-                                        <p className="text-sm font-medium text-gray-900 dark:text-white">
-                                            {config.isEditing ? 'Modo edición activado' : 'Activar modo edición'}
-                                        </p>
-                                    </div>
-                                </div>
-                                <div className={`w-2 h-2 rounded-full ${config.isEditing ? 'bg-green-500 animate-pulse' : 'bg-gray-300'}`} />
-                            </button>
-
-                            {/* Filtro por sección */}
-                            <div className="flex flex-wrap gap-2 mt-4">
-                                {getUniqueSections(templateTexts).map(section => (
-                                    <button
-                                        key={section}
-                                        onClick={() => setSelectedCategory(section)}
-                                        className={`px-3 py-1 text-xs rounded-full transition-colors ${selectedCategory === section
-                                            ? 'bg-blue-600 text-white'
-                                            : 'bg-gray-200 dark:bg-neutral-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-neutral-600'
-                                            }`}
-                                    >
-                                        {section}
-                                    </button>
-                                ))}
-                            </div>
-
-                            {/* Lista de textos por sección */}
-                            <div className="space-y-6 mt-4">
-                                {Object.entries(textsBySection)
-                                    .filter(([section]) => selectedCategory === 'Todos' || section === selectedCategory)
-                                    .map(([section, texts]) => (
-                                        <div key={section}>
-                                            <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
-                                                {section} ({texts.length})
-                                            </h4>
-                                            <div className="space-y-1">
-                                                {texts.map((text) => (
-                                                    <TextGuide
-                                                        key={text.id}
-                                                        label={text.label}
-                                                        element={text.id}
-                                                        defaultText={text.default}
-                                                        onClick={() => scrollToElement(text.id)}
-                                                    />
-                                                ))}
-                                            </div>
-                                        </div>
-                                    ))}
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Sección de Imágenes - AHORA USA LAS IMÁGENES DEL TEMPLATE */}
-                    {activeSection === 'images' && (
-                        <div className="space-y-4">
-                            <InstructionBadge
-                                icon={<ImageIcon className="w-3 h-3" />}
-                                text="Hacé clic en cualquier imagen para cambiarla"
-                                color="orange"
-                            />
-
-                            {/* Filtro por sección */}
-                            <div className="flex flex-wrap gap-2">
-                                {getUniqueSections(templateImages).map(section => (
-                                    <button
-                                        key={section}
-                                        onClick={() => setSelectedCategory(section)}
-                                        className={`px-3 py-1 text-xs rounded-full transition-colors ${selectedCategory === section
-                                            ? 'bg-orange-600 text-white'
-                                            : 'bg-gray-200 dark:bg-neutral-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-neutral-600'
-                                            }`}
-                                    >
-                                        {section}
-                                    </button>
-                                ))}
-                            </div>
-
-                            {/* Lista de imágenes por sección */}
-                            <div className="space-y-6 mt-4">
-                                {Object.entries(imagesBySection)
-                                    .filter(([section]) => selectedCategory === 'Todos' || section === selectedCategory)
-                                    .map(([section, images]) => (
-                                        <div key={section}>
-                                            <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
-                                                {section} ({images.length})
-                                            </h4>
-                                            <div className="space-y-2">
-                                                {images.map((image) => (
-                                                    <ImageGuide
-                                                        key={image.id}
-                                                        label={image.label}
-                                                        element={image.id}
-                                                        defaultImage={image.defaultImage}
-                                                        onClick={() => scrollToElement(image.id)}
-                                                    />
-                                                ))}
-                                            </div>
-                                        </div>
-                                    ))}
-                            </div>
-
-                            <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/30 rounded-lg">
-                                <p className="text-xs text-blue-700 dark:text-blue-300">
-                                    💡 Podés subir tus propias imágenes o elegir de nuestra galería
-                                </p>
-                            </div>
-                        </div>
-                    )}
-                </div>
-
-                {/* Footer con acciones */}
-                {/* Footer con acciones - VERSIÓN ACTUALIZADA */}
-                <div className="p-4 bg-gray-50 dark:bg-neutral-800 border-t border-gray-200 dark:border-gray-700 flex-shrink-0">
-                    <div className="space-y-2">
-                        {/* Botón para guardar en cuenta */}
-                        <button
-                            onClick={handleSaveToAccount}
-                            disabled={isSaving}
-                            className={`w-full px-4 py-3 rounded-lg transition-all flex items-center justify-center ${isAuthenticated
-                                ? 'bg-green-600 hover:bg-green-700 text-white'
-                                : 'bg-amber-600 hover:bg-amber-700 text-white'
-                                }`}
-                        >
-                            {isSaving ? (
-                                <span className="flex items-center">
-                                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                    </svg>
-                                    Guardando...
-                                </span>
-                            ) : (
-                                <>
-                                    <Save className="w-4 h-4 mr-2" />
-                                    {isAuthenticated ? 'Guardar en mi cuenta' : 'Guardar template (requiere login)'}
-                                </>
-                            )}
+                          </div>
+                          <p className="text-[9px] text-neutral-500 dark:text-neutral-400 mt-1 truncate">
+                            {preset.name}
+                          </p>
                         </button>
-
-                        {/* Mensaje informativo si no está logueado */}
-                        {!isAuthenticated && !isSaving && (
-                            <p className="text-xs text-amber-600 dark:text-amber-400 text-center">
-                                💡 Creá una cuenta gratis para guardar tus templates
-                            </p>
-                        )}
-
-                        {/* Botones existentes */}
-                        <div className="flex space-x-2 pt-2">
-                            <button
-                                onClick={saveDraft}
-                                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg transition-colors flex items-center justify-center text-sm"
-                            >
-                                <Save className="w-3 h-3 mr-1" />
-                                Guardar borrador
-                            </button>
-                            <button
-                                onClick={() => resetTemplate(template.type)}
-                                className="flex-1 bg-gray-500 hover:bg-gray-600 text-white px-3 py-2 rounded-lg transition-colors flex items-center justify-center text-sm"
-                                title="Volver a los colores originales"
-                            >
-                                <RotateCcw className="w-3 h-3 mr-1" />
-                                Restaurar
-                            </button>
-                        </div>
+                      ))}
                     </div>
+                  </div>
                 </div>
+              )}
+
+              {activeTab === 'texts' && (
+                <div className="space-y-3">
+                  <div className="p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                    <p className="text-[10px] text-blue-700 dark:text-blue-300 flex items-start gap-1.5">
+                      <Info className="w-3 h-3 flex-shrink-0 mt-0.5" />
+                      <span>Doble clic en cualquier texto para editarlo</span>
+                    </p>
+                  </div>
+                  <div className="grid grid-cols-2 gap-1.5">
+                    <div className="p-2 bg-neutral-50 dark:bg-neutral-800 rounded-lg text-center">
+                      <p className="text-[10px] font-medium text-neutral-700 dark:text-neutral-300">Título principal</p>
+                      <p className="text-[9px] text-neutral-400 mt-0.5">doble clic</p>
+                    </div>
+                    <div className="p-2 bg-neutral-50 dark:bg-neutral-800 rounded-lg text-center">
+                      <p className="text-[10px] font-medium text-neutral-700 dark:text-neutral-300">Descripción</p>
+                      <p className="text-[9px] text-neutral-400 mt-0.5">doble clic</p>
+                    </div>
+                    <div className="p-2 bg-neutral-50 dark:bg-neutral-800 rounded-lg text-center">
+                      <p className="text-[10px] font-medium text-neutral-700 dark:text-neutral-300">Botones CTA</p>
+                      <p className="text-[9px] text-neutral-400 mt-0.5">doble clic</p>
+                    </div>
+                    <div className="p-2 bg-neutral-50 dark:bg-neutral-800 rounded-lg text-center">
+                      <p className="text-[10px] font-medium text-neutral-700 dark:text-neutral-300">Secciones</p>
+                      <p className="text-[9px] text-neutral-400 mt-0.5">doble clic</p>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
-            {/* Modal de login */}
-            {/* // En el return, antes del cierre del fragment */}
-            <LoginModal
-                isOpen={showLoginModal}
-                onClose={() => setShowLoginModal(false)}
-                message="Para guardar este template en tu cuenta y poder acceder a él desde cualquier 
-                dispositivo, necesitas iniciar sesión o registrarte."
-            />
-        </>
-    );
-};
-
-// Componentes auxiliares (actualizados)
-const InstructionBadge: React.FC<{ icon: React.ReactNode; text: string; color: string }> =
-    ({ icon, text, color }) => (
-        <div className={`bg-${color}-50 dark:bg-${color}-900/30 p-3 rounded-lg`}>
-            <p className={`text-xs text-${color}-700 dark:text-${color}-300 flex items-start`}>
-                <span className="mr-2 flex-shrink-0">{icon}</span>
-                {text}
-            </p>
-        </div>
-    );
-
-const ColorSection: React.FC<{
-    title: string;
-    description: string;
-    color: string;
-    onChange: (value: string) => void;
-}> = ({ title, description, color, onChange }) => {
-    const [isOpen, setIsOpen] = useState(false);
-
-    return (
-        <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
-            <button
-                onClick={() => setIsOpen(!isOpen)}
-                className="w-full p-3 flex items-center justify-between bg-gray-50 dark:bg-neutral-800 hover:bg-gray-100 dark:hover:bg-neutral-700 transition-colors"
-            >
-                <div className="flex items-center">
-                    <div
-                        className="w-6 h-6 rounded mr-2 border border-gray-300"
-                        style={{ backgroundColor: color }}
-                    />
-                    <div className="text-left">
-                        <h3 className="text-sm font-medium text-gray-900 dark:text-white">{title}</h3>
-                        <p className="text-xs text-gray-500">{description}</p>
-                    </div>
-                </div>
-                <ChevronRight className={`w-4 h-4 text-gray-400 transition-transform ${isOpen ? 'rotate-90' : ''}`} />
-            </button>
-
-            {isOpen && (
-                <div className="p-3 bg-white dark:bg-neutral-900">
-                    <input
-                        type="color"
-                        value={color}
-                        onChange={(e) => onChange(e.target.value)}
-                        className="w-full h-8 rounded cursor-pointer"
-                    />
-                    <input
-                        type="text"
-                        value={color}
-                        onChange={(e) => onChange(e.target.value)}
-                        className="w-full mt-2 px-2 py-1 text-xs border border-gray-300 dark:border-gray-600 rounded-md font-mono"
-                        placeholder="#000000"
-                    />
-                    <div className="mt-2 p-2 bg-gray-50 dark:bg-neutral-800 rounded-lg">
-                        <div className="flex space-x-2">
-                            <button
-                                className="px-2 py-1 rounded text-xs"
-                                style={{
-                                    backgroundColor: color,
-                                    color: getContrastColor(color)
-                                }}
-                            >
-                                Botón
-                            </button>
-                            <span className="text-xs" style={{ color }}>
-                                Texto
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            )}
-        </div>
-    );
-
-
-};
-
-const PresetCard: React.FC<{
-    name: string;
-    colors: any;
-    onApply: () => void;
-}> = ({ name, colors, onApply }) => (
-    <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-3 hover:shadow-md transition-all">
-        <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-2">{name}</h4>
-        <div className="flex space-x-1 mb-2">
-            {Object.values(colors).map((color: any, i) => (
-                <div
-                    key={i}
-                    className="w-5 h-5 rounded-full border border-gray-300"
-                    style={{ backgroundColor: color as string }}
-                    title={color as string}
-                />
-            ))}
-        </div>
-        <button
-            onClick={onApply}
-            className="w-full px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs transition-colors"
-        >
-            Aplicar
-        </button>
-    </div>
-);
-
-const TextGuide: React.FC<{ label: string; element: string; defaultText?: string; onClick: () => void }> =
-    ({ label, element, defaultText, onClick }) => (
-        <button
-            onClick={onClick}
-            className="w-full flex items-center justify-between p-2 bg-gray-50 dark:bg-neutral-800 rounded-lg text-xs hover:bg-gray-100 dark:hover:bg-neutral-700 transition-colors group"
-            title={`Click para ir al texto: ${label}`}
-        >
-            <div className="flex-1 text-left">
-                <span className="text-gray-700 dark:text-gray-300 block">{label}</span>
-                {defaultText && (
-                    <span className="text-gray-400 text-xxs block truncate max-w-[200px]">
-                        "{defaultText.substring(0, 30)}..."
-                    </span>
+            {/* Acciones del sidebar */}
+            <div className="p-2 border-t border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-800/50">
+              {/* Botón Guardar */}
+              <button
+                id="save-button"
+                onClick={handleSave}
+                disabled={isSaving}
+                className={`w-full py-1.5 rounded-lg text-[11px] font-medium transition-all flex items-center justify-center gap-1.5 mb-1.5
+                  ${hasUnsavedChanges
+                    ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-md animate-pulse'
+                    : 'bg-neutral-200 dark:bg-neutral-700 text-neutral-500 dark:text-neutral-400 cursor-not-allowed'}`}
+              >
+                {isSaving ? (
+                  <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                ) : (
+                  <Save className="w-3.5 h-3.5" />
                 )}
+                {isSaving ? "Guardando..." : (hasUnsavedChanges ? "¡Guardar cambios!*" : "Guardar cambios")}
+              </button>
+
+              {/* Botones deshacer/rehacer */}
+              <div id="undo-redo-buttons" className="flex gap-1.5 mb-1.5">
+                <button
+                  onClick={undo}
+                  disabled={!canUndo}
+                  className={`flex-1 py-1.5 rounded-lg text-[10px] font-medium transition-all flex items-center justify-center gap-1
+                    ${canUndo
+                      ? 'bg-neutral-200 dark:bg-neutral-700 hover:bg-neutral-300 dark:hover:bg-neutral-600 text-neutral-700 dark:text-neutral-300'
+                      : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-400 dark:text-neutral-500 cursor-not-allowed'}`}
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M3 7v6h6" />
+                    <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13" />
+                  </svg>
+                  Deshacer
+                </button>
+                <button
+                  onClick={redo}
+                  disabled={!canRedo}
+                  className={`flex-1 py-1.5 rounded-lg text-[10px] font-medium transition-all flex items-center justify-center gap-1
+                    ${canRedo
+                      ? 'bg-neutral-200 dark:bg-neutral-700 hover:bg-neutral-300 dark:hover:bg-neutral-600 text-neutral-700 dark:text-neutral-300'
+                      : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-400 dark:text-neutral-500 cursor-not-allowed'}`}
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 7v6h-6" />
+                    <path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 13" />
+                  </svg>
+                  Rehacer
+                </button>
+              </div>
+
+              {/* Botón Restablecer */}
+              <button
+                onClick={() => resetTemplate(template?.type || 'consulting')}
+                className="w-full py-1.5 bg-neutral-200 dark:bg-neutral-700 hover:bg-neutral-300 dark:hover:bg-neutral-600 rounded-lg text-[10px] font-medium text-neutral-700 dark:text-neutral-300 transition-all flex items-center justify-center gap-1 mb-1.5"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                  <path d="M3 3v5h5" />
+                </svg>
+                Restablecer todo
+              </button>
+
+              {/* Botones de navegación */}
+              <div className="flex gap-1.5">
+                <button
+                  onClick={onHomeClick}
+                  className="flex-1 py-1.5 bg-primary-500 hover:bg-primary-600 text-white rounded-lg text-[10px] font-medium transition-all flex items-center justify-center gap-1"
+                >
+                  <Home className="w-3 h-3" />
+                  Inicio
+                </button>
+                <button
+                  id="finish-button"
+                  onClick={handleFinishEditing}
+                  disabled={isSaving}
+                  className="flex-1 py-1.5 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white rounded-lg text-[10px] font-medium transition-all flex items-center justify-center gap-1"
+                >
+                  <LogOut className="w-3 h-3" />
+                  {isSaving ? "Guardando..." : "Finalizar edición"}
+                </button>
+              </div>
+
+              {/* Soporte */}
+              <button
+                onClick={() => setShowSupportModal(true)}
+                className="w-full mt-1.5 py-1 bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded-lg text-[10px] font-medium text-neutral-600 dark:text-neutral-400 transition-all flex items-center justify-center gap-1"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                  <line x1="12" y1="17" x2="12.01" y2="17" />
+                </svg>
+                Soporte
+              </button>
+
+              {userLoggedIn && (
+                <button
+                  onClick={handleSaveToAccount}
+                  disabled={isSaving}
+                  className="w-full mt-1.5 py-1 bg-gradient-to-r from-primary-500 to-accent-500 hover:from-primary-600 hover:to-accent-600 text-white rounded-lg text-[10px] font-medium transition-all flex items-center justify-center gap-1 disabled:opacity-50"
+                >
+                  {isSaving ? (
+                    <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  ) : (
+                    <User className="w-3 h-3" />
+                  )}
+                  {isSaving ? "Guardando..." : "Guardar en cuenta"}
+                </button>
+              )}
             </div>
-            <span className="text-gray-400 group-hover:text-blue-500 transition-colors font-mono text-xxs ml-2">
-                {element}
-            </span>
-        </button>
-    );
+          </>
+        )}
 
-const ImageGuide: React.FC<{ label: string; element: string; defaultImage?: string; onClick: () => void }> =
-    ({ label, element, defaultImage, onClick }) => (
-        <button
-            onClick={onClick}
-            className="w-full flex items-center p-2 bg-gray-50 dark:bg-neutral-800 rounded-lg text-xs hover:bg-gray-100 dark:hover:bg-neutral-700 transition-colors group"
-            title={`Click para ir a la imagen: ${label}`}
-        >
-            {defaultImage && (
-                <div className="w-8 h-8 rounded mr-2 overflow-hidden flex-shrink-0 bg-gray-200">
-                    <img src={defaultImage} alt={label} className="w-full h-full object-cover" />
-                </div>
-            )}
-            <div className="flex-1 flex items-center justify-between">
-                <span className="text-gray-700 dark:text-gray-300">{label}</span>
-                <span className="text-gray-400 group-hover:text-orange-500 transition-colors font-mono text-xxs">
-                    {element}
-                </span>
+        {/* Versión colapsada */}
+        {isCollapsed && (
+          <div className="flex-1 flex flex-col items-center py-3 gap-3">
+            <div className="w-6 h-6 rounded-full bg-gradient-to-r from-primary-500 to-accent-500 flex items-center justify-center text-white text-[10px] font-bold">
+              E
             </div>
-        </button>
+            <div className="flex flex-col gap-2">
+              <button
+                onClick={() => setActiveTab('colors')}
+                className={`p-1.5 rounded-lg transition-all ${activeTab === 'colors' ? 'bg-primary-100 dark:bg-primary-900/30 text-primary-600' : 'text-neutral-500 hover:text-primary-600'}`}
+                title="Colores"
+              >
+                <Sparkles className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() => setActiveTab('texts')}
+                className={`p-1.5 rounded-lg transition-all ${activeTab === 'texts' ? 'bg-primary-100 dark:bg-primary-900/30 text-primary-600' : 'text-neutral-500 hover:text-primary-600'}`}
+                title="Textos"
+              >
+                <Edit3 className="w-4 h-4" />
+              </button>
+              {hasUnsavedChanges && (
+                <button
+                  onClick={handleSave}
+                  disabled={isSaving}
+                  className="p-1.5 rounded-lg transition-all text-amber-500"
+                  title="Guardar cambios"
+                >
+                  {isSaving ? (
+                    <div className="w-4 h-4 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
+                  ) : (
+                    <Save className="w-4 h-4" />
+                  )}
+                </button>
+              )}
+              <button
+                onClick={onHomeClick}
+                className="p-1.5 rounded-lg transition-all text-neutral-500 hover:text-primary-600"
+                title="Inicio"
+              >
+                <Home className="w-4 h-4" />
+              </button>
+              <button
+                onClick={handleFinishEditing}
+                disabled={isSaving}
+                className="p-1.5 rounded-lg transition-all text-neutral-500 hover:text-green-600"
+                title="Finalizar edición"
+              >
+                <LogOut className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
 
-
-    );
-
-const TabButton: React.FC<{
-    active: boolean;
-    onClick: () => void;
-    icon: React.ReactNode;
-    label: string;
-}> = ({ active, onClick, icon, label }) => (
-    <button
-        onClick={onClick}
-        className={`flex-1 px-2 py-2 text-xs font-medium transition-colors flex items-center justify-center space-x-1 ${active
-            ? 'text-blue-600 border-b-2 border-blue-600'
-            : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
-            }`}
-    >
-        {icon}
-        <span>{label}</span>
-    </button>
-);
-
-function getContrastColor(hexcolor: string): string {
-    const r = parseInt(hexcolor.slice(1, 3), 16);
-    const g = parseInt(hexcolor.slice(3, 5), 16);
-    const b = parseInt(hexcolor.slice(5, 7), 16);
-    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-    return luminance > 0.5 ? '#000000' : '#ffffff';
-}
+      {/* Modal de Soporte */}
+      {showSupportModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white dark:bg-neutral-900 rounded-xl p-5 max-w-sm w-full shadow-2xl">
+            <h3 className="text-base font-semibold mb-2">Soporte</h3>
+            <p className="text-xs text-neutral-600 dark:text-neutral-400 mb-3">
+              ¿Necesitas ayuda con la edición de tu template?
+            </p>
+            <div className="space-y-2 mb-4">
+              <div className="p-2 bg-neutral-50 dark:bg-neutral-800 rounded-lg">
+                <p className="text-xs font-medium text-neutral-700 dark:text-neutral-300">📧 Email</p>
+                <p className="text-xs text-neutral-500">soporte@kernelice.com</p>
+              </div>
+              <div className="p-2 bg-neutral-50 dark:bg-neutral-800 rounded-lg">
+                <p className="text-xs font-medium text-neutral-700 dark:text-neutral-300">💬 WhatsApp</p>
+                <p className="text-xs text-neutral-500">+54 9 11 1234-5678</p>
+              </div>
+              <button
+                onClick={() => {
+                  setShowSupportModal(false);
+                  tutorial.startTutorial();
+                }}
+                className="w-full mt-2 py-1.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-lg text-xs font-medium flex items-center justify-center gap-1"
+              >
+                <Info className="w-3 h-3" />
+                Ver tutorial otra vez
+              </button>
+            </div>
+            <button
+              onClick={() => setShowSupportModal(false)}
+              className="w-full py-1.5 bg-gradient-to-r from-primary-500 to-accent-500 text-white rounded-lg text-xs font-medium"
+            >
+              Cerrar
+            </button>
+          </div>
+        </div>
+      )}
+    </>
+  );
+};
 
 export default EditorDashboard;

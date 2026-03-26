@@ -1,6 +1,6 @@
 import type { Template } from '../types/template.types';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+const API_URL = import.meta.env.VITE_API_URL || 'https://kerneliceapi-production.up.railway.app/'/* 'http://localhost:3000/api'*/;
 
 export const templateService = {
     // Guardar template (requiere autenticación)

@@ -1,8 +1,9 @@
+// src/services/api/templateApi.service.ts
 import { del, get, post } from './index';
 
 export interface TemplateData {
     name: string;
-    type: string;
+    type: string;  // Esto debe venir en mayúsculas
     colors: Record<string, string> | string;
     texts: Record<string, string>;
     images?: Record<string, string>;
@@ -20,7 +21,44 @@ export const templateApi = {
     // Guardar template (requiere autenticación)
     saveTemplate: async (data: TemplateData): Promise<TemplateResponse> => {
         try {
-            const response: TemplateResponse = await post('/templates', data);
+            // ✅ CORRECCIÓN: Convertir el tipo a mayúsculas si es necesario
+            let typeUpper = data.type;
+            if (typeof data.type === 'string' && data.type !== data.type.toUpperCase()) {
+                typeUpper = data.type.toUpperCase();
+            }
+
+            // ✅ CORRECCIÓN: Asegurar que colors sea un objeto, no un string vacío
+            let colors = data.colors;
+            if (typeof colors === 'string') {
+                // Si es un string vacío, usar objeto por defecto
+                if (colors === '') {
+                    colors = {
+                        primary: '#2563eb',
+                        secondary: '#475569',
+                        accent: '#1e293b',
+                        background: '#ffffff',
+                        text: '#0f172a'
+                    };
+                } else {
+                    try {
+                        colors = JSON.parse(colors);
+                    } catch {
+                        colors = {};
+                    }
+                }
+            }
+
+            const payload = {
+                name: data.name,
+                type: typeUpper,  // Ahora en mayúsculas
+                colors: colors,
+                texts: data.texts || {},
+                images: data.images || {}
+            };
+
+            console.log('📤 Enviando template al backend:', payload);
+
+            const response: TemplateResponse = await post('/templates', payload);
             return response;
         } catch (error) {
             console.error('Error en saveTemplate:', error);

@@ -2,7 +2,7 @@ import { ChevronLeft, ChevronRight, Heart, X } from 'lucide-react';
 import { useState } from 'react';
 import { defaultImages } from '../../assets/default-images';
 import EditableImage from '../../components/Editor/EditableImage';
-import EditableText from '../../components/common/EditableText';
+import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
 
 const RestaurantGallery = () => {

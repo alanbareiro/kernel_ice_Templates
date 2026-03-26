@@ -10,7 +10,7 @@ import {
     UtensilsCrossed
 } from 'lucide-react';
 import ThemeToggle from '../../Theme/ThemeToogle';
-import EditableText from '../../components/common/EditableText';
+import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
 
 const RestaurantFooter = () => {

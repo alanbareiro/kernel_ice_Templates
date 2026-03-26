@@ -1,6 +1,6 @@
 import { BarChart, Camera, Code, Mail, Megaphone, PenTool, Search, Share2 } from 'lucide-react';
 import React from 'react';
-import EditableText from '../../components/common/EditableText';
+import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
 
 const AgencyServices: React.FC = () => {

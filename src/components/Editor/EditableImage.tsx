@@ -61,7 +61,6 @@ const EditableImage: React.FC<EditableImageProps> = ({
 
     const handleSelectFromGallery = async (imageUrl: string) => {
         try {
-            // Convertir URL a File object
             const response = await fetch(imageUrl);
             const blob = await response.blob();
             const file = new File([blob], `gallery-image-${Date.now()}.jpg`, { type: 'image/jpeg' });

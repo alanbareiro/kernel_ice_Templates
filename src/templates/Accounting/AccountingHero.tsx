@@ -1,5 +1,5 @@
 import { ArrowRight, FileText, Scale, Shield, TrendingDown } from 'lucide-react';
-import EditableText from '../../components/common/EditableText';
+import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
 
 const AccountingHero = () => {

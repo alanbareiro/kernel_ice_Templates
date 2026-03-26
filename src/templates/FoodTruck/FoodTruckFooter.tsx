@@ -1,7 +1,7 @@
 import { Facebook, Heart, Instagram, Mail, MapPin, Phone, Truck, Twitter } from 'lucide-react';
 import React from 'react';
 import ThemeToggle from '../../Theme/ThemeToogle';
-import EditableText from '../../components/common/EditableText';
+import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
 
 const FoodTruckFooter: React.FC = () => {

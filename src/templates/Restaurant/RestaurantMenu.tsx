@@ -1,6 +1,6 @@
 import { Clock } from 'lucide-react';
 import { useState } from 'react';
-import EditableText from '../../components/common/EditableText';
+import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
 
 // Definir un tipo para los items del menú

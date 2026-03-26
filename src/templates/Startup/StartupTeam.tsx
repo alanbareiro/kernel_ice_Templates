@@ -1,7 +1,7 @@
 import { Linkedin, Twitter } from 'lucide-react';
 import React from 'react';
-import EditableText from '../../components/common/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
+import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
 
 const StartupTeam: React.FC = () => {

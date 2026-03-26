@@ -2,7 +2,7 @@ import { Menu, X } from 'lucide-react';
 import React, { useState } from 'react';
 import ThemeToggle from '../../Theme/ThemeToogle';
 import EditableImage from '../../components/Editor/EditableImage';
-import EditableText from '../../components/common/EditableText';
+import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
 import { useTemplateEditor } from '../../contexts/TemplateEditorContext';
 

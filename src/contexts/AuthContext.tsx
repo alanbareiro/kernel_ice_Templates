@@ -1,20 +1,21 @@
 // src/contexts/AuthContext.tsx - VERSIÓN CORREGIDA
-import React, { createContext, useContext, useState, useEffect,  } from 'react';
-import type {ReactNode} from 'react'
-import * as authService from '../services/api/auth.service'; // Cambié la importación
+import type { ReactNode } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import type {
-  User,
-  LoginCredentials,
   AuthResponse,
+  LoginCredentials,
   Order,
-  RegisterData
-} from '../services/api/auth.service' // Cambié la importación
+  RegisterData,
+  User
+} from '../services/api/auth.service';
+import * as authService from '../services/api/auth.service';
 
 interface AuthContextType {
   user: User | null;
   token: string | null;
   isAuthenticated: boolean;
   isLoading: boolean;
+  isRefreshing: boolean;
   error: string | null;
   login: (credentials: LoginCredentials) => Promise<AuthResponse>;
   register: (userData: RegisterData) => Promise<AuthResponse>;
@@ -22,7 +23,7 @@ interface AuthContextType {
   updateProfile: (userData: Partial<User>) => Promise<User>;
   getUserOrders: () => Promise<Order[]>;
   clearError: () => void;
-  refreshUser: () => Promise<void>; // Nueva función para refrescar usuario
+  refreshUser: () => Promise<void>;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -42,7 +43,8 @@ interface AuthProviderProps {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true); // Iniciar como true
+  const [isLoading, setIsLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // Cargar usuario al iniciar
@@ -61,10 +63,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         if (!authService.isAuthenticated()) {
           // Intentar refrescar el token
           try {
-            await authService.refreshToken();
+            const refreshResult = await authService.refreshToken();
+            // Actualizar token con el nuevo
+            setToken(refreshResult.token);
+            localStorage.setItem('token', refreshResult.token);
           } catch (refreshError) {
             console.log('Token expirado, limpiando datos');
-            // Limpiar datos expirados
             localStorage.removeItem('token');
             localStorage.removeItem('user');
             localStorage.removeItem('refreshToken');
@@ -82,7 +86,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         localStorage.setItem('user', JSON.stringify(profile));
       } catch (error) {
         console.error('Error cargando perfil:', error);
-        // Limpiar datos inválidos
         localStorage.removeItem('token');
         localStorage.removeItem('user');
         localStorage.removeItem('refreshToken');
@@ -96,14 +99,39 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     loadUser();
   }, []);
 
-  // Función para refrescar datos del usuario
+  // ✅ Función para refrescar datos del usuario - CORREGIDA
   const refreshUser = async () => {
+    setIsRefreshing(true);
     try {
+      // Obtener el token actual
+      const currentToken = localStorage.getItem('token');
+      
+      // Obtener el perfil actualizado
       const profile = await authService.getProfile();
+      
+      // Actualizar estado y localStorage
       setUser(profile);
+      setToken(currentToken);
       localStorage.setItem('user', JSON.stringify(profile));
-    } catch (error) {
+      
+      console.log('✅ Usuario refrescado correctamente', { 
+        profile, 
+        hasToken: !!currentToken,
+        isAuthenticated: !!currentToken && !!profile
+      });
+    } catch (error: any) {
       console.error('Error refrescando usuario:', error);
+      // Si es error de conexión, no limpiar la sesión
+      if (error.errorCode !== 'CONNECTION_ERROR') {
+        setUser(null);
+        setToken(null);
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        localStorage.removeItem('refreshToken');
+      }
+      throw error;
+    } finally {
+      setIsRefreshing(false);
     }
   };
 
@@ -114,7 +142,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       const response = await authService.login(credentials);
 
-      // Guardar datos
       setUser(response.user);
       setToken(response.token);
       localStorage.setItem('token', response.token);
@@ -138,7 +165,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       const response = await authService.register(userData);
 
-      // Si el registro incluye login automático
       if (response.token) {
         setUser(response.user);
         setToken(response.token);
@@ -168,7 +194,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     } catch (error) {
       console.error('Error en logout:', error);
     } finally {
-      // Siempre limpiar estado local
       setUser(null);
       setToken(null);
       localStorage.removeItem('token');
@@ -214,6 +239,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     token,
     isAuthenticated: !!token && !!user && authService.isAuthenticated(),
     isLoading,
+    isRefreshing,
     error,
     login,
     register,

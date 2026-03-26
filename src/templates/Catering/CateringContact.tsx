@@ -1,6 +1,6 @@
 import { Calendar, Mail, MapPin, MessageSquare, Phone, Send, Users } from 'lucide-react';
 import React, { useState } from 'react';
-import EditableText from '../../components/common/EditableText';
+import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
 import { getFocusRingStyle } from '../../utils/styles';
 

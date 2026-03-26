@@ -1,6 +1,6 @@
 import { Calculator, FileText, Handshake, Home, Shield, TrendingUp } from 'lucide-react';
 import React from 'react';
-import EditableText from '../../components/common/EditableText';
+import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
 
 const RealEstateServices: React.FC = () => {
