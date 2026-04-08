@@ -1,14 +1,14 @@
+// src/templates/Catering/CateringTestimonials.tsx
 import { Star } from 'lucide-react';
 import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
+import { defaultSectionColors, defaultTypography } from '../../types/template.types';
 
 const CateringTestimonials = () => {
     const { template } = useTemplate();
-    const colors = template?.colors || {
-        primary: '#f59e0b',
-        secondary: '#d97706',
-        accent: '#b45309',
-    };
+
+    const sectionColors = template?.sectionColors || defaultSectionColors;
+    const typography = template?.typography || defaultTypography;
 
     const testimonials = [
         {
@@ -44,22 +44,35 @@ const CateringTestimonials = () => {
     ];
 
     return (
-        <section className="section-padding bg-white dark:bg-neutral-900">
+        <section
+            className="section-padding"
+            style={{ backgroundColor: sectionColors.featuresBackground }}
+        >
             <div className="container-custom">
                 <div className="text-center max-w-3xl mx-auto mb-16">
-                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-6"
-                        style={{ background: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                    <div
+                        className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-6"
+                        style={{ background: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                    >
                         <span className="text-3xl">💬</span>
                     </div>
 
-                    <h2 className="text-4xl md:text-5xl font-bold mb-6 text-amber-900 dark:text-amber-100">
+                    <h2
+                        className="font-bold mb-6"
+                        style={{
+                            fontSize: typography.sectionTitleSize,
+                            color: sectionColors.featuresTitleColor
+                        }}
+                    >
                         <EditableText
                             elementId="c_testimonials_title_1"
                             defaultText="Lo que dicen nuestros"
                             tag="span"
                         />{' '}
-                        <span className="text-transparent bg-clip-text"
-                            style={{ backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                        <span
+                            className="text-transparent bg-clip-text"
+                            style={{ backgroundImage: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                        >
                             <EditableText
                                 elementId="c_testimonials_title_2"
                                 defaultText="clientes"
@@ -71,7 +84,14 @@ const CateringTestimonials = () => {
 
                 <div className="grid md:grid-cols-3 gap-8">
                     {testimonials.map((testimonial, index) => (
-                        <div key={index} className="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 rounded-2xl p-8 border border-amber-200 dark:border-amber-800">
+                        <div
+                            key={index}
+                            className="rounded-2xl p-8 border"
+                            style={{
+                                backgroundColor: sectionColors.featuresCardBackground,
+                                borderColor: sectionColors.featuresCardBorder
+                            }}
+                        >
                             {/* Rating */}
                             <div className="flex mb-4">
                                 {[...Array(testimonial.rating)].map((_, i) => (
@@ -80,7 +100,10 @@ const CateringTestimonials = () => {
                             </div>
 
                             {/* Contenido */}
-                            <p className="text-lg text-amber-800 dark:text-amber-200 italic mb-6">
+                            <p
+                                className="text-lg italic mb-6"
+                                style={{ color: sectionColors.bodyTextColor }}
+                            >
                                 "<EditableText
                                     elementId={testimonial.contentId}
                                     defaultText={testimonial.contentDefault}
@@ -90,19 +113,27 @@ const CateringTestimonials = () => {
 
                             {/* Autor */}
                             <div className="flex items-center">
-                                <div className="w-12 h-12 rounded-full flex items-center justify-center text-2xl"
-                                    style={{ background: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                                <div
+                                    className="w-12 h-12 rounded-full flex items-center justify-center text-2xl"
+                                    style={{ background: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                                >
                                     {testimonial.image}
                                 </div>
                                 <div className="ml-4">
-                                    <h4 className="font-semibold text-amber-900 dark:text-amber-100">
+                                    <h4
+                                        className="font-semibold"
+                                        style={{ color: sectionColors.featuresTitleColor }}
+                                    >
                                         <EditableText
                                             elementId={testimonial.nameId}
                                             defaultText={testimonial.nameDefault}
                                             tag="span"
                                         />
                                     </h4>
-                                    <p className="text-sm text-amber-600 dark:text-amber-400">
+                                    <p
+                                        className="text-sm"
+                                        style={{ color: sectionColors.bodyTextColor }}
+                                    >
                                         <EditableText
                                             elementId={testimonial.roleId}
                                             defaultText={testimonial.roleDefault}

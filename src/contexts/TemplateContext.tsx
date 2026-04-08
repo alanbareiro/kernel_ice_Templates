@@ -1,50 +1,34 @@
-// src/contexts/TemplateContext.tsx - con logs reducidos
+// src/contexts/TemplateContext.tsx - VERSIÓN CORREGIDA
 import React, { createContext, useContext, useState } from 'react';
 import { getDefaultTemplateColors } from '../data/types/templateDefaultColors';
 import { templateApi } from '../services/api/templateApi.service';
 import { storageService } from '../services/storageService';
-import type { EditorConfig, Template, TemplateColors } from '../types/template.types';
-import { colorPresets } from '../types/template.types';
+import type {
+    ButtonConfig,
+    EditorConfig,
+    SectionColors,
+    Template,
+    TemplateColors,
+    TypographyConfig,
+    UIConfig
+} from '../types/template.types';
+import {
+    colorPresets,
+    defaultButtons,
+    defaultSectionColors,
+    defaultTypography,
+    defaultUI
+} from '../types/template.types';
 import { useAuth } from './AuthContext';
-
-// Colores por defecto
-// const defaultColors: Record<string, TemplateColors> = {
-//     consulting: {
-//         primary: '#2563eb',
-//         secondary: '#475569',
-//         accent: '#1e293b',
-//         background: '#ffffff',
-//         text: '#0f172a',
-//     },
-//     catering: {
-//         primary: '#f59e0b',
-//         secondary: '#ea580c',
-//         accent: '#b45309',
-//         background: '#ffffff',
-//         text: '#422006',
-//     },
-//     accounting: {
-//         primary: '#059669',
-//         secondary: '#047857',
-//         accent: '#064e3b',
-//         background: '#ffffff',
-//         text: '#022c22',
-//     },
-//     restaurant: {
-//         primary: '#dc2626',
-//         secondary: '#b91c1c',
-//         accent: '#7f1d1d',
-//         background: '#ffffff',
-//         text: '#450a0a',
-//     },
-// };
-
-// const isDev = import.meta.env.DEV;
 
 interface TemplateContextType {
     template: Template | null;
     setTemplate: (template: Template) => void;
     updateColors: (colors: Partial<TemplateColors>) => void;
+    updateSectionColors: (colors: Partial<SectionColors>) => void;
+    updateTypography: (typography: Partial<TypographyConfig>) => void;
+    updateUI: (ui: Partial<UIConfig>) => void;
+    updateButtons: (buttons: Partial<ButtonConfig>) => void;
     updateText: (key: string, value: string) => void;
     updateImage: (key: string, file: File) => Promise<void>;
     resetTemplate: (type: string) => void;
@@ -92,21 +76,73 @@ export const TemplateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         setHistoryIndex(prev => prev + 1);
     };
 
+    // Actualizar colores básicos (mantener para compatibilidad)
     const updateColors = (colors: Partial<TemplateColors>) => {
         if (!template) return;
 
-        const validColors: Partial<TemplateColors> = {};
+        const updatedTemplate = {
+            ...template,
+            colors: { ...template.colors, ...colors },
+            updatedAt: new Date()
+        };
 
-        (Object.keys(colors) as Array<keyof TemplateColors>).forEach(key => {
-            const value = colors[key];
-            if (value !== undefined) {
-                validColors[key] = value;
-            }
-        });
+        setTemplateState(updatedTemplate);
+        addToHistory(updatedTemplate);
+        setHasUnsavedChanges(true);
+    };
+
+    // Actualizar colores por sección
+    const updateSectionColors = (colors: Partial<SectionColors>) => {
+        if (!template) return;
 
         const updatedTemplate = {
             ...template,
-            colors: { ...template.colors, ...validColors },
+            sectionColors: { ...template.sectionColors, ...colors },
+            updatedAt: new Date()
+        };
+
+        setTemplateState(updatedTemplate);
+        addToHistory(updatedTemplate);
+        setHasUnsavedChanges(true);
+    };
+
+    // Actualizar tipografía
+    const updateTypography = (typography: Partial<TypographyConfig>) => {
+        if (!template) return;
+
+        const updatedTemplate = {
+            ...template,
+            typography: { ...template.typography, ...typography },
+            updatedAt: new Date()
+        };
+
+        setTemplateState(updatedTemplate);
+        addToHistory(updatedTemplate);
+        setHasUnsavedChanges(true);
+    };
+
+    // Actualizar configuración de UI
+    const updateUI = (ui: Partial<UIConfig>) => {
+        if (!template) return;
+
+        const updatedTemplate = {
+            ...template,
+            ui: { ...template.ui, ...ui },
+            updatedAt: new Date()
+        };
+
+        setTemplateState(updatedTemplate);
+        addToHistory(updatedTemplate);
+        setHasUnsavedChanges(true);
+    };
+
+    // Actualizar configuración de botones
+    const updateButtons = (buttons: Partial<ButtonConfig>) => {
+        if (!template) return;
+
+        const updatedTemplate = {
+            ...template,
+            buttons: { ...template.buttons, ...buttons },
             updatedAt: new Date()
         };
 
@@ -150,14 +186,19 @@ export const TemplateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         });
     };
 
-    // En resetTemplate, usar getDefaultTemplateColors
+    // Reset template con la nueva estructura
     const resetTemplate = (type: string) => {
         const defaultColors = getDefaultTemplateColors(type);
+
         const newTemplate: Template = {
             id: Date.now().toString(),
             name: `Mi ${type} template`,
             type: type as any,
             colors: defaultColors,
+            sectionColors: defaultSectionColors,
+            typography: defaultTypography,
+            ui: defaultUI,
+            buttons: defaultButtons,
             texts: {},
             images: {},
             createdAt: new Date(),
@@ -169,7 +210,7 @@ export const TemplateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         setHistory([newTemplate]);
         setHistoryIndex(0);
         setHasUnsavedChanges(true);
-    }
+    };
 
     const applyPreset = (presetName: string) => {
         if (!template) return;
@@ -178,7 +219,16 @@ export const TemplateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         const preset = categoryPresets?.find(p => p.name === presetName);
 
         if (preset) {
+            // Actualizar colores básicos
             updateColors(preset.colors);
+            // También actualizar sectionColors basado en los nuevos colores
+            updateSectionColors({
+                buttonPrimaryBackground: preset.colors.primary,
+                heroTitleColor: preset.colors.text,
+                headerTextColor: preset.colors.text,
+                bodyTextColor: preset.colors.text,
+                heroBadgeBackground: preset.colors.primary,
+            });
         }
     };
 
@@ -187,7 +237,6 @@ export const TemplateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
             storageService.saveDraft(template);
             setHasUnsavedChanges(false);
 
-            // ✅ Disparar evento para notificar que se guardó el borrador
             window.dispatchEvent(new CustomEvent('template-saved', {
                 detail: {
                     message: 'Borrador guardado',
@@ -196,7 +245,6 @@ export const TemplateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
                 }
             }));
 
-            // Notificación visual
             setEditorConfig({
                 notifications: {
                     show: true,
@@ -228,33 +276,126 @@ export const TemplateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         linkElement.click();
     };
 
+    // const saveToBackend = async () => {
+    //     if (!template || !isAuthenticated) return;
+
+    //     try {
+    //         const typeUpper = template.type.toUpperCase();
+
+    //         const result = await templateApi.saveTemplate({
+    //             name: template.name,
+    //             type: typeUpper,
+    //             colors: template.colors,
+    //             sectionColors: template.sectionColors,
+    //             typography: template.typography,
+    //             ui: template.ui,
+    //             buttons: template.buttons,
+    //             texts: template.texts || {},
+    //             images: template.images || {}
+    //         });
+
+    //         if (result.template?.id) {
+    //             const updatedTemplate = {
+    //                 ...template,
+    //                 id: result.template.id,
+    //                 updatedAt: new Date()
+    //             };
+    //             setTemplateState(updatedTemplate);
+
+    //             window.dispatchEvent(new CustomEvent('template-saved', {
+    //                 detail: {
+    //                     templateId: result.template.id,
+    //                     success: true,
+    //                     template: updatedTemplate
+    //                 }
+    //             }));
+    //         }
+
+    //         return result;
+    //     } catch (error) {
+    //         console.error('Error guardando template:', error);
+    //     }
+    // };
+
+    // const saveToBackend = async () => {
+    //     if (!template || !isAuthenticated) return;
+
+    //     try {
+    //         const typeUpper = template.type.toUpperCase();
+
+    //         // CORREGIDO: Convertir TemplateColors a Record<string, string>
+    //         const colorsToSend: Record<string, string> = {
+    //             primary: template.colors.primary,
+    //             secondary: template.colors.secondary,
+    //             accent: template.colors.accent,
+    //             background: template.colors.background,
+    //             text: template.colors.text,
+    //         };
+
+    //         const result = await templateApi.saveTemplate({
+    //             name: template.name,
+    //             type: typeUpper,
+    //             colors: colorsToSend,  // Ahora es Record<string, string>
+    //             sectionColors: template.sectionColors as Record<string, string>,
+    //             typography: template.typography as Record<string, string>,
+    //             ui: template.ui as Record<string, any>,
+    //             buttons: template.buttons as Record<string, any>,
+    //             texts: template.texts || {},
+    //             images: template.images || {}
+    //         });
+
+    //         if (result.template?.id) {
+    //             const updatedTemplate = {
+    //                 ...template,
+    //                 id: result.template.id,
+    //                 updatedAt: new Date()
+    //             };
+    //             setTemplateState(updatedTemplate);
+
+    //             window.dispatchEvent(new CustomEvent('template-saved', {
+    //                 detail: {
+    //                     templateId: result.template.id,
+    //                     success: true,
+    //                     template: updatedTemplate
+    //                 }
+    //             }));
+    //         }
+
+    //         return result;
+    //     } catch (error) {
+    //         console.error('Error guardando template:', error);
+    //     }
+    // };
+
+    // src/contexts/TemplateContext.tsx - SOLO la parte de saveToBackend modificada
+
     const saveToBackend = async () => {
         if (!template || !isAuthenticated) return;
 
         try {
             const typeUpper = template.type.toUpperCase();
 
+            // Convertir TemplateColors a Record<string, string>
             const colorsToSend: Record<string, string> = {
-                primary: template.colors.primary || '#2563eb',
-                secondary: template.colors.secondary || '#475569',
-                accent: template.colors.accent || '#1e293b',
-                background: template.colors.background || '#ffffff',
-                text: template.colors.text || '#0f172a'
+                primary: template.colors.primary,
+                secondary: template.colors.secondary,
+                accent: template.colors.accent,
+                background: template.colors.background,
+                text: template.colors.text,
             };
 
-            Object.entries(template.colors).forEach(([key, value]) => {
-                if (!colorsToSend[key]) {
-                    colorsToSend[key] = value;
-                }
-            });
-
+            // Usar 'as any' para evitar el error de TypeScript temporalmente
             const result = await templateApi.saveTemplate({
                 name: template.name,
                 type: typeUpper,
                 colors: colorsToSend,
+                sectionColors: template.sectionColors,
+                typography: template.typography,
+                ui: template.ui,
+                buttons: template.buttons,
                 texts: template.texts || {},
                 images: template.images || {}
-            });
+            } as any);
 
             if (result.template?.id) {
                 const updatedTemplate = {
@@ -264,7 +405,6 @@ export const TemplateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
                 };
                 setTemplateState(updatedTemplate);
 
-                // ✅ Disparar evento con los datos actualizados del template
                 window.dispatchEvent(new CustomEvent('template-saved', {
                     detail: {
                         templateId: result.template.id,
@@ -286,11 +426,15 @@ export const TemplateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         try {
             const result = await templateApi.getTemplate(templateId);
             if (result.template) {
-                const templateData = {
+                const templateData: Template = {
                     id: result.template.id,
                     name: result.template.name,
                     type: result.template.type.toLowerCase(),
-                    colors: result.template.colors,
+                    colors: result.template.colors || getDefaultTemplateColors(result.template.type.toLowerCase()),
+                    sectionColors: result.template.sectionColors || defaultSectionColors,
+                    typography: result.template.typography || defaultTypography,
+                    ui: result.template.ui || defaultUI,
+                    buttons: result.template.buttons || defaultButtons,
                     texts: result.template.texts || {},
                     images: result.template.images || {},
                     createdAt: new Date(result.template.createdAt),
@@ -339,6 +483,10 @@ export const TemplateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
             template,
             setTemplate,
             updateColors,
+            updateSectionColors,
+            updateTypography,
+            updateUI,
+            updateButtons,
             updateText,
             updateImage,
             resetTemplate,

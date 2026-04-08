@@ -1,4 +1,4 @@
-// src/components/Editor/EditorDashboard.tsx
+// src/components/Editor/EditorDashboard.tsx - VERSIÓN COMPLETA CORREGIDA
 import {
   AlertCircle,
   Check,
@@ -9,6 +9,7 @@ import {
   Home,
   Info,
   LogOut,
+  Palette,
   Save,
   Sparkles,
   User
@@ -16,11 +17,13 @@ import {
 import React, { useState } from 'react';
 import { useTemplate } from '../../contexts/TemplateContext';
 import { useTemplateEditor } from '../../contexts/TemplateEditorContext';
-import { getDefaultTemplateColors } from '../../data/types/templateDefaultColors';
 import { useTutorial } from '../../hooks/useTutorial';
 import { colorPresets } from '../../types/template.types';
-import ColorPicker from './ColorPicker';
 import TutorialOverlay from './TutorialOverlay';
+import { VisualEditorPanel } from './VisualEditorPanel';
+
+// Definir los tabs disponibles
+type EditorTab = 'visual' | 'presets' | 'texts';
 
 interface EditorDashboardProps {
   onHomeClick?: () => void;
@@ -34,7 +37,6 @@ const EditorDashboard: React.FC<EditorDashboardProps> = ({
   const {
     template,
     resetTemplate,
-    /*saveDraft,*/
     hasUnsavedChanges,
     undo,
     redo,
@@ -46,17 +48,13 @@ const EditorDashboard: React.FC<EditorDashboardProps> = ({
   } = useTemplate();
 
   const { config, toggleEditing } = useTemplateEditor();
-  const [activeTab, setActiveTab] = useState<'colors' | 'texts'>('colors');
+  const [activeTab, setActiveTab] = useState<EditorTab>('visual');
   const [isSaving, setIsSaving] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [showSupportModal, setShowSupportModal] = useState(false);
 
   // Tutorial
   const tutorial = useTutorial();
-
-  const defaultColors = template
-    ? getDefaultTemplateColors(template.type)
-    : getDefaultTemplateColors('consulting');
 
   const handleSave = async () => {
     setIsSaving(true);
@@ -158,14 +156,14 @@ const EditorDashboard: React.FC<EditorDashboardProps> = ({
       <div
         id="editor-sidebar"
         className={`fixed left-0 top-20 h-[calc(100vh-5rem)] bg-white dark:bg-neutral-900 shadow-2xl border-r border-neutral-200 dark:border-neutral-800 transition-all duration-300 z-40 flex flex-col
-        ${isCollapsed ? 'w-12' : 'w-72'}`}>
+        ${isCollapsed ? 'w-12' : 'w-80'}`}>
 
         {/* Header del sidebar */}
         <div className={`px-3 py-2 bg-gradient-to-r from-primary-500 to-accent-500 text-white flex items-center justify-between
           ${isCollapsed ? 'justify-center' : ''}`}>
           {!isCollapsed && (
             <div className="flex items-center gap-2">
-              <h4 className="font-medium text-xs">Editor</h4>
+              <h4 className="font-medium text-xs">Personalizador</h4>
               {hasUnsavedChanges && (
                 <div className="flex items-center gap-1">
                   <span className="w-1.5 h-1.5 bg-yellow-300 rounded-full animate-pulse"></span>
@@ -217,18 +215,29 @@ const EditorDashboard: React.FC<EditorDashboardProps> = ({
               )}
             </div>
 
-            {/* Tabs compactos */}
+            {/* Tabs reorganizados */}
             <div className="flex border-b border-neutral-200 dark:border-neutral-800">
               <button
-                id="colors-tab"
-                onClick={() => setActiveTab('colors')}
+                id="visual-tab"
+                onClick={() => setActiveTab('visual')}
                 className={`flex-1 py-2 text-[11px] font-medium transition-all flex items-center justify-center gap-1.5
-                  ${activeTab === 'colors'
+                  ${activeTab === 'visual'
+                    ? 'text-primary-600 dark:text-primary-400 border-b-2 border-primary-500'
+                    : 'text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300'}`}
+              >
+                <Palette className="w-3 h-3" />
+                Diseño visual
+              </button>
+              <button
+                id="presets-tab"
+                onClick={() => setActiveTab('presets')}
+                className={`flex-1 py-2 text-[11px] font-medium transition-all flex items-center justify-center gap-1.5
+                  ${activeTab === 'presets'
                     ? 'text-primary-600 dark:text-primary-400 border-b-2 border-primary-500'
                     : 'text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300'}`}
               >
                 <Sparkles className="w-3 h-3" />
-                Colores
+                Presets
               </button>
               <button
                 id="texts-tab"
@@ -245,77 +254,96 @@ const EditorDashboard: React.FC<EditorDashboardProps> = ({
 
             {/* Contenido scrollable */}
             <div className="flex-1 overflow-y-auto p-3">
-              {activeTab === 'colors' && template && (
+              {/* Tab de Diseño Visual */}
+              {activeTab === 'visual' && template && (
+                <VisualEditorPanel />
+              )}
+
+              {/* Tab de Presets - CORREGIDO: con type assertion para evitar error de índice */}
+              {activeTab === 'presets' && template && (
                 <div className="space-y-4">
-                  {/* Color Picker compacto */}
-                  <div className="space-y-2">
-                    <ColorPicker colorKey="primary" label="Principal" defaultColor={defaultColors.primary} compact />
-                    <ColorPicker colorKey="secondary" label="Secundario" defaultColor={defaultColors.secondary} compact />
-                    <ColorPicker colorKey="accent" label="Acento" defaultColor={defaultColors.accent} compact />
-                    <ColorPicker colorKey="background" label="Fondo" defaultColor={defaultColors.background} compact />
-                    <ColorPicker colorKey="text" label="Texto" defaultColor={defaultColors.text} compact />
+                  <div className="p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg mb-3">
+                    <p className="text-[10px] text-blue-700 dark:text-blue-300 flex items-start gap-1.5">
+                      <Info className="w-3 h-3 flex-shrink-0 mt-0.5" />
+                      <span>Combinaciones de colores predefinidas para tu template</span>
+                    </p>
                   </div>
 
-                  {/* Presets siempre visibles */}
-                  <div id="presets-section" className="mt-4 pt-3 border-t border-neutral-200 dark:border-neutral-800">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-[10px] font-medium text-primary-600 dark:text-primary-400 flex items-center gap-1">
-                        <Sparkles className="w-3 h-3" />
-                        Presets de colores
-                      </span>
-                    </div>
-                    <div className="grid grid-cols-2 gap-1.5">
-                      {colorPresets[template.type]?.map((preset, index) => (
+                  <div id="presets-section">
+                    <div className="grid grid-cols-2 gap-2">
+                      {/* CORREGIDO: Usar type assertion para acceder a colorPresets */}
+                      {(colorPresets[template.type as keyof typeof colorPresets] || []).map((preset, index) => (
                         <button
                           key={index}
                           onClick={() => applyPreset(preset.name)}
-                          className="p-1.5 bg-neutral-50 dark:bg-neutral-800 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-all text-left"
+                          className="p-2 bg-neutral-50 dark:bg-neutral-800 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-all text-left group"
                         >
-                          <div className="flex space-x-1">
+                          <div className="flex flex-wrap gap-1 mb-2">
                             {Object.values(preset.colors).map((color, i) => (
                               <div
                                 key={i}
-                                className="w-5 h-5 rounded-full border border-neutral-300 dark:border-neutral-600"
+                                className="w-6 h-6 rounded-full border border-neutral-300 dark:border-neutral-600 shadow-sm"
                                 style={{ backgroundColor: color as string }}
                                 title={color as string}
                               />
                             ))}
                           </div>
-                          <p className="text-[9px] text-neutral-500 dark:text-neutral-400 mt-1 truncate">
+                          <p className="text-[10px] font-medium text-neutral-700 dark:text-neutral-300 truncate">
                             {preset.name}
+                          </p>
+                          <p className="text-[9px] text-neutral-500 dark:text-neutral-400 mt-0.5">
+                            Click para aplicar
                           </p>
                         </button>
                       ))}
                     </div>
                   </div>
+
+                  {/* Mensaje si no hay presets */}
+                  {(!colorPresets[template.type as keyof typeof colorPresets] ||
+                    colorPresets[template.type as keyof typeof colorPresets]?.length === 0) && (
+                      <div className="text-center py-8">
+                        <p className="text-xs text-neutral-500">
+                          No hay presets disponibles para este template
+                        </p>
+                      </div>
+                    )}
                 </div>
               )}
 
+              {/* Tab de Textos */}
               {activeTab === 'texts' && (
                 <div className="space-y-3">
                   <div className="p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
                     <p className="text-[10px] text-blue-700 dark:text-blue-300 flex items-start gap-1.5">
                       <Info className="w-3 h-3 flex-shrink-0 mt-0.5" />
-                      <span>Doble clic en cualquier texto para editarlo</span>
+                      <span>Doble clic en cualquier texto de la página para editarlo</span>
                     </p>
                   </div>
-                  <div className="grid grid-cols-2 gap-1.5">
+
+                  <div className="grid grid-cols-2 gap-2">
                     <div className="p-2 bg-neutral-50 dark:bg-neutral-800 rounded-lg text-center">
-                      <p className="text-[10px] font-medium text-neutral-700 dark:text-neutral-300">Título principal</p>
-                      <p className="text-[9px] text-neutral-400 mt-0.5">doble clic</p>
+                      <p className="text-[10px] font-medium text-neutral-700 dark:text-neutral-300">Títulos principales</p>
+                      <p className="text-[9px] text-neutral-400 mt-0.5">Doble clic para editar</p>
                     </div>
                     <div className="p-2 bg-neutral-50 dark:bg-neutral-800 rounded-lg text-center">
-                      <p className="text-[10px] font-medium text-neutral-700 dark:text-neutral-300">Descripción</p>
-                      <p className="text-[9px] text-neutral-400 mt-0.5">doble clic</p>
+                      <p className="text-[10px] font-medium text-neutral-700 dark:text-neutral-300">Descripciones</p>
+                      <p className="text-[9px] text-neutral-400 mt-0.5">Doble clic para editar</p>
                     </div>
                     <div className="p-2 bg-neutral-50 dark:bg-neutral-800 rounded-lg text-center">
                       <p className="text-[10px] font-medium text-neutral-700 dark:text-neutral-300">Botones CTA</p>
-                      <p className="text-[9px] text-neutral-400 mt-0.5">doble clic</p>
+                      <p className="text-[9px] text-neutral-400 mt-0.5">Doble clic para editar</p>
                     </div>
                     <div className="p-2 bg-neutral-50 dark:bg-neutral-800 rounded-lg text-center">
-                      <p className="text-[10px] font-medium text-neutral-700 dark:text-neutral-300">Secciones</p>
-                      <p className="text-[9px] text-neutral-400 mt-0.5">doble clic</p>
+                      <p className="text-[10px] font-medium text-neutral-700 dark:text-neutral-300">Secciones completas</p>
+                      <p className="text-[9px] text-neutral-400 mt-0.5">Doble clic para editar</p>
                     </div>
+                  </div>
+
+                  <div className="mt-3 pt-2 border-t border-neutral-200 dark:border-neutral-800">
+                    <p className="text-[9px] text-neutral-400 text-center">
+                      También puedes editar textos desde el panel visual en "Diseño visual"
+                    </p>
                   </div>
                 </div>
               )}
@@ -444,9 +472,16 @@ const EditorDashboard: React.FC<EditorDashboardProps> = ({
             </div>
             <div className="flex flex-col gap-2">
               <button
-                onClick={() => setActiveTab('colors')}
-                className={`p-1.5 rounded-lg transition-all ${activeTab === 'colors' ? 'bg-primary-100 dark:bg-primary-900/30 text-primary-600' : 'text-neutral-500 hover:text-primary-600'}`}
-                title="Colores"
+                onClick={() => setActiveTab('visual')}
+                className={`p-1.5 rounded-lg transition-all ${activeTab === 'visual' ? 'bg-primary-100 dark:bg-primary-900/30 text-primary-600' : 'text-neutral-500 hover:text-primary-600'}`}
+                title="Diseño visual"
+              >
+                <Palette className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() => setActiveTab('presets')}
+                className={`p-1.5 rounded-lg transition-all ${activeTab === 'presets' ? 'bg-primary-100 dark:bg-primary-900/30 text-primary-600' : 'text-neutral-500 hover:text-primary-600'}`}
+                title="Presets"
               >
                 <Sparkles className="w-4 h-4" />
               </button>

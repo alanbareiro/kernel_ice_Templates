@@ -1,16 +1,16 @@
+// src/templates/Accounting/AccountingContact.tsx
 import { Clock, FileText, Mail, MapPin, Phone, Send } from 'lucide-react';
 import React, { useState } from 'react';
 import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
-import { getFocusRingStyle } from '../../utils/styles';
+import { defaultSectionColors, defaultTypography } from '../../types/template.types';
 
 const AccountingContact = () => {
     const { template } = useTemplate();
-    const colors = template?.colors || {
-        primary: '#059669',
-        secondary: '#047857',
-        accent: '#064e3b',
-    };
+
+    const sectionColors = template?.sectionColors || defaultSectionColors;
+    const typography = template?.typography || defaultTypography;
+    // const buttons = template?.buttons || defaultButtons;
 
     const [formData, setFormData] = useState({
         name: '',
@@ -60,20 +60,32 @@ const AccountingContact = () => {
     ];
 
     return (
-        <section id="contact" className="section-padding bg-white dark:bg-neutral-900">
+        <section
+            id="contact"
+            className="section-padding"
+            style={{ backgroundColor: sectionColors.featuresBackground }}
+        >
             <div className="container-custom">
                 <div className="grid lg:grid-cols-2 gap-12">
                     {/* Información de contacto */}
                     <div className="space-y-8">
                         <div>
-                            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-emerald-900 dark:text-emerald-100">
+                            <h2
+                                className="font-bold mb-6"
+                                style={{
+                                    fontSize: typography.sectionTitleSize,
+                                    color: sectionColors.featuresTitleColor
+                                }}
+                            >
                                 <EditableText
                                     elementId="a_contact_title_1"
                                     defaultText="¿Hablamos sobre tu"
                                     tag="span"
                                 />{' '}
-                                <span className="text-transparent bg-clip-text"
-                                    style={{ backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                                <span
+                                    className="text-transparent bg-clip-text"
+                                    style={{ backgroundImage: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                                >
                                     <EditableText
                                         elementId="a_contact_title_2"
                                         defaultText="situación?"
@@ -81,7 +93,10 @@ const AccountingContact = () => {
                                     />
                                 </span>
                             </h2>
-                            <p className="text-xl text-emerald-700 dark:text-emerald-300">
+                            <p
+                                className="text-xl"
+                                style={{ color: sectionColors.bodyTextColor }}
+                            >
                                 <EditableText
                                     elementId="a_contact_description"
                                     defaultText="Déjanos tus datos y un asesor se comunicará a la brevedad. Primera consulta sin cargo."
@@ -91,28 +106,35 @@ const AccountingContact = () => {
                         </div>
 
                         <div className="space-y-6">
-                            <div className="flex items-start space-x-4 p-4 rounded-xl"
-                                style={{ backgroundColor: `${colors.primary}10` }}>
-                                <div className="w-12 h-12 rounded-lg flex items-center justify-center text-white"
-                                    style={{ background: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                            <div
+                                className="flex items-start space-x-4 p-4 rounded-xl"
+                                style={{ backgroundColor: `${sectionColors.buttonPrimaryBackground}10` }}
+                            >
+                                <div
+                                    className="w-12 h-12 rounded-lg flex items-center justify-center text-white"
+                                    style={{ background: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                                >
                                     <Phone className="w-5 h-5" />
                                 </div>
                                 <div>
-                                    <h3 className="font-semibold text-emerald-900 dark:text-emerald-100">
+                                    <h3
+                                        className="font-semibold"
+                                        style={{ color: sectionColors.featuresTitleColor }}
+                                    >
                                         <EditableText
                                             elementId="a_contact_phone_title"
                                             defaultText="Teléfono"
                                             tag="span"
                                         />
                                     </h3>
-                                    <p className="text-emerald-600 dark:text-emerald-400">
+                                    <p style={{ color: sectionColors.bodyTextColor }}>
                                         <EditableText
                                             elementId="a_contact_phone"
                                             defaultText="+54 9 11 6745-7413"
                                             tag="span"
                                         />
                                     </p>
-                                    <p className="text-sm text-emerald-500">
+                                    <p className="text-sm" style={{ color: sectionColors.buttonPrimaryBackground }}>
                                         <EditableText
                                             elementId="a_contact_phone_hours"
                                             defaultText="Lun-Vie 9:00 a 18:00"
@@ -122,28 +144,35 @@ const AccountingContact = () => {
                                 </div>
                             </div>
 
-                            <div className="flex items-start space-x-4 p-4 rounded-xl"
-                                style={{ backgroundColor: `${colors.primary}10` }}>
-                                <div className="w-12 h-12 rounded-lg flex items-center justify-center text-white"
-                                    style={{ background: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                            <div
+                                className="flex items-start space-x-4 p-4 rounded-xl"
+                                style={{ backgroundColor: `${sectionColors.buttonPrimaryBackground}10` }}
+                            >
+                                <div
+                                    className="w-12 h-12 rounded-lg flex items-center justify-center text-white"
+                                    style={{ background: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                                >
                                     <Mail className="w-5 h-5" />
                                 </div>
                                 <div>
-                                    <h3 className="font-semibold text-emerald-900 dark:text-emerald-100">
+                                    <h3
+                                        className="font-semibold"
+                                        style={{ color: sectionColors.featuresTitleColor }}
+                                    >
                                         <EditableText
                                             elementId="a_contact_email_title"
                                             defaultText="Email"
                                             tag="span"
                                         />
                                     </h3>
-                                    <p className="text-emerald-600 dark:text-emerald-400">
+                                    <p style={{ color: sectionColors.bodyTextColor }}>
                                         <EditableText
                                             elementId="a_contact_email"
                                             defaultText="contabilidad@kernelize.com"
                                             tag="span"
                                         />
                                     </p>
-                                    <p className="text-sm text-emerald-500">
+                                    <p className="text-sm" style={{ color: sectionColors.buttonPrimaryBackground }}>
                                         <EditableText
                                             elementId="a_contact_email_response"
                                             defaultText="Respuesta en 24hs"
@@ -153,28 +182,35 @@ const AccountingContact = () => {
                                 </div>
                             </div>
 
-                            <div className="flex items-start space-x-4 p-4 rounded-xl"
-                                style={{ backgroundColor: `${colors.primary}10` }}>
-                                <div className="w-12 h-12 rounded-lg flex items-center justify-center text-white"
-                                    style={{ background: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                            <div
+                                className="flex items-start space-x-4 p-4 rounded-xl"
+                                style={{ backgroundColor: `${sectionColors.buttonPrimaryBackground}10` }}
+                            >
+                                <div
+                                    className="w-12 h-12 rounded-lg flex items-center justify-center text-white"
+                                    style={{ background: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                                >
                                     <MapPin className="w-5 h-5" />
                                 </div>
                                 <div>
-                                    <h3 className="font-semibold text-emerald-900 dark:text-emerald-100">
+                                    <h3
+                                        className="font-semibold"
+                                        style={{ color: sectionColors.featuresTitleColor }}
+                                    >
                                         <EditableText
                                             elementId="a_contact_location_title"
                                             defaultText="Ubicación"
                                             tag="span"
                                         />
                                     </h3>
-                                    <p className="text-emerald-600 dark:text-emerald-400">
+                                    <p style={{ color: sectionColors.bodyTextColor }}>
                                         <EditableText
                                             elementId="a_contact_location"
                                             defaultText="Av. Corrientes 1234, CABA"
                                             tag="span"
                                         />
                                     </p>
-                                    <p className="text-sm text-emerald-500">
+                                    <p className="text-sm" style={{ color: sectionColors.buttonPrimaryBackground }}>
                                         <EditableText
                                             elementId="a_contact_location_city"
                                             defaultText="Buenos Aires, Argentina"
@@ -186,8 +222,10 @@ const AccountingContact = () => {
                         </div>
 
                         {/* Horarios */}
-                        <div className="p-6 rounded-2xl text-white"
-                            style={{ background: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                        <div
+                            className="p-6 rounded-2xl text-white"
+                            style={{ background: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                        >
                             <div className="flex items-center mb-4">
                                 <Clock className="w-5 h-5 mr-2" />
                                 <h4 className="font-semibold">
@@ -243,21 +281,32 @@ const AccountingContact = () => {
                     </div>
 
                     {/* Formulario */}
-                    <div className="rounded-2xl p-8" style={{ backgroundColor: `${colors.primary}08` }}>
+                    <div
+                        className="rounded-2xl p-8"
+                        style={{ backgroundColor: `${sectionColors.buttonPrimaryBackground}08` }}
+                    >
                         {isSubmitted ? (
                             <div className="text-center py-12">
-                                <div className="w-20 h-20 mx-auto mb-6 rounded-full flex items-center justify-center"
-                                    style={{ background: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                                <div
+                                    className="w-20 h-20 mx-auto mb-6 rounded-full flex items-center justify-center"
+                                    style={{ background: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                                >
                                     <FileText className="w-10 h-10 text-white" />
                                 </div>
-                                <h3 className="text-2xl font-bold text-emerald-900 dark:text-emerald-100 mb-4">
+                                <h3
+                                    className="text-2xl font-bold mb-4"
+                                    style={{ color: sectionColors.featuresTitleColor }}
+                                >
                                     <EditableText
                                         elementId="a_success_title"
                                         defaultText="¡Consulta enviada!"
                                         tag="span"
                                     />
                                 </h3>
-                                <p className="text-emerald-700 dark:text-emerald-300 mb-8">
+                                <p
+                                    className="mb-8"
+                                    style={{ color: sectionColors.bodyTextColor }}
+                                >
                                     <EditableText
                                         elementId="a_success_message"
                                         defaultText="En las próximas 24 horas hábiles un asesor se comunicará contigo para coordinar una reunión sin cargo."
@@ -267,7 +316,7 @@ const AccountingContact = () => {
                                 <button
                                     onClick={() => setIsSubmitted(false)}
                                     className="text-white font-semibold px-8 py-3 rounded-lg transition-all"
-                                    style={{ background: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}
+                                    style={{ background: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
                                 >
                                     <EditableText
                                         elementId="a_success_button"
@@ -278,7 +327,10 @@ const AccountingContact = () => {
                             </div>
                         ) : (
                             <>
-                                <h3 className="text-2xl font-bold mb-8 text-emerald-900 dark:text-emerald-100">
+                                <h3
+                                    className="text-2xl font-bold mb-8"
+                                    style={{ color: sectionColors.featuresTitleColor }}
+                                >
                                     <EditableText
                                         elementId="a_form_title"
                                         defaultText="Solicita tu asesoría gratuita"
@@ -288,7 +340,10 @@ const AccountingContact = () => {
 
                                 <form onSubmit={handleSubmit} className="space-y-6">
                                     <div>
-                                        <label className="block text-sm font-medium text-emerald-800 dark:text-emerald-200 mb-2">
+                                        <label
+                                            className="block text-sm font-medium mb-2"
+                                            style={{ color: sectionColors.bodyTextColor }}
+                                        >
                                             <EditableText
                                                 elementId="a_form_name"
                                                 defaultText="Nombre completo *"
@@ -301,10 +356,11 @@ const AccountingContact = () => {
                                             value={formData.name}
                                             onChange={handleChange}
                                             required
-                                            className="w-full px-4 py-3 bg-white dark:bg-emerald-900 border rounded-lg focus:outline-none focus:ring-2 transition-all"
+                                            className="w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 transition-all"
                                             style={{
-                                                borderColor: `${colors.primary}40`,
-                                                ...getFocusRingStyle(colors.primary)// focusRing: colors.primary
+                                                backgroundColor: `${sectionColors.buttonPrimaryBackground}10`,
+                                                borderColor: `${sectionColors.buttonPrimaryBackground}40`,
+                                                color: sectionColors.bodyTextColor
                                             }}
                                             placeholder="Tu nombre"
                                         />
@@ -312,7 +368,10 @@ const AccountingContact = () => {
 
                                     <div className="grid md:grid-cols-2 gap-6">
                                         <div>
-                                            <label className="block text-sm font-medium text-emerald-800 dark:text-emerald-200 mb-2">
+                                            <label
+                                                className="block text-sm font-medium mb-2"
+                                                style={{ color: sectionColors.bodyTextColor }}
+                                            >
                                                 <EditableText
                                                     elementId="a_form_email"
                                                     defaultText="Email *"
@@ -325,18 +384,21 @@ const AccountingContact = () => {
                                                 value={formData.email}
                                                 onChange={handleChange}
                                                 required
-                                                className="w-full px-4 py-3 bg-white dark:bg-emerald-900 border rounded-lg focus:outline-none focus:ring-2 transition-all"
+                                                className="w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 transition-all"
                                                 style={{
-                                                    borderColor: `${colors.primary}40`,
-                                                     ...getFocusRingStyle(colors.primary)
-                                                    // focusRing: colors.primary
+                                                    backgroundColor: `${sectionColors.buttonPrimaryBackground}10`,
+                                                    borderColor: `${sectionColors.buttonPrimaryBackground}40`,
+                                                    color: sectionColors.bodyTextColor
                                                 }}
                                                 placeholder="tu@email.com"
                                             />
                                         </div>
 
                                         <div>
-                                            <label className="block text-sm font-medium text-emerald-800 dark:text-emerald-200 mb-2">
+                                            <label
+                                                className="block text-sm font-medium mb-2"
+                                                style={{ color: sectionColors.bodyTextColor }}
+                                            >
                                                 <EditableText
                                                     elementId="a_form_phone"
                                                     defaultText="Teléfono *"
@@ -349,11 +411,11 @@ const AccountingContact = () => {
                                                 value={formData.phone}
                                                 onChange={handleChange}
                                                 required
-                                                className="w-full px-4 py-3 bg-white dark:bg-emerald-900 border rounded-lg focus:outline-none focus:ring-2 transition-all"
+                                                className="w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 transition-all"
                                                 style={{
-                                                    borderColor: `${colors.primary}40`,
-                                                     ...getFocusRingStyle(colors.primary)
-                                                    // focusRing: `${colors.primary}`
+                                                    backgroundColor: `${sectionColors.buttonPrimaryBackground}10`,
+                                                    borderColor: `${sectionColors.buttonPrimaryBackground}40`,
+                                                    color: sectionColors.bodyTextColor
                                                 }}
                                                 placeholder="+54 9 11 1234-5678"
                                             />
@@ -361,7 +423,10 @@ const AccountingContact = () => {
                                     </div>
 
                                     <div>
-                                        <label className="block text-sm font-medium text-emerald-800 dark:text-emerald-200 mb-2">
+                                        <label
+                                            className="block text-sm font-medium mb-2"
+                                            style={{ color: sectionColors.bodyTextColor }}
+                                        >
                                             <EditableText
                                                 elementId="a_form_company"
                                                 defaultText="Empresa"
@@ -373,18 +438,21 @@ const AccountingContact = () => {
                                             name="company"
                                             value={formData.company}
                                             onChange={handleChange}
-                                            className="w-full px-4 py-3 bg-white dark:bg-emerald-900 border rounded-lg focus:outline-none focus:ring-2 transition-all"
+                                            className="w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 transition-all"
                                             style={{
-                                                borderColor: `${colors.primary}40`,
-                                                 ...getFocusRingStyle(colors.primary)
-                                                // focusRing: colors.primary
+                                                backgroundColor: `${sectionColors.buttonPrimaryBackground}10`,
+                                                borderColor: `${sectionColors.buttonPrimaryBackground}40`,
+                                                color: sectionColors.bodyTextColor
                                             }}
                                             placeholder="Nombre de tu empresa"
                                         />
                                     </div>
 
                                     <div>
-                                        <label className="block text-sm font-medium text-emerald-800 dark:text-emerald-200 mb-2">
+                                        <label
+                                            className="block text-sm font-medium mb-2"
+                                            style={{ color: sectionColors.bodyTextColor }}
+                                        >
                                             <EditableText
                                                 elementId="a_form_consult_type"
                                                 defaultText="Tipo de consulta *"
@@ -396,11 +464,11 @@ const AccountingContact = () => {
                                             value={formData.consultType}
                                             onChange={handleChange}
                                             required
-                                            className="w-full px-4 py-3 bg-white dark:bg-emerald-900 border rounded-lg focus:outline-none focus:ring-2 transition-all"
+                                            className="w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 transition-all"
                                             style={{
-                                                borderColor: `${colors.primary}40`,
-                                                 ...getFocusRingStyle(colors.primary)
-                                                // focusRing: colors.primary
+                                                backgroundColor: `${sectionColors.buttonPrimaryBackground}10`,
+                                                borderColor: `${sectionColors.buttonPrimaryBackground}40`,
+                                                color: sectionColors.bodyTextColor
                                             }}
                                         >
                                             <option value="">Selecciona una opción</option>
@@ -411,7 +479,10 @@ const AccountingContact = () => {
                                     </div>
 
                                     <div>
-                                        <label className="block text-sm font-medium text-emerald-800 dark:text-emerald-200 mb-2">
+                                        <label
+                                            className="block text-sm font-medium mb-2"
+                                            style={{ color: sectionColors.bodyTextColor }}
+                                        >
                                             <EditableText
                                                 elementId="a_form_message"
                                                 defaultText="Mensaje"
@@ -423,18 +494,21 @@ const AccountingContact = () => {
                                             value={formData.message}
                                             onChange={handleChange}
                                             rows={4}
-                                            className="w-full px-4 py-3 bg-white dark:bg-emerald-900 border rounded-lg focus:outline-none focus:ring-2 transition-all resize-none"
+                                            className="w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 transition-all resize-none"
                                             style={{
-                                                borderColor: `${colors.primary}40`,
-                                                 ...getFocusRingStyle(colors.primary)
-                                                // focusRing: colors.primary
+                                                backgroundColor: `${sectionColors.buttonPrimaryBackground}10`,
+                                                borderColor: `${sectionColors.buttonPrimaryBackground}40`,
+                                                color: sectionColors.bodyTextColor
                                             }}
                                             placeholder="Cuéntanos tu situación o consulta..."
                                         />
                                     </div>
 
                                     <div className="flex items-center justify-between pt-6">
-                                        <div className="text-sm" style={{ color: colors.primary }}>
+                                        <div
+                                            className="text-sm"
+                                            style={{ color: sectionColors.buttonPrimaryBackground }}
+                                        >
                                             <EditableText
                                                 elementId="a_form_required"
                                                 defaultText="* Campos obligatorios"
@@ -445,7 +519,7 @@ const AccountingContact = () => {
                                             type="submit"
                                             disabled={isSubmitting}
                                             className="text-white font-semibold px-8 py-4 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
-                                            style={{ background: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}
+                                            style={{ background: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
                                         >
                                             {isSubmitting ? (
                                                 <EditableText
@@ -466,7 +540,10 @@ const AccountingContact = () => {
                                         </button>
                                     </div>
 
-                                    <p className="text-xs text-center" style={{ color: `${colors.primary}80` }}>
+                                    <p
+                                        className="text-xs text-center"
+                                        style={{ color: `${sectionColors.buttonPrimaryBackground}80` }}
+                                    >
                                         <EditableText
                                             elementId="a_form_privacy"
                                             defaultText="Tus datos están protegidos por nuestra política de confidencialidad."

@@ -1,3 +1,4 @@
+// src/templates/Catering/CateringFooter.tsx
 import {
     Clock,
     Coffee,
@@ -13,14 +14,14 @@ import {
 import ThemeToggle from '../../Theme/ThemeToogle';
 import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
+import { defaultSectionColors } from '../../types/template.types';
 
 const CateringFooter = () => {
     const { template } = useTemplate();
-    const colors = template?.colors || {
-        primary: '#f59e0b',
-        secondary: '#d97706',
-        accent: '#b45309',
-    };
+
+    const sectionColors = template?.sectionColors || defaultSectionColors;
+    // const typography = template?.typography || defaultTypography;
+
     const currentYear = new Date().getFullYear();
 
     const socialLinks = [
@@ -45,16 +46,20 @@ const CateringFooter = () => {
     ];
 
     return (
-        <footer className="text-white"
-            style={{ background: `linear-gradient(135deg, ${colors.accent}, ${colors.secondary})` }}>
+        <footer
+            className="text-white"
+            style={{ background: `linear-gradient(135deg, ${sectionColors.footerBackground}, ${sectionColors.footerBackground})` }}
+        >
             <div className="container-custom px-4 sm:px-6 lg:px-8">
                 {/* Sección principal */}
                 <div className="py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                     {/* Información de la empresa */}
                     <div className="space-y-4">
                         <div className="flex items-center space-x-2">
-                            <div className="w-12 h-12 rounded-full flex items-center justify-center"
-                                style={{ background: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                            <div
+                                className="w-12 h-12 rounded-full flex items-center justify-center"
+                                style={{ background: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                            >
                                 <Coffee className="w-6 h-6 text-white" />
                             </div>
                             <h2 className="text-2xl font-bold">
@@ -72,7 +77,7 @@ const CateringFooter = () => {
                                 />
                             </h2>
                         </div>
-                        <p className="text-amber-200 leading-relaxed">
+                        <p style={{ color: sectionColors.footerTextColor }} className="leading-relaxed">
                             <EditableText
                                 elementId="c_footer_description"
                                 defaultText="Hacemos de tu evento una experiencia gastronómica inolvidable. Calidad, creatividad y pasión en cada plato."
@@ -86,7 +91,8 @@ const CateringFooter = () => {
                                 <a
                                     key={social.id}
                                     href="#"
-                                    className="p-2 bg-amber-800 rounded-lg text-amber-200 hover:bg-amber-600 hover:text-white transition-all"
+                                    className="p-2 rounded-lg transition-all"
+                                    style={{ backgroundColor: `${sectionColors.buttonPrimaryBackground}40`, color: sectionColors.footerLinkColor }}
                                     aria-label={social.label}
                                 >
                                     {social.icon}
@@ -97,7 +103,7 @@ const CateringFooter = () => {
 
                     {/* Enlaces rápidos */}
                     <div>
-                        <h3 className="text-lg font-semibold text-amber-300 mb-4">
+                        <h3 className="text-lg font-semibold mb-4" style={{ color: sectionColors.footerHeadingColor }}>
                             <EditableText
                                 elementId="c_footer_quick_title"
                                 defaultText="Enlaces Rápidos"
@@ -109,7 +115,8 @@ const CateringFooter = () => {
                                 <li key={link.id}>
                                     <a
                                         href={link.href}
-                                        className="text-amber-200 hover:text-white transition-colors"
+                                        className="transition-colors"
+                                        style={{ color: sectionColors.footerLinkColor }}
                                     >
                                         <EditableText
                                             elementId={link.id}
@@ -124,7 +131,7 @@ const CateringFooter = () => {
 
                     {/* Horarios */}
                     <div>
-                        <h3 className="text-lg font-semibold text-amber-300 mb-4">
+                        <h3 className="text-lg font-semibold mb-4" style={{ color: sectionColors.footerHeadingColor }}>
                             <EditableText
                                 elementId="c_footer_hours_title"
                                 defaultText="Horarios de atención"
@@ -133,16 +140,16 @@ const CateringFooter = () => {
                         </h3>
                         <ul className="space-y-3">
                             <li className="flex items-start space-x-3">
-                                <Clock className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
+                                <Clock className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: sectionColors.buttonPrimaryBackground }} />
                                 <div>
-                                    <p className="text-amber-200">
+                                    <p style={{ color: sectionColors.footerTextColor }}>
                                         <EditableText
                                             elementId="c_footer_hours_week"
                                             defaultText="Lun-Vie: 9:00 - 20:00"
                                             tag="span"
                                         />
                                     </p>
-                                    <p className="text-amber-200">
+                                    <p style={{ color: sectionColors.footerTextColor }}>
                                         <EditableText
                                             elementId="c_footer_hours_sat"
                                             defaultText="Sáb: 10:00 - 18:00"
@@ -152,8 +159,8 @@ const CateringFooter = () => {
                                 </div>
                             </li>
                             <li className="flex items-start space-x-3">
-                                <Phone className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
-                                <span className="text-amber-200">
+                                <Phone className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: sectionColors.buttonPrimaryBackground }} />
+                                <span style={{ color: sectionColors.footerTextColor }}>
                                     <EditableText
                                         elementId="c_footer_phone"
                                         defaultText="+54 9 11 6745-7413"
@@ -162,8 +169,8 @@ const CateringFooter = () => {
                                 </span>
                             </li>
                             <li className="flex items-start space-x-3">
-                                <Mail className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
-                                <span className="text-amber-200">
+                                <Mail className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: sectionColors.buttonPrimaryBackground }} />
+                                <span style={{ color: sectionColors.footerTextColor }}>
                                     <EditableText
                                         elementId="c_footer_email"
                                         defaultText="eventos@kernelizecatering.com"
@@ -172,8 +179,8 @@ const CateringFooter = () => {
                                 </span>
                             </li>
                             <li className="flex items-start space-x-3">
-                                <MapPin className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
-                                <span className="text-amber-200">
+                                <MapPin className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: sectionColors.buttonPrimaryBackground }} />
+                                <span style={{ color: sectionColors.footerTextColor }}>
                                     <EditableText
                                         elementId="c_footer_location"
                                         defaultText="Buenos Aires, Argentina"
@@ -186,14 +193,14 @@ const CateringFooter = () => {
 
                     {/* Newsletter */}
                     <div className="space-y-4">
-                        <h3 className="text-lg font-semibold text-amber-300 mb-4">
+                        <h3 className="text-lg font-semibold mb-4" style={{ color: sectionColors.footerHeadingColor }}>
                             <EditableText
                                 elementId="c_footer_newsletter"
                                 defaultText="Novedades"
                                 tag="span"
                             />
                         </h3>
-                        <p className="text-sm text-amber-200">
+                        <p className="text-sm" style={{ color: sectionColors.footerTextColor }}>
                             <EditableText
                                 elementId="c_footer_newsletter_desc"
                                 defaultText="Suscríbete para recibir promociones y novedades gastronómicas."
@@ -204,13 +211,16 @@ const CateringFooter = () => {
                             <input
                                 type="email"
                                 placeholder="tu@email.com"
-                                className="w-full px-4 py-2 bg-amber-800 border border-amber-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent text-white"
-                                // style={{ placeholderColor: 'text-amber-400' }}
+                                className="w-full px-4 py-2 rounded-lg focus:outline-none focus:ring-2 text-white"
+                                style={{
+                                    backgroundColor: `${sectionColors.buttonPrimaryBackground}40`,
+                                    borderColor: `${sectionColors.buttonPrimaryBackground}60`,
+                                }}
                             />
                             <button
                                 type="submit"
                                 className="w-full px-4 py-2 text-white font-medium rounded-lg transition-all"
-                                style={{ background: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}
+                                style={{ background: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
                             >
                                 <EditableText
                                     elementId="c_footer_newsletter_button"
@@ -222,19 +232,19 @@ const CateringFooter = () => {
 
                         {/* Toggle de tema */}
                         <div className="pt-4 flex items-center justify-between">
-                            <span className="text-sm text-amber-300">Tema:</span>
+                            <span className="text-sm" style={{ color: sectionColors.footerHeadingColor }}>Tema:</span>
                             <ThemeToggle />
                         </div>
                     </div>
                 </div>
 
                 {/* Línea divisoria */}
-                <div className="border-t border-amber-800"></div>
+                <div className="border-t" style={{ borderColor: `${sectionColors.buttonPrimaryBackground}40` }}></div>
 
                 {/* Sección inferior */}
                 <div className="py-8 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
                     <div className="text-center md:text-left">
-                        <p className="text-amber-200">
+                        <p style={{ color: sectionColors.footerTextColor }}>
                             © {currentYear}{' '}
                             <EditableText
                                 elementId="c_footer_copyright"
@@ -242,7 +252,7 @@ const CateringFooter = () => {
                                 tag="span"
                             />
                         </p>
-                        <p className="text-sm text-amber-300 mt-1 flex items-center justify-center md:justify-start">
+                        <p className="text-sm mt-1 flex items-center justify-center md:justify-start" style={{ color: sectionColors.footerLinkColor }}>
                             <EditableText
                                 elementId="c_footer_made_with"
                                 defaultText="Hecho con"
@@ -258,25 +268,29 @@ const CateringFooter = () => {
                     </div>
 
                     <div className="flex flex-wrap justify-center md:justify-end gap-4">
-                        <a href="#" className="text-sm text-amber-200 hover:text-white transition-colors">
+                        <a href="#" className="text-sm transition-colors" style={{ color: sectionColors.footerLinkColor }}>
                             <EditableText elementId="c_footer_terms" defaultText="Términos" tag="span" />
                         </a>
-                        <a href="#" className="text-sm text-amber-200 hover:text-white transition-colors">
+                        <a href="#" className="text-sm transition-colors" style={{ color: sectionColors.footerLinkColor }}>
                             <EditableText elementId="c_footer_privacy" defaultText="Privacidad" tag="span" />
                         </a>
-                        <a href="#" className="text-sm text-amber-200 hover:text-white transition-colors">
+                        <a href="#" className="text-sm transition-colors" style={{ color: sectionColors.footerLinkColor }}>
                             <EditableText elementId="c_footer_cookies" defaultText="Cookies" tag="span" />
                         </a>
                     </div>
                 </div>
 
                 {/* Certificaciones */}
-                <div className="pb-8 pt-4 border-t border-amber-800">
+                <div className="pb-8 pt-4 border-t" style={{ borderColor: `${sectionColors.buttonPrimaryBackground}40` }}>
                     <div className="flex flex-wrap items-center justify-center gap-3 text-sm">
                         {certifications.map((cert) => (
                             <span
                                 key={cert.id}
-                                className="px-3 py-1 bg-amber-800 rounded-full border border-amber-600 text-amber-200"
+                                className="px-3 py-1 rounded-full"
+                                style={{
+                                    backgroundColor: `${sectionColors.buttonPrimaryBackground}40`,
+                                    color: sectionColors.footerTextColor
+                                }}
                             >
                                 <EditableText
                                     elementId={cert.id}

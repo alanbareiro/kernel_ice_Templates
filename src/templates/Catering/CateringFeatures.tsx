@@ -1,3 +1,4 @@
+// src/templates/Catering/CateringFeatures.tsx
 import {
     Cake,
     ChefHat,
@@ -8,14 +9,13 @@ import {
 } from 'lucide-react';
 import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
+import { defaultSectionColors, defaultTypography } from '../../types/template.types';
 
 const CateringFeatures = () => {
     const { template } = useTemplate();
-    const colors = template?.colors || {
-        primary: '#f59e0b',
-        secondary: '#d97706',
-        accent: '#b45309',
-    };
+
+    const sectionColors = template?.sectionColors || defaultSectionColors;
+    const typography = template?.typography || defaultTypography;
 
     const features = [
         {
@@ -24,7 +24,6 @@ const CateringFeatures = () => {
             titleDefault: 'Buffet Completo',
             descId: 'c_feature_desc_buffet',
             descDefault: 'Variedad de platos fríos y calientes para todos los gustos y necesidades dietéticas.',
-            color: 'from-amber-500 to-amber-600',
         },
         {
             icon: <Wine className="w-8 h-8" />,
@@ -32,7 +31,6 @@ const CateringFeatures = () => {
             titleDefault: 'Maridaje Profesional',
             descId: 'c_feature_desc_wine',
             descDefault: 'Selección de vinos y bebidas que complementan perfectamente cada plato.',
-            color: 'from-orange-500 to-orange-600',
         },
         {
             icon: <Cake className="w-8 h-8" />,
@@ -40,7 +38,6 @@ const CateringFeatures = () => {
             titleDefault: 'Repostería Exquisita',
             descId: 'c_feature_desc_desserts',
             descDefault: 'Postres y tartas artesanales que endulzan cualquier celebración.',
-            color: 'from-amber-600 to-orange-600',
         },
         {
             icon: <PartyPopper className="w-8 h-8" />,
@@ -48,7 +45,6 @@ const CateringFeatures = () => {
             titleDefault: 'Eventos Especiales',
             descId: 'c_feature_desc_events',
             descDefault: 'Bodas, cumpleaños, aniversarios y celebraciones corporativas.',
-            color: 'from-orange-500 to-red-500',
         },
         {
             icon: <Truck className="w-8 h-8" />,
@@ -56,7 +52,6 @@ const CateringFeatures = () => {
             titleDefault: 'Logística Completa',
             descId: 'c_feature_desc_logistics',
             descDefault: 'Transporte, montaje y servicio de mesa incluidos en nuestros paquetes.',
-            color: 'from-amber-500 to-orange-500',
         },
         {
             icon: <ChefHat className="w-8 h-8" />,
@@ -64,21 +59,32 @@ const CateringFeatures = () => {
             titleDefault: 'Chefs Expertos',
             descId: 'c_feature_desc_chefs',
             descDefault: 'Equipo de cocineros con formación internacional y pasión por la gastronomía.',
-            color: 'from-orange-600 to-amber-700',
         },
     ];
 
     return (
-        <section className="section-padding bg-white dark:bg-neutral-900">
+        <section
+            className="section-padding"
+            style={{ backgroundColor: sectionColors.featuresBackground }}
+        >
             <div className="container-custom">
                 <div className="text-center max-w-3xl mx-auto mb-16">
-                    <h2 className="text-4xl md:text-5xl font-bold mb-6 text-amber-900 dark:text-amber-100">
+                    <h2
+                        className="font-bold mb-6"
+                        style={{
+                            fontSize: typography.sectionTitleSize,
+                            color: sectionColors.featuresTitleColor
+                        }}
+                    >
                         <EditableText
                             elementId="c_features_title_1"
                             defaultText="Servicios de"
                             tag="span"
                         />{' '}
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-600">
+                        <span
+                            className="text-transparent bg-clip-text"
+                            style={{ backgroundImage: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                        >
                             <EditableText
                                 elementId="c_features_title_2"
                                 defaultText="Catering Premium"
@@ -86,7 +92,10 @@ const CateringFeatures = () => {
                             />
                         </span>
                     </h2>
-                    <p className="text-xl text-amber-700 dark:text-amber-300">
+                    <p
+                        className="text-xl"
+                        style={{ color: sectionColors.bodyTextColor }}
+                    >
                         <EditableText
                             elementId="c_features_description"
                             defaultText="Ofrecemos soluciones gastronómicas completas para todo tipo de eventos, con la más alta calidad y atención al detalle."
@@ -99,17 +108,28 @@ const CateringFeatures = () => {
                     {features.map((feature, index) => (
                         <div
                             key={index}
-                            className="group p-8 rounded-2xl bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 border border-amber-200 dark:border-amber-800 hover:border-amber-500 dark:hover:border-amber-500 transition-all duration-300 hover:shadow-xl"
-                            style={{ borderColor: `hover:${colors.primary}` }}
+                            className="group p-8 rounded-2xl border transition-all duration-300 hover:shadow-xl"
+                            style={{
+                                backgroundColor: sectionColors.featuresCardBackground,
+                                borderColor: sectionColors.featuresCardBorder,
+                            }}
                         >
-                            <div className={`w-16 h-16 rounded-xl bg-gradient-to-r ${feature.color} p-0.5 mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                                <div className="w-full h-full rounded-xl bg-white dark:bg-neutral-900 flex items-center justify-center"
-                                    style={{ color: colors.primary }}>
+                            <div
+                                className="w-16 h-16 rounded-xl p-0.5 mb-6 group-hover:scale-110 transition-transform duration-300"
+                                style={{ backgroundColor: sectionColors.buttonPrimaryBackground }}
+                            >
+                                <div
+                                    className="w-full h-full rounded-xl flex items-center justify-center"
+                                    style={{ backgroundColor: sectionColors.featuresCardBackground, color: sectionColors.buttonPrimaryBackground }}
+                                >
                                     {feature.icon}
                                 </div>
                             </div>
 
-                            <h3 className="text-2xl font-bold mb-3 text-amber-900 dark:text-amber-100 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
+                            <h3
+                                className="text-2xl font-bold mb-3 group-hover:text-amber-600 transition-colors"
+                                style={{ color: sectionColors.featuresTitleColor }}
+                            >
                                 <EditableText
                                     elementId={feature.titleId}
                                     defaultText={feature.titleDefault}
@@ -117,7 +137,7 @@ const CateringFeatures = () => {
                                 />
                             </h3>
 
-                            <p className="text-amber-700 dark:text-amber-300 leading-relaxed">
+                            <p className="leading-relaxed" style={{ color: sectionColors.bodyTextColor }}>
                                 <EditableText
                                     elementId={feature.descId}
                                     defaultText={feature.descDefault}

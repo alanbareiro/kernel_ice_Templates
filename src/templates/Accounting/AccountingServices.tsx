@@ -1,3 +1,4 @@
+// src/templates/Accounting/AccountingServices.tsx
 import {
     ArrowRight,
     Briefcase,
@@ -8,14 +9,14 @@ import {
 } from 'lucide-react';
 import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
+import { defaultButtons, defaultSectionColors, defaultTypography } from '../../types/template.types';
 
 const AccountingServices = () => {
     const { template } = useTemplate();
-    const colors = template?.colors || {
-        primary: '#059669',
-        secondary: '#047857',
-        accent: '#064e3b',
-    };
+
+    const sectionColors = template?.sectionColors || defaultSectionColors;
+    const typography = template?.typography || defaultTypography;
+    const buttons = template?.buttons || defaultButtons;
 
     const servicePackages = [
         {
@@ -30,7 +31,7 @@ const AccountingServices = () => {
                 { id: 'a_plan_1_feature_3', text: 'Asesoramiento personalizado' },
                 { id: 'a_plan_1_feature_4', text: 'Facturación electrónica' },
             ],
-            color: 'from-emerald-600 to-emerald-700',
+            highlighted: false,
         },
         {
             titleId: 'a_plan_2_title',
@@ -47,7 +48,6 @@ const AccountingServices = () => {
                 { id: 'a_plan_2_feature_4', text: 'Auditoría externa' },
                 { id: 'a_plan_2_feature_5', text: 'Planificación fiscal' },
             ],
-            color: 'from-emerald-700 to-emerald-800',
             highlighted: true,
         },
         {
@@ -62,22 +62,33 @@ const AccountingServices = () => {
                 { id: 'a_plan_3_feature_3', text: 'Liquidación de impuestos' },
                 { id: 'a_plan_3_feature_4', text: 'Facturación' },
             ],
-            color: 'from-emerald-500 to-emerald-600',
+            highlighted: false,
         },
     ];
 
     return (
-        <section className="section-padding bg-white dark:bg-neutral-900">
+        <section
+            className="section-padding"
+            style={{ backgroundColor: sectionColors.featuresBackground }}
+        >
             <div className="container-custom">
                 <div className="text-center max-w-3xl mx-auto mb-16">
-                    <h2 className="text-4xl md:text-5xl font-bold mb-6 text-emerald-900 dark:text-emerald-100">
+                    <h2
+                        className="font-bold mb-6"
+                        style={{
+                            fontSize: typography.sectionTitleSize,
+                            color: sectionColors.featuresTitleColor
+                        }}
+                    >
                         <EditableText
                             elementId="a_services_title_1"
                             defaultText="Planes"
                             tag="span"
                         />{' '}
-                        <span className="text-transparent bg-clip-text"
-                            style={{ backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                        <span
+                            className="text-transparent bg-clip-text"
+                            style={{ backgroundImage: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                        >
                             <EditableText
                                 elementId="a_services_title_2"
                                 defaultText="a tu medida"
@@ -85,7 +96,10 @@ const AccountingServices = () => {
                             />
                         </span>
                     </h2>
-                    <p className="text-xl text-emerald-700 dark:text-emerald-300">
+                    <p
+                        className="text-xl"
+                        style={{ color: sectionColors.bodyTextColor }}
+                    >
                         <EditableText
                             elementId="a_services_description"
                             defaultText="Ofrecemos soluciones adaptadas a cada etapa de tu negocio, con precios claros y sin sorpresas."
@@ -98,19 +112,19 @@ const AccountingServices = () => {
                     {servicePackages.map((pkg, index) => (
                         <div
                             key={index}
-                            className={`relative rounded-2xl p-8 ${pkg.highlighted
-                                    ? 'text-white shadow-2xl scale-105'
-                                    : 'text-emerald-900 dark:text-emerald-100'
+                            className={`relative rounded-2xl p-8 transition-all duration-300 hover:scale-105 ${pkg.highlighted ? 'text-white shadow-2xl' : ''
                                 }`}
-                            style={pkg.highlighted ? {
-                                background: `linear-gradient(135deg, ${colors.primary}, ${colors.accent})`
-                            } : {
-                                backgroundColor: `${colors.primary}08`
-                            }}
+                            style={
+                                pkg.highlighted
+                                    ? { background: `linear-gradient(135deg, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }
+                                    : { backgroundColor: `${sectionColors.buttonPrimaryBackground}08` }
+                            }
                         >
                             {pkg.highlighted && pkg.badgeId && (
-                                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 px-4 py-1 rounded-full text-sm font-semibold"
-                                    style={{ background: `linear-gradient(to right, ${colors.accent}, ${colors.primary})` }}>
+                                <div
+                                    className="absolute -top-4 left-1/2 transform -translate-x-1/2 px-4 py-1 rounded-full text-sm font-semibold text-white"
+                                    style={{ background: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                                >
                                     <EditableText
                                         elementId={pkg.badgeId}
                                         defaultText={pkg.badgeDefault}
@@ -119,12 +133,14 @@ const AccountingServices = () => {
                                 </div>
                             )}
 
-                            <div className="w-16 h-16 rounded-xl bg-gradient-to-r p-0.5 mb-6"
-                                style={{ background: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
-                                <div className={`w-full h-full rounded-xl flex items-center justify-center ${pkg.highlighted ? 'bg-transparent' : 'bg-white dark:bg-emerald-900'
-                                    }`}>
-                                    <div className={pkg.highlighted ? 'text-white' : ''}
-                                        style={!pkg.highlighted ? { color: colors.primary } : {}}>
+                            <div className="w-16 h-16 rounded-xl p-0.5 mb-6"
+                                style={{ background: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}>
+                                <div
+                                    className={`w-full h-full rounded-xl flex items-center justify-center ${pkg.highlighted ? 'bg-transparent' : ''
+                                        }`}
+                                    style={!pkg.highlighted ? { backgroundColor: sectionColors.featuresCardBackground } : {}}
+                                >
+                                    <div style={!pkg.highlighted ? { color: sectionColors.buttonPrimaryBackground } : { color: 'white' }}>
                                         {pkg.icon}
                                     </div>
                                 </div>
@@ -148,9 +164,9 @@ const AccountingServices = () => {
                             <ul className="space-y-3 mb-8">
                                 {pkg.features.map((feature, i) => (
                                     <li key={i} className="flex items-start">
-                                        <CheckCircle className={`w-5 h-5 mr-2 flex-shrink-0 ${pkg.highlighted ? 'text-white' : ''
-                                            }`} style={!pkg.highlighted ? { color: colors.primary } : {}} />
-                                        <span className={pkg.highlighted ? 'text-white' : 'text-emerald-700 dark:text-emerald-300'}>
+                                        <CheckCircle className={`w-5 h-5 mr-2 flex-shrink-0 ${pkg.highlighted ? 'text-white' : ''}`}
+                                            style={!pkg.highlighted ? { color: sectionColors.buttonPrimaryBackground } : {}} />
+                                        <span className={pkg.highlighted ? 'text-white' : ''} style={!pkg.highlighted ? { color: sectionColors.bodyTextColor } : {}}>
                                             <EditableText
                                                 elementId={feature.id}
                                                 defaultText={feature.text}
@@ -161,12 +177,14 @@ const AccountingServices = () => {
                                 ))}
                             </ul>
 
-                            <button
+                            <a
+                                href={buttons.primary.url}
+                                target={buttons.primary.openInNewTab ? '_blank' : '_self'}
                                 className={`w-full py-3 rounded-lg font-semibold transition-all flex items-center justify-center group ${pkg.highlighted
-                                        ? 'bg-white text-emerald-900 hover:bg-emerald-100'
+                                        ? 'bg-white hover:bg-emerald-100'
                                         : 'text-white hover:opacity-90'
                                     }`}
-                                style={!pkg.highlighted ? { background: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` } : {}}
+                                style={!pkg.highlighted ? { background: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` } : {}}
                             >
                                 <EditableText
                                     elementId="a_plan_button"
@@ -174,16 +192,18 @@ const AccountingServices = () => {
                                     tag="span"
                                 />
                                 <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                            </button>
+                            </a>
                         </div>
                     ))}
                 </div>
 
                 {/* Nota adicional */}
-                <div className="mt-12 text-center p-6 rounded-2xl"
-                    style={{ backgroundColor: `${colors.primary}15` }}>
-                    <FileSpreadsheet className="w-12 h-12 mx-auto mb-4" style={{ color: colors.primary }} />
-                    <p className="text-emerald-800 dark:text-emerald-200">
+                <div
+                    className="mt-12 text-center p-6 rounded-2xl"
+                    style={{ backgroundColor: `${sectionColors.buttonPrimaryBackground}15` }}
+                >
+                    <FileSpreadsheet className="w-12 h-12 mx-auto mb-4" style={{ color: sectionColors.buttonPrimaryBackground }} />
+                    <p style={{ color: sectionColors.bodyTextColor }}>
                         <EditableText
                             elementId="a_plan_note"
                             defaultText="¿Necesitas un servicio específico? Contactanos para armar un plan a tu medida."

@@ -1,25 +1,24 @@
+// src/templates/Catering/CateringGallery.tsx
 import { ChevronLeft, ChevronRight, Heart, X } from 'lucide-react';
 import { useState } from 'react';
 import { defaultImages } from '../../assets/default-images';
 import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
+import { defaultSectionColors, defaultTypography } from '../../types/template.types';
 
 const CateringGallery = () => {
     const { template } = useTemplate();
-    const colors = template?.colors || {
-        primary: '#f59e0b',
-        secondary: '#d97706',
-        accent: '#b45309',
-    };
+
+    const sectionColors = template?.sectionColors || defaultSectionColors;
+    const typography = template?.typography || defaultTypography;
+
     const [selectedImage, setSelectedImage] = useState<number | null>(null);
     const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
 
-    // Función para manejar errores de imagen
     const handleImageError = (imageId: string) => {
         setImageErrors(prev => ({ ...prev, [imageId]: true }));
     };
 
-    // Función para obtener URL con fallback
     const getImageUrl = (imageId: string, defaultUrl: string) => {
         if (imageErrors[imageId]) {
             return `https://via.placeholder.com/800x600?text=${encodeURIComponent(imageId.replace(/_/g, ' '))}`;
@@ -105,17 +104,29 @@ const CateringGallery = () => {
     };
 
     return (
-        <section id="gallery" className="section-padding bg-white dark:bg-neutral-900">
+        <section
+            id="gallery"
+            className="section-padding"
+            style={{ backgroundColor: sectionColors.featuresBackground }}
+        >
             <div className="container-custom">
                 <div className="text-center max-w-3xl mx-auto mb-16">
-                    <h2 className="text-4xl md:text-5xl font-bold mb-6 text-amber-900 dark:text-amber-100">
+                    <h2
+                        className="font-bold mb-6"
+                        style={{
+                            fontSize: typography.sectionTitleSize,
+                            color: sectionColors.featuresTitleColor
+                        }}
+                    >
                         <EditableText
                             elementId="c_gallery_title_1"
                             defaultText="Galería de"
                             tag="span"
                         />{' '}
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-600"
-                            style={{ backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                        <span
+                            className="text-transparent bg-clip-text"
+                            style={{ backgroundImage: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                        >
                             <EditableText
                                 elementId="c_gallery_title_2"
                                 defaultText="Experiencias"
@@ -123,7 +134,10 @@ const CateringGallery = () => {
                             />
                         </span>
                     </h2>
-                    <p className="text-xl text-amber-700 dark:text-amber-300">
+                    <p
+                        className="text-xl"
+                        style={{ color: sectionColors.bodyTextColor }}
+                    >
                         <EditableText
                             elementId="c_gallery_description"
                             defaultText="Momentos inolvidables que hemos creado para nuestros clientes."
@@ -164,7 +178,6 @@ const CateringGallery = () => {
                                 </div>
                             </div>
 
-                            {/* Badge de categoría */}
                             <div className="absolute top-4 left-4 bg-black/50 backdrop-blur-sm text-white text-xs px-3 py-1 rounded-full">
                                 <EditableText
                                     elementId={image.categoryId}

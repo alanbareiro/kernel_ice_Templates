@@ -1,14 +1,14 @@
+// src/templates/Accounting/AccountingTestimonials.tsx
 import { Quote, Star } from 'lucide-react';
 import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
+import { defaultSectionColors, defaultTypography } from '../../types/template.types';
 
 const AccountingTestimonials = () => {
     const { template } = useTemplate();
-    const colors = template?.colors || {
-        primary: '#059669',
-        secondary: '#047857',
-        accent: '#064e3b',
-    };
+
+    const sectionColors = template?.sectionColors || defaultSectionColors;
+    const typography = template?.typography || defaultTypography;
 
     const testimonials = [
         {
@@ -44,22 +44,35 @@ const AccountingTestimonials = () => {
     ];
 
     return (
-        <section className="section-padding bg-gradient-to-br from-emerald-100 to-emerald-50 dark:from-emerald-950 dark:to-emerald-900">
+        <section
+            className="section-padding"
+            style={{ backgroundColor: sectionColors.featuresBackground }}
+        >
             <div className="container-custom">
                 <div className="text-center max-w-3xl mx-auto mb-16">
-                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-6"
-                        style={{ background: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                    <div
+                        className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-6"
+                        style={{ background: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                    >
                         <Quote className="w-8 h-8 text-white" />
                     </div>
 
-                    <h2 className="text-4xl md:text-5xl font-bold mb-6 text-emerald-900 dark:text-emerald-100">
+                    <h2
+                        className="font-bold mb-6"
+                        style={{
+                            fontSize: typography.sectionTitleSize,
+                            color: sectionColors.featuresTitleColor
+                        }}
+                    >
                         <EditableText
                             elementId="a_testimonials_title_1"
                             defaultText="La confianza de"
                             tag="span"
                         />{' '}
-                        <span className="text-transparent bg-clip-text"
-                            style={{ backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                        <span
+                            className="text-transparent bg-clip-text"
+                            style={{ backgroundImage: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                        >
                             <EditableText
                                 elementId="a_testimonials_title_2"
                                 defaultText="nuestros clientes"
@@ -71,14 +84,21 @@ const AccountingTestimonials = () => {
 
                 <div className="grid md:grid-cols-3 gap-8">
                     {testimonials.map((testimonial, index) => (
-                        <div key={index} className="bg-white dark:bg-emerald-900 rounded-2xl p-8 shadow-xl">
+                        <div
+                            key={index}
+                            className="rounded-2xl p-8 shadow-xl"
+                            style={{ backgroundColor: sectionColors.featuresCardBackground }}
+                        >
                             <div className="flex mb-4">
                                 {[...Array(testimonial.rating)].map((_, i) => (
                                     <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
                                 ))}
                             </div>
 
-                            <p className="text-lg text-emerald-800 dark:text-emerald-200 italic mb-6">
+                            <p
+                                className="text-lg italic mb-6"
+                                style={{ color: sectionColors.bodyTextColor }}
+                            >
                                 "<EditableText
                                     elementId={testimonial.contentId}
                                     defaultText={testimonial.contentDefault}
@@ -87,19 +107,27 @@ const AccountingTestimonials = () => {
                             </p>
 
                             <div className="flex items-center">
-                                <div className="w-12 h-12 rounded-full flex items-center justify-center text-2xl"
-                                    style={{ background: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                                <div
+                                    className="w-12 h-12 rounded-full flex items-center justify-center text-2xl"
+                                    style={{ background: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                                >
                                     {testimonial.image}
                                 </div>
                                 <div className="ml-4">
-                                    <h4 className="font-semibold text-emerald-900 dark:text-emerald-100">
+                                    <h4
+                                        className="font-semibold"
+                                        style={{ color: sectionColors.featuresTitleColor }}
+                                    >
                                         <EditableText
                                             elementId={testimonial.nameId}
                                             defaultText={testimonial.nameDefault}
                                             tag="span"
                                         />
                                     </h4>
-                                    <p className="text-sm" style={{ color: colors.primary }}>
+                                    <p
+                                        className="text-sm"
+                                        style={{ color: sectionColors.buttonPrimaryBackground }}
+                                    >
                                         <EditableText
                                             elementId={testimonial.roleId}
                                             defaultText={testimonial.roleDefault}
@@ -113,8 +141,11 @@ const AccountingTestimonials = () => {
                 </div>
 
                 {/* Logos de confianza */}
-                <div className="mt-16 pt-16 border-t" style={{ borderColor: `${colors.primary}30` }}>
-                    <p className="text-center mb-8" style={{ color: colors.primary }}>
+                <div className="mt-16 pt-16 border-t" style={{ borderColor: `${sectionColors.buttonPrimaryBackground}30` }}>
+                    <p
+                        className="text-center mb-8"
+                        style={{ color: sectionColors.buttonPrimaryBackground }}
+                    >
                         <EditableText
                             elementId="a_trust_text"
                             defaultText="Confían en nosotros"
@@ -123,7 +154,11 @@ const AccountingTestimonials = () => {
                     </p>
                     <div className="grid grid-cols-2 md:grid-cols-5 gap-8 opacity-60">
                         {[1, 2, 3, 4, 5].map((i) => (
-                            <div key={i} className="h-12 rounded" style={{ backgroundColor: `${colors.primary}30` }}></div>
+                            <div
+                                key={i}
+                                className="h-12 rounded"
+                                style={{ backgroundColor: `${sectionColors.buttonPrimaryBackground}30` }}
+                            />
                         ))}
                     </div>
                 </div>

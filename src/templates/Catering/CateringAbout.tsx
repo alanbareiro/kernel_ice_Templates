@@ -1,16 +1,16 @@
+// src/templates/Catering/CateringAbout.tsx
 import { Award, Heart, Sparkles, Users } from 'lucide-react';
 import { defaultImages } from '../../assets/default-images';
 import EditableImage from '../../components/Editor/EditableImage';
 import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
+import { defaultSectionColors, defaultTypography } from '../../types/template.types';
 
 const CateringAbout = () => {
     const { template } = useTemplate();
-    const colors = template?.colors || {
-        primary: '#f59e0b',
-        secondary: '#d97706',
-        accent: '#b45309',
-    };
+
+    const sectionColors = template?.sectionColors || defaultSectionColors;
+    const typography = template?.typography || defaultTypography;
 
     const stats = [
         { icon: <Users className="w-6 h-6" />, valueId: 'c_stat_value_1', valueDefault: '500+', labelId: 'c_stat_label_1', labelDefault: 'Eventos realizados' },
@@ -20,14 +20,19 @@ const CateringAbout = () => {
     ];
 
     return (
-        <section className="section-padding bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950 dark:to-orange-950">
+        <section
+            className="section-padding"
+            style={{ backgroundColor: sectionColors.featuresBackground }}
+        >
             <div className="container-custom">
                 <div className="grid lg:grid-cols-2 gap-12 items-center">
                     {/* Contenido */}
                     <div className="space-y-8">
                         <div>
-                            <span className="inline-block px-4 py-2 rounded-full bg-amber-200 dark:bg-amber-800 text-amber-800 dark:text-amber-200 text-sm font-medium mb-4"
-                                style={{ backgroundColor: `${colors.primary}20`, color: colors.primary }}>
+                            <span
+                                className="inline-block px-4 py-2 rounded-full text-sm font-medium mb-4"
+                                style={{ backgroundColor: `${sectionColors.buttonPrimaryBackground}20`, color: sectionColors.buttonPrimaryBackground }}
+                            >
                                 <EditableText
                                     elementId="c_about_badge"
                                     defaultText="Nuestra Historia"
@@ -35,13 +40,22 @@ const CateringAbout = () => {
                                 />
                             </span>
 
-                            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-amber-900 dark:text-amber-100">
+                            <h2
+                                className="font-bold mb-6"
+                                style={{
+                                    fontSize: typography.sectionTitleSize,
+                                    color: sectionColors.featuresTitleColor
+                                }}
+                            >
                                 <EditableText
                                     elementId="c_about_title_1"
                                     defaultText="Pasión por la"
                                     tag="span"
                                 />{' '}
-                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-600">
+                                <span
+                                    className="text-transparent bg-clip-text"
+                                    style={{ backgroundImage: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                                >
                                     <EditableText
                                         elementId="c_about_title_2"
                                         defaultText="buena mesa"
@@ -50,7 +64,10 @@ const CateringAbout = () => {
                                 </span>
                             </h2>
 
-                            <p className="text-lg text-amber-700 dark:text-amber-300 mb-6">
+                            <p
+                                className="text-lg mb-6"
+                                style={{ color: sectionColors.bodyTextColor }}
+                            >
                                 <EditableText
                                     elementId="c_about_desc_1"
                                     defaultText="Desde 2009, nos dedicamos a crear experiencias gastronómicas únicas que combinan la tradición culinaria con las tendencias más innovadoras. Nuestro equipo de chefs y profesionales trabaja con ingredientes frescos y de la más alta calidad."
@@ -58,7 +75,7 @@ const CateringAbout = () => {
                                 />
                             </p>
 
-                            <p className="text-amber-700 dark:text-amber-300">
+                            <p style={{ color: sectionColors.bodyTextColor }}>
                                 <EditableText
                                     elementId="c_about_desc_2"
                                     defaultText="Cada evento es una oportunidad para sorprender y deleitar a tus invitados. Nos adaptamos a tus necesidades, presupuesto y preferencias para crear el menú perfecto que hará de tu celebración algo inolvidable."
@@ -68,21 +85,28 @@ const CateringAbout = () => {
                         </div>
 
                         {/* Estadísticas */}
-                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-8 border-t border-amber-200 dark:border-amber-800">
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-8 border-t"
+                            style={{ borderColor: `${sectionColors.buttonPrimaryBackground}40` }}
+                        >
                             {stats.map((stat, index) => (
                                 <div key={index} className="text-center group">
-                                    <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-amber-200 dark:bg-amber-800 text-amber-600 dark:text-amber-400 mb-3 group-hover:scale-110 group-hover:bg-gradient-to-r group-hover:from-amber-600 group-hover:to-orange-600 group-hover:text-white transition-all duration-300"
-                                        style={{ backgroundColor: `${colors.primary}20`, color: colors.primary }}>
+                                    <div
+                                        className="inline-flex items-center justify-center w-12 h-12 rounded-xl mb-3 group-hover:scale-110 transition-all duration-300"
+                                        style={{ backgroundColor: `${sectionColors.buttonPrimaryBackground}20`, color: sectionColors.buttonPrimaryBackground }}
+                                    >
                                         {stat.icon}
                                     </div>
-                                    <div className="text-2xl font-bold text-amber-900 dark:text-amber-100 group-hover:text-amber-600 transition-colors">
+                                    <div
+                                        className="text-2xl font-bold group-hover:text-amber-600 transition-colors"
+                                        style={{ color: sectionColors.featuresTitleColor }}
+                                    >
                                         <EditableText
                                             elementId={stat.valueId}
                                             defaultText={stat.valueDefault}
                                             tag="span"
                                         />
                                     </div>
-                                    <div className="text-xs text-amber-600 dark:text-amber-400">
+                                    <div className="text-xs" style={{ color: sectionColors.bodyTextColor }}>
                                         <EditableText
                                             elementId={stat.labelId}
                                             defaultText={stat.labelDefault}
@@ -95,15 +119,18 @@ const CateringAbout = () => {
 
                         {/* Valores */}
                         <div className="grid grid-cols-2 gap-4">
-                            <div className="p-4 bg-white dark:bg-amber-900 rounded-xl shadow-md">
-                                <h4 className="font-bold text-amber-900 dark:text-amber-100 mb-2">
+                            <div
+                                className="p-4 rounded-xl shadow-md"
+                                style={{ backgroundColor: sectionColors.featuresCardBackground }}
+                            >
+                                <h4 className="font-bold mb-2" style={{ color: sectionColors.featuresTitleColor }}>
                                     <EditableText
                                         elementId="c_value_1_title"
                                         defaultText="Calidad"
                                         tag="span"
                                     />
                                 </h4>
-                                <p className="text-sm text-amber-700 dark:text-amber-300">
+                                <p className="text-sm" style={{ color: sectionColors.bodyTextColor }}>
                                     <EditableText
                                         elementId="c_value_1_desc"
                                         defaultText="Ingredientes frescos y seleccionados"
@@ -111,15 +138,18 @@ const CateringAbout = () => {
                                     />
                                 </p>
                             </div>
-                            <div className="p-4 bg-white dark:bg-amber-900 rounded-xl shadow-md">
-                                <h4 className="font-bold text-amber-900 dark:text-amber-100 mb-2">
+                            <div
+                                className="p-4 rounded-xl shadow-md"
+                                style={{ backgroundColor: sectionColors.featuresCardBackground }}
+                            >
+                                <h4 className="font-bold mb-2" style={{ color: sectionColors.featuresTitleColor }}>
                                     <EditableText
                                         elementId="c_value_2_title"
                                         defaultText="Creatividad"
                                         tag="span"
                                     />
                                 </h4>
-                                <p className="text-sm text-amber-700 dark:text-amber-300">
+                                <p className="text-sm" style={{ color: sectionColors.bodyTextColor }}>
                                     <EditableText
                                         elementId="c_value_2_desc"
                                         defaultText="Platos únicos y originales"
@@ -132,8 +162,10 @@ const CateringAbout = () => {
 
                     {/* Imagen */}
                     <div className="relative group">
-                        <div className="absolute -inset-4 bg-gradient-to-r from-amber-500 to-orange-500 rounded-3xl opacity-20 group-hover:opacity-30 transition-opacity duration-500 blur-xl"
-                            style={{ background: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }} />
+                        <div
+                            className="absolute -inset-4 rounded-3xl opacity-20 group-hover:opacity-30 transition-opacity duration-500 blur-xl"
+                            style={{ background: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                        />
 
                         <div className="relative z-10 overflow-hidden rounded-2xl shadow-2xl">
                             <EditableImage

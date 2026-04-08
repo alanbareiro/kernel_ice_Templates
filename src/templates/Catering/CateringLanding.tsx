@@ -1,7 +1,7 @@
 import EditModeToggle from '../../components/Editor/EditModeToggle';
 import EditorDashboard from '../../components/Editor/EditorDashboard';
-import { TemplateProvider } from '../../contexts/TemplateContext';
-import { TemplateEditorProvider } from '../../contexts/TemplateEditorContext';
+// import { TemplateProvider } from '../../contexts/TemplateContext';
+// import { TemplateEditorProvider } from '../../contexts/TemplateEditorContext';
 import CateringAbout from './CateringAbout';
 import CateringContact from './CateringContact';
 import CateringFeatures from './CateringFeatures';
@@ -19,8 +19,8 @@ interface CateringLandingProps {
 
 const CateringLanding: React.FC<CateringLandingProps> = ({ onHomeClick }) => {
     return (
-        <TemplateProvider>
-            <TemplateEditorProvider>
+        // <TemplateProvider>
+        //     <TemplateEditorProvider>
                 <div className="min-h-screen flex flex-col">
                     <CateringHeader />
                     <main className="flex-grow">
@@ -36,8 +36,8 @@ const CateringLanding: React.FC<CateringLandingProps> = ({ onHomeClick }) => {
                     <EditorDashboard onHomeClick={onHomeClick} />
                     <EditModeToggle />
                 </div>
-            </TemplateEditorProvider>
-        </TemplateProvider>
+        //     </TemplateEditorProvider>
+        // </TemplateProvider>
     );
 };
 

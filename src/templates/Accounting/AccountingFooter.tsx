@@ -1,3 +1,4 @@
+// src/templates/Accounting/AccountingFooter.tsx
 import {
     Calculator,
     Clock,
@@ -13,14 +14,12 @@ import {
 import ThemeToggle from '../../Theme/ThemeToogle';
 import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
+import { defaultSectionColors } from '../../types/template.types';
 
 const AccountingFooter = () => {
     const { template } = useTemplate();
-    const colors = template?.colors || {
-        primary: '#059669',
-        secondary: '#047857',
-        accent: '#064e3b',
-    };
+
+    const sectionColors = template?.sectionColors || defaultSectionColors;
     const currentYear = new Date().getFullYear();
 
     const socialLinks = [
@@ -52,34 +51,43 @@ const AccountingFooter = () => {
     ];
 
     return (
-        <footer className="text-white"
-            style={{ background: `linear-gradient(135deg, ${colors.accent}, ${colors.secondary})` }}>
+        <footer
+            className="text-white"
+            style={{ background: `linear-gradient(135deg, ${sectionColors.footerBackground}, ${sectionColors.footerBackground})` }}
+        >
             <div className="container-custom px-4 sm:px-6 lg:px-8">
                 {/* Sección principal */}
                 <div className="py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                     {/* Información de la empresa */}
                     <div className="space-y-4">
                         <div className="flex items-center space-x-2">
-                            <div className="w-12 h-12 rounded-lg flex items-center justify-center"
-                                style={{ background: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                            <div
+                                className="w-12 h-12 rounded-lg flex items-center justify-center"
+                                style={{ background: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                            >
                                 <Calculator className="w-6 h-6 text-white" />
                             </div>
                             <h2 className="text-2xl font-bold">
-                                <EditableText
-                                    elementId="a_footer_brand_1"
-                                    defaultText="Kernelize"
-                                    tag="span"
-                                    className="text-emerald-300"
-                                />
-                                <EditableText
-                                    elementId="a_footer_brand_2"
-                                    defaultText="Contadores"
-                                    tag="span"
-                                    className="text-emerald-400 ml-1"
-                                />
+                                <span className="text-emerald-300">
+                                    <EditableText
+                                        elementId="a_footer_brand_1"
+                                        defaultText="Kernelize"
+                                        tag="span"
+                                    />
+                                </span>
+                                <span className="text-emerald-400 ml-1">
+                                    <EditableText
+                                        elementId="a_footer_brand_2"
+                                        defaultText="Contadores"
+                                        tag="span"
+                                    />
+                                </span>
                             </h2>
                         </div>
-                        <p className="text-emerald-200 leading-relaxed">
+                        <p
+                            className="leading-relaxed"
+                            style={{ color: sectionColors.footerTextColor }}
+                        >
                             <EditableText
                                 elementId="a_footer_description"
                                 defaultText="Estudio contable con más de 25 años de experiencia. Brindamos soluciones integrales con la máxima confidencialidad y profesionalismo."
@@ -93,7 +101,11 @@ const AccountingFooter = () => {
                                 <a
                                     key={social.id}
                                     href="#"
-                                    className="p-2 bg-emerald-800 rounded-lg text-emerald-200 hover:bg-emerald-700 hover:text-white transition-all"
+                                    className="p-2 rounded-lg transition-all"
+                                    style={{
+                                        backgroundColor: `${sectionColors.buttonPrimaryBackground}40`,
+                                        color: sectionColors.footerLinkColor
+                                    }}
                                     aria-label={social.label}
                                 >
                                     {social.icon}
@@ -104,7 +116,10 @@ const AccountingFooter = () => {
 
                     {/* Enlaces rápidos */}
                     <div>
-                        <h3 className="text-lg font-semibold text-emerald-300 mb-4">
+                        <h3
+                            className="text-lg font-semibold mb-4"
+                            style={{ color: sectionColors.footerHeadingColor }}
+                        >
                             <EditableText
                                 elementId="a_footer_quick_title"
                                 defaultText="Enlaces Rápidos"
@@ -116,7 +131,8 @@ const AccountingFooter = () => {
                                 <li key={link.id}>
                                     <a
                                         href={link.href}
-                                        className="text-emerald-200 hover:text-white transition-colors"
+                                        className="transition-colors"
+                                        style={{ color: sectionColors.footerLinkColor }}
                                     >
                                         <EditableText
                                             elementId={link.id}
@@ -131,7 +147,10 @@ const AccountingFooter = () => {
 
                     {/* Servicios */}
                     <div>
-                        <h3 className="text-lg font-semibold text-emerald-300 mb-4">
+                        <h3
+                            className="text-lg font-semibold mb-4"
+                            style={{ color: sectionColors.footerHeadingColor }}
+                        >
                             <EditableText
                                 elementId="a_footer_services_title"
                                 defaultText="Servicios"
@@ -141,7 +160,7 @@ const AccountingFooter = () => {
                         <ul className="space-y-2">
                             {services.map((service) => (
                                 <li key={service.id}>
-                                    <span className="text-emerald-200">
+                                    <span style={{ color: sectionColors.footerLinkColor }}>
                                         <EditableText
                                             elementId={service.id}
                                             defaultText={service.label}
@@ -155,7 +174,10 @@ const AccountingFooter = () => {
 
                     {/* Contacto */}
                     <div className="space-y-4">
-                        <h3 className="text-lg font-semibold text-emerald-300 mb-4">
+                        <h3
+                            className="text-lg font-semibold mb-4"
+                            style={{ color: sectionColors.footerHeadingColor }}
+                        >
                             <EditableText
                                 elementId="a_footer_contact_title"
                                 defaultText="Contacto"
@@ -165,8 +187,8 @@ const AccountingFooter = () => {
 
                         <div className="space-y-3">
                             <div className="flex items-start space-x-3">
-                                <MapPin className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
-                                <span className="text-emerald-200">
+                                <MapPin className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: sectionColors.buttonPrimaryBackground }} />
+                                <span style={{ color: sectionColors.footerTextColor }}>
                                     <EditableText
                                         elementId="a_footer_address"
                                         defaultText="Av. Corrientes 1234, CABA"
@@ -175,8 +197,8 @@ const AccountingFooter = () => {
                                 </span>
                             </div>
                             <div className="flex items-start space-x-3">
-                                <Phone className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
-                                <span className="text-emerald-200">
+                                <Phone className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: sectionColors.buttonPrimaryBackground }} />
+                                <span style={{ color: sectionColors.footerTextColor }}>
                                     <EditableText
                                         elementId="a_footer_phone"
                                         defaultText="+54 9 11 6745-7413"
@@ -185,8 +207,8 @@ const AccountingFooter = () => {
                                 </span>
                             </div>
                             <div className="flex items-start space-x-3">
-                                <Mail className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
-                                <span className="text-emerald-200">
+                                <Mail className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: sectionColors.buttonPrimaryBackground }} />
+                                <span style={{ color: sectionColors.footerTextColor }}>
                                     <EditableText
                                         elementId="a_footer_email"
                                         defaultText="contabilidad@kernelize.com"
@@ -195,8 +217,8 @@ const AccountingFooter = () => {
                                 </span>
                             </div>
                             <div className="flex items-start space-x-3">
-                                <Clock className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
-                                <span className="text-emerald-200">
+                                <Clock className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: sectionColors.buttonPrimaryBackground }} />
+                                <span style={{ color: sectionColors.footerTextColor }}>
                                     <EditableText
                                         elementId="a_footer_hours"
                                         defaultText="Lun-Vie 9:00 a 18:00"
@@ -207,9 +229,9 @@ const AccountingFooter = () => {
                         </div>
 
                         {/* Toggle de tema */}
-                        <div className="pt-6 mt-6 border-t" style={{ borderColor: `${colors.primary}40` }}>
+                        <div className="pt-6 mt-6 border-t" style={{ borderColor: `${sectionColors.buttonPrimaryBackground}40` }}>
                             <div className="flex items-center justify-between">
-                                <span className="text-emerald-300">Tema:</span>
+                                <span style={{ color: sectionColors.footerHeadingColor }}>Tema:</span>
                                 <ThemeToggle />
                             </div>
                         </div>
@@ -217,12 +239,12 @@ const AccountingFooter = () => {
                 </div>
 
                 {/* Línea divisoria */}
-                <div className="border-t" style={{ borderColor: `${colors.primary}40` }}></div>
+                <div className="border-t" style={{ borderColor: `${sectionColors.buttonPrimaryBackground}40` }}></div>
 
                 {/* Sección inferior */}
                 <div className="py-8 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
                     <div className="text-center md:text-left">
-                        <p className="text-emerald-200">
+                        <p style={{ color: sectionColors.footerTextColor }}>
                             © {currentYear}{' '}
                             <EditableText
                                 elementId="a_footer_copyright"
@@ -230,7 +252,7 @@ const AccountingFooter = () => {
                                 tag="span"
                             />
                         </p>
-                        <p className="text-sm text-emerald-300 mt-1 flex items-center justify-center md:justify-start">
+                        <p className="text-sm mt-1 flex items-center justify-center md:justify-start" style={{ color: sectionColors.footerLinkColor }}>
                             <EditableText
                                 elementId="a_footer_made_with"
                                 defaultText="Hecho con"
@@ -246,26 +268,29 @@ const AccountingFooter = () => {
                     </div>
 
                     <div className="flex flex-wrap justify-center md:justify-end gap-4">
-                        <a href="#" className="text-sm text-emerald-200 hover:text-white transition-colors">
+                        <a href="#" className="text-sm transition-colors" style={{ color: sectionColors.footerLinkColor }}>
                             <EditableText elementId="a_footer_terms" defaultText="Términos" tag="span" />
                         </a>
-                        <a href="#" className="text-sm text-emerald-200 hover:text-white transition-colors">
+                        <a href="#" className="text-sm transition-colors" style={{ color: sectionColors.footerLinkColor }}>
                             <EditableText elementId="a_footer_privacy" defaultText="Privacidad" tag="span" />
                         </a>
-                        <a href="#" className="text-sm text-emerald-200 hover:text-white transition-colors">
+                        <a href="#" className="text-sm transition-colors" style={{ color: sectionColors.footerLinkColor }}>
                             <EditableText elementId="a_footer_cookies" defaultText="Cookies" tag="span" />
                         </a>
                     </div>
                 </div>
 
                 {/* Certificaciones */}
-                <div className="pb-8 pt-4 border-t" style={{ borderColor: `${colors.primary}40` }}>
+                <div className="pb-8 pt-4 border-t" style={{ borderColor: `${sectionColors.buttonPrimaryBackground}40` }}>
                     <div className="flex flex-wrap items-center justify-center gap-3 text-sm">
                         {certifications.map((cert) => (
                             <span
                                 key={cert.id}
-                                className="px-3 py-1 bg-emerald-800 rounded-full border text-emerald-200"
-                                style={{ borderColor: colors.primary }}
+                                className="px-3 py-1 rounded-full"
+                                style={{
+                                    backgroundColor: `${sectionColors.buttonPrimaryBackground}40`,
+                                    color: sectionColors.footerTextColor
+                                }}
                             >
                                 <EditableText
                                     elementId={cert.id}

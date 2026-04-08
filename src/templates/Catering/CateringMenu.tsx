@@ -1,15 +1,17 @@
+// src/templates/Catering/CateringMenu.tsx
 import { ChevronRight, Clock } from 'lucide-react';
 import { useState } from 'react';
 import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
+import { defaultButtons, defaultSectionColors, defaultTypography } from '../../types/template.types';
 
 const CateringMenu = () => {
     const { template } = useTemplate();
-    const colors = template?.colors || {
-        primary: '#f59e0b',
-        secondary: '#d97706',
-        accent: '#b45309',
-    };
+
+    const sectionColors = template?.sectionColors || defaultSectionColors;
+    const typography = template?.typography || defaultTypography;
+    const buttons = template?.buttons || defaultButtons;
+
     const [activeCategory, setActiveCategory] = useState('entradas');
 
     const categories = [
@@ -139,16 +141,29 @@ const CateringMenu = () => {
     };
 
     return (
-        <section id="menu" className="section-padding bg-gradient-to-br from-amber-100 to-orange-100 dark:from-amber-950 dark:to-orange-950">
+        <section
+            id="menu"
+            className="section-padding"
+            style={{ backgroundColor: sectionColors.featuresBackground }}
+        >
             <div className="container-custom">
                 <div className="text-center max-w-3xl mx-auto mb-16">
-                    <h2 className="text-4xl md:text-5xl font-bold mb-6 text-amber-900 dark:text-amber-100">
+                    <h2
+                        className="font-bold mb-6"
+                        style={{
+                            fontSize: typography.sectionTitleSize,
+                            color: sectionColors.featuresTitleColor
+                        }}
+                    >
                         <EditableText
                             elementId="c_menu_title_1"
                             defaultText="Nuestro"
                             tag="span"
                         />{' '}
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-600">
+                        <span
+                            className="text-transparent bg-clip-text"
+                            style={{ backgroundImage: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                        >
                             <EditableText
                                 elementId="c_menu_title_2"
                                 defaultText="Menú"
@@ -156,7 +171,10 @@ const CateringMenu = () => {
                             />
                         </span>
                     </h2>
-                    <p className="text-xl text-amber-700 dark:text-amber-300">
+                    <p
+                        className="text-xl"
+                        style={{ color: sectionColors.bodyTextColor }}
+                    >
                         <EditableText
                             elementId="c_menu_description"
                             defaultText="Una selección de nuestros platos más destacados. Todos los menús son personalizables según tus preferencias."
@@ -171,11 +189,16 @@ const CateringMenu = () => {
                         <button
                             key={category.id}
                             onClick={() => setActiveCategory(category.id)}
-                            className={`px-6 py-3 rounded-full font-semibold transition-all flex items-center space-x-2 ${activeCategory === category.id
-                                    ? 'text-white shadow-lg scale-105'
-                                    : 'bg-white dark:bg-amber-900 text-amber-700 dark:text-amber-300 hover:bg-amber-100 dark:hover:bg-amber-800'
+                            className={`px-6 py-3 rounded-full font-semibold transition-all flex items-center space-x-2 ${activeCategory === category.id ? 'text-white shadow-lg scale-105' : ''
                                 }`}
-                            style={activeCategory === category.id ? { background: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` } : {}}
+                            style={
+                                activeCategory === category.id
+                                    ? { background: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }
+                                    : {
+                                        backgroundColor: sectionColors.featuresCardBackground,
+                                        color: sectionColors.bodyTextColor
+                                    }
+                            }
                         >
                             <span>{category.icon}</span>
                             <EditableText
@@ -192,19 +215,28 @@ const CateringMenu = () => {
                     {menuItems[activeCategory as keyof typeof menuItems].map((item, index) => (
                         <div
                             key={index}
-                            className="group bg-white dark:bg-amber-900 rounded-2xl p-6 mb-4 shadow-md hover:shadow-xl transition-all hover:scale-[1.02]"
-                            style={{ borderLeft: `4px solid ${colors.primary}` }}
+                            className="group rounded-2xl p-6 mb-4 shadow-md hover:shadow-xl transition-all hover:scale-[1.02]"
+                            style={{
+                                backgroundColor: sectionColors.featuresCardBackground,
+                                borderLeft: `4px solid ${sectionColors.buttonPrimaryBackground}`
+                            }}
                         >
                             <div className="flex justify-between items-start">
                                 <div className="flex-1">
-                                    <h3 className="text-xl font-bold text-amber-900 dark:text-amber-100 mb-2">
+                                    <h3
+                                        className="text-xl font-bold mb-2"
+                                        style={{ color: sectionColors.featuresTitleColor }}
+                                    >
                                         <EditableText
                                             elementId={item.nameId}
                                             defaultText={item.nameDefault}
                                             tag="span"
                                         />
                                     </h3>
-                                    <p className="text-amber-700 dark:text-amber-300 mb-3">
+                                    <p
+                                        className="mb-3"
+                                        style={{ color: sectionColors.bodyTextColor }}
+                                    >
                                         <EditableText
                                             elementId={item.descId}
                                             defaultText={item.descDefault}
@@ -212,22 +244,24 @@ const CateringMenu = () => {
                                         />
                                     </p>
                                     <div className="flex items-center space-x-4 text-sm">
-                                        <span className="flex items-center text-amber-600 dark:text-amber-400">
+                                        <span className="flex items-center" style={{ color: sectionColors.buttonPrimaryBackground }}>
                                             <Clock className="w-4 h-4 mr-1" />
                                             {item.time}
                                         </span>
                                     </div>
                                 </div>
                                 <div className="text-right">
-                                    <span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-600"
-                                        style={{ backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                                    <span
+                                        className="text-2xl font-bold text-transparent bg-clip-text"
+                                        style={{ backgroundImage: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                                    >
                                         <EditableText
                                             elementId={item.priceId}
                                             defaultText={item.priceDefault}
                                             tag="span"
                                         />
                                     </span>
-                                    <p className="text-xs text-amber-500 dark:text-amber-400">por persona</p>
+                                    <p className="text-xs" style={{ color: sectionColors.bodyTextColor }}>por persona</p>
                                 </div>
                             </div>
                         </div>
@@ -236,23 +270,31 @@ const CateringMenu = () => {
 
                 {/* Nota adicional */}
                 <div className="mt-12 text-center">
-                    <p className="text-amber-700 dark:text-amber-300 mb-4">
+                    <p
+                        className="mb-4"
+                        style={{ color: sectionColors.bodyTextColor }}
+                    >
                         <EditableText
                             elementId="c_menu_note"
                             defaultText="¿Tienes requisitos especiales? ¿Alergias o dietas específicas?"
                             tag="span"
                         />
                     </p>
-                    <button
-                        className="inline-flex items-center border-2 text-amber-700 dark:text-amber-300 font-semibold px-8 py-3 rounded-full hover:text-white transition-all"
-                        style={{ borderColor: colors.primary, color: colors.primary }}
+                    <a
+                        href={buttons.primary.url}
+                        target={buttons.primary.openInNewTab ? '_blank' : '_self'}
+                        className="inline-flex items-center border-2 font-semibold px-8 py-3 rounded-full transition-all"
+                        style={{
+                            borderColor: sectionColors.buttonPrimaryBackground,
+                            color: sectionColors.buttonPrimaryBackground
+                        }}
                         onMouseEnter={(e) => {
-                            e.currentTarget.style.backgroundColor = colors.primary;
+                            e.currentTarget.style.backgroundColor = sectionColors.buttonPrimaryBackground;
                             e.currentTarget.style.color = 'white';
                         }}
                         onMouseLeave={(e) => {
                             e.currentTarget.style.backgroundColor = 'transparent';
-                            e.currentTarget.style.color = colors.primary;
+                            e.currentTarget.style.color = sectionColors.buttonPrimaryBackground;
                         }}
                     >
                         <EditableText
@@ -261,7 +303,7 @@ const CateringMenu = () => {
                             tag="span"
                         />
                         <ChevronRight className="ml-2 w-5 h-5" />
-                    </button>
+                    </a>
                 </div>
             </div>
         </section>

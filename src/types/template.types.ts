@@ -1,4 +1,6 @@
-// Tipos para colores personalizables
+// src/types/template.types.ts - VERSIÓN COMPLETA Y CORREGIDA
+
+// Tipos para colores personalizables (versión simple)
 export interface TemplateColors {
     primary: string;
     secondary: string;
@@ -10,29 +12,6 @@ export interface TemplateColors {
 // Textos editables
 export interface EditableTexts {
     [key: string]: string;
-}
-
-// Template completo
-export interface Template {
-    id: string;
-    name: string;
-    type: 'consulting' | 'catering' | 'accounting' | 'restaurant';
-    colors: TemplateColors;
-    texts: EditableTexts;
-    images?: {
-        [key: string]: string;
-    };
-    createdAt: Date;
-    updatedAt: Date;
-    userId?: string;
-    version?: number;
-}
-
-// Tipo para almacenamiento (con fechas como string)
-export interface StoredTemplate extends Omit<Template, 'createdAt' | 'updatedAt'> {
-    createdAt: string;  // ISO string
-    updatedAt: string;  // ISO string
-    lastSaved?: string;
 }
 
 // Configuración de edición
@@ -47,7 +26,117 @@ export interface EditorConfig {
     } | null;
 }
 
-// Presets de colores - 5 para cada template con mejor contraste
+// Colores por sección
+export interface SectionColors {
+    heroBackground: string;
+    heroTitleColor: string;
+    heroDescriptionColor: string;
+    heroBadgeBackground: string;
+    heroBadgeTextColor: string;
+
+    buttonPrimaryBackground: string;
+    buttonPrimaryText: string;
+    buttonPrimaryHoverBackground: string;
+    buttonSecondaryBackground: string;
+    buttonSecondaryText: string;
+    buttonSecondaryHoverBackground: string;
+
+    headerBackground: string;
+    headerTextColor: string;
+    headerLinkColor: string;
+    headerLinkHoverColor: string;
+
+    featuresBackground: string;
+    featuresTitleColor: string;
+    featuresCardBackground: string;
+    featuresCardBorder: string;
+
+    footerBackground: string;
+    footerTextColor: string;
+    footerLinkColor: string;
+    footerHeadingColor: string;
+
+    bodyBackground: string;
+    bodyTextColor: string;
+}
+
+// Configuración de tipografía
+export interface TypographyConfig {
+    heroTitleSize: string;
+    heroDescriptionSize: string;
+    sectionTitleSize: string;
+    bodyTextSize: string;
+    headingFont: string;
+    bodyFont: string;
+    headingWeight: string;
+    bodyWeight: string;
+}
+
+// Configuración de UI
+export interface UIConfig {
+    borderRadius: {
+        small: string;
+        medium: string;
+        large: string;
+        full: string;
+    };
+    boxShadow: {
+        small: string;
+        medium: string;
+        large: string;
+        none: string;
+    };
+    spacing: {
+        sectionPadding: string;
+        elementGap: string;
+    };
+}
+
+// Configuración de botones
+export interface ButtonConfig {
+    primary: {
+        text: string;
+        url: string;
+        openInNewTab: boolean;
+    };
+    secondary: {
+        text: string;
+        url: string;
+        openInNewTab: boolean;
+    };
+    ctaButtons?: Record<string, {
+        text: string;
+        url: string;
+        openInNewTab: boolean;
+    }>;
+}
+
+// Template completo
+export interface Template {
+    id: string;
+    name: string;
+    type: string;
+    colors: TemplateColors;
+    sectionColors: SectionColors;
+    typography: TypographyConfig;
+    ui: UIConfig;
+    buttons: ButtonConfig;
+    texts: Record<string, string>;
+    images?: Record<string, string>;
+    createdAt: Date;
+    updatedAt: Date;
+    userId?: string;
+    version?: number;
+}
+
+// Tipo para almacenamiento
+export interface StoredTemplate extends Omit<Template, 'createdAt' | 'updatedAt'> {
+    createdAt: string;
+    updatedAt: string;
+    lastSaved?: string;
+}
+
+// Presets de colores
 export const colorPresets = {
     consulting: [
         {
@@ -100,16 +189,6 @@ export const colorPresets = {
                 text: '#2e1065'
             }
         },
-        {
-            name: 'Ejecutivo Azul Marino',
-            colors: {
-                primary: '#1e3a8a',
-                secondary: '#1e293b',
-                accent: '#0f172a',
-                background: '#f8fafc',
-                text: '#020617'
-            }
-        }
     ],
     catering: [
         {
@@ -132,36 +211,6 @@ export const colorPresets = {
                 text: '#431407'
             }
         },
-        {
-            name: 'Terracota',
-            colors: {
-                primary: '#b45309',
-                secondary: '#92400e',
-                accent: '#78350f',
-                background: '#fef3c7',
-                text: '#422006'
-            }
-        },
-        {
-            name: 'Mostaza',
-            colors: {
-                primary: '#ca8a04',
-                secondary: '#a16207',
-                accent: '#854d0e',
-                background: '#fef9c3',
-                text: '#3f2e05'
-            }
-        },
-        {
-            name: 'Durazno',
-            colors: {
-                primary: '#f97316',
-                secondary: '#c2410c',
-                accent: '#9a3412',
-                background: '#fff7ed',
-                text: '#2d1b0e'
-            }
-        }
     ],
     accounting: [
         {
@@ -174,46 +223,6 @@ export const colorPresets = {
                 text: '#022c22'
             }
         },
-        {
-            name: 'Sobrio Verde',
-            colors: {
-                primary: '#16a34a',
-                secondary: '#15803d',
-                accent: '#166534',
-                background: '#f0fdf4',
-                text: '#052e16'
-            }
-        },
-        {
-            name: 'Clásico Azul',
-            colors: {
-                primary: '#1e4b8a',
-                secondary: '#1e3a5f',
-                accent: '#0f2b4f',
-                background: '#f5f9ff',
-                text: '#0a1a2f'
-            }
-        },
-        {
-            name: 'Profesional Grafito',
-            colors: {
-                primary: '#2d3c4a',
-                secondary: '#1f2a36',
-                accent: '#141c26',
-                background: '#f8fafc',
-                text: '#0b1119'
-            }
-        },
-        {
-            name: 'Ejecutivo Borgoña',
-            colors: {
-                primary: '#7f1d1d',
-                secondary: '#5c1717',
-                accent: '#3f1010',
-                background: '#fef2f2',
-                text: '#2b0b0b'
-            }
-        }
     ],
     restaurant: [
         {
@@ -226,52 +235,77 @@ export const colorPresets = {
                 text: '#450a0a'
             }
         },
-        {
-            name: 'Elegante Borgoña',
-            colors: {
-                primary: '#9d174d',
-                secondary: '#831843',
-                accent: '#73163e',
-                background: '#fdf2f8',
-                text: '#500724'
-            }
-        },
-        {
-            name: 'Rústico Terracota',
-            colors: {
-                primary: '#b45309',
-                secondary: '#92400e',
-                accent: '#7b3a0b',
-                background: '#fef3c7',
-                text: '#422006'
-            }
-        },
-        {
-            name: 'Mediterráneo',
-            colors: {
-                primary: '#b91c1c',
-                secondary: '#a31515',
-                accent: '#7f1d1d',
-                background: '#fef3f3',
-                text: '#3b0c0c'
-            }
-        },
-        {
-            name: 'Gourmet Oscuro',
-            colors: {
-                primary: '#7f1d1d',
-                secondary: '#5c1717',
-                accent: '#3f1010',
-                background: '#faf5f5',
-                text: '#2b0b0b'
-            }
-        }
     ]
 };
 
-// Tipo para los presets (para type safety)
-export type ColorPreset = typeof colorPresets;
-export type ColorPresetItem = {
-    name: string;
-    colors: TemplateColors;
+// Valores por defecto
+export const defaultSectionColors: SectionColors = {
+    heroBackground: '#f8fafc',
+    heroTitleColor: '#1e293b',
+    heroDescriptionColor: '#475569',
+    heroBadgeBackground: '#2563eb',
+    heroBadgeTextColor: '#ffffff',
+    buttonPrimaryBackground: '#2563eb',
+    buttonPrimaryText: '#ffffff',
+    buttonPrimaryHoverBackground: '#1d4ed8',
+    buttonSecondaryBackground: '#ffffff',
+    buttonSecondaryText: '#1e293b',
+    buttonSecondaryHoverBackground: '#f1f5f9',
+    headerBackground: '#ffffff',
+    headerTextColor: '#1e293b',
+    headerLinkColor: '#475569',
+    headerLinkHoverColor: '#2563eb',
+    featuresBackground: '#ffffff',
+    featuresTitleColor: '#1e293b',
+    featuresCardBackground: '#ffffff',
+    featuresCardBorder: '#e2e8f0',
+    footerBackground: '#0f172a',
+    footerTextColor: '#94a3b8',
+    footerLinkColor: '#cbd5e1',
+    footerHeadingColor: '#ffffff',
+    bodyBackground: '#ffffff',
+    bodyTextColor: '#334155',
+};
+
+export const defaultTypography: TypographyConfig = {
+    heroTitleSize: '3rem',
+    heroDescriptionSize: '1.125rem',
+    sectionTitleSize: '2rem',
+    bodyTextSize: '1rem',
+    headingFont: 'Inter, system-ui, sans-serif',
+    bodyFont: 'Inter, system-ui, sans-serif',
+    headingWeight: '700',
+    bodyWeight: '400',
+};
+
+export const defaultUI: UIConfig = {
+    borderRadius: {
+        small: '0.375rem',
+        medium: '0.5rem',
+        large: '0.75rem',
+        full: '9999px',
+    },
+    boxShadow: {
+        small: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
+        medium: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
+        large: '0 10px 15px -3px rgb(0 0 0 / 0.1)',
+        none: 'none',
+    },
+    spacing: {
+        sectionPadding: '4rem',
+        elementGap: '1.5rem',
+    },
+};
+
+export const defaultButtons: ButtonConfig = {
+    primary: {
+        text: 'Solicitar consultoría',
+        url: '/contacto',
+        openInNewTab: false,
+    },
+    secondary: {
+        text: 'Conocer metodología',
+        url: '#metodologia',
+        openInNewTab: false,
+    },
 };
