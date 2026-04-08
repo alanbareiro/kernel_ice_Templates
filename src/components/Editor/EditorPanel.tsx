@@ -1,3 +1,4 @@
+// src/components/Editor/EditorPanel.tsx - CORREGIDO
 import {
     AlertCircle,
     AlertTriangle,
@@ -34,7 +35,6 @@ interface EditorPanelProps {
 }
 
 export const EditorPanel: React.FC<EditorPanelProps> = ({
-    // onSendEmail,
     onSaveToUser,
     userLoggedIn = false
 }) => {
@@ -49,7 +49,6 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
         canUndo,
         canRedo,
         applyPreset,
-        // editorConfig,
         setEditorConfig
     } = useTemplate();
 
@@ -57,16 +56,8 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
     const [activeTab, setActiveTab] = useState<'colors' | 'texts' | 'images' | 'presets'>('colors');
     const [email, setEmail] = useState('');
     const [showEmailModal, setShowEmailModal] = useState(false);
-    // const [showPresets, setShowPresets] = useState(false);
 
     if (!config.showEditor) return null;
-
-    // const NotificationIcon = {
-    //     success: Check,
-    //     error: AlertCircle,
-    //     warning: AlertTriangle,
-    //     info: Info
-    // };
 
     const handleSendEmail = async () => {
         if (!template || !email) return;
@@ -109,14 +100,14 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
         <>
             {/* Notificaciones */}
             {config.notifications && (
-                <div className={`fixed top-4 left-1/2 transform -translate-x-1/2 z-[60] animate-slideDown`}>
+                <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-[60] animate-slideDown">
                     <div className={`
-            flex items-center space-x-2 px-4 py-3 rounded-lg shadow-lg
-            ${config.notifications.type === 'success' ? 'bg-green-500 text-white' : ''}
-            ${config.notifications.type === 'error' ? 'bg-red-500 text-white' : ''}
-            ${config.notifications.type === 'warning' ? 'bg-yellow-500 text-white' : ''}
-            ${config.notifications.type === 'info' ? 'bg-blue-500 text-white' : ''}
-          `}>
+                        flex items-center space-x-2 px-4 py-3 rounded-lg shadow-lg
+                        ${config.notifications.type === 'success' ? 'bg-green-500 text-white' : ''}
+                        ${config.notifications.type === 'error' ? 'bg-red-500 text-white' : ''}
+                        ${config.notifications.type === 'warning' ? 'bg-yellow-500 text-white' : ''}
+                        ${config.notifications.type === 'info' ? 'bg-blue-500 text-white' : ''}
+                    `}>
                         {config.notifications.type === 'success' && <Check className="w-5 h-5" />}
                         {config.notifications.type === 'error' && <AlertCircle className="w-5 h-5" />}
                         {config.notifications.type === 'warning' && <AlertTriangle className="w-5 h-5" />}
@@ -139,8 +130,8 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
                 <button
                     onClick={toggleEditor}
                     className={`p-3 rounded-full shadow-lg transition-all hover:scale-110 ${config.showEditor
-                        ? 'bg-red-600 hover:bg-red-700'
-                        : 'bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800'
+                            ? 'bg-red-600 hover:bg-red-700'
+                            : 'bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800'
                         } text-white`}
                     title={config.showEditor ? 'Cerrar editor' : 'Abrir editor'}
                 >
@@ -150,8 +141,8 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
                 <button
                     onClick={toggleEditing}
                     className={`p-3 rounded-full shadow-lg transition-all hover:scale-110 ${config.isEditing
-                        ? 'bg-green-600 hover:bg-green-700 ring-4 ring-green-300'
-                        : 'bg-gray-600 hover:bg-gray-700'
+                            ? 'bg-green-600 hover:bg-green-700 ring-4 ring-green-300'
+                            : 'bg-gray-600 hover:bg-gray-700'
                         } text-white`}
                     title={config.isEditing ? 'Modo edición activado' : 'Activar modo edición'}
                 >
@@ -165,8 +156,8 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
                             onClick={undo}
                             disabled={!canUndo}
                             className={`p-3 rounded-full shadow-lg transition-all ${canUndo
-                                ? 'bg-blue-600 hover:bg-blue-700'
-                                : 'bg-gray-400 cursor-not-allowed'
+                                    ? 'bg-blue-600 hover:bg-blue-700'
+                                    : 'bg-gray-400 cursor-not-allowed'
                                 } text-white`}
                             title="Deshacer"
                         >
@@ -176,8 +167,8 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
                             onClick={redo}
                             disabled={!canRedo}
                             className={`p-3 rounded-full shadow-lg transition-all ${canRedo
-                                ? 'bg-blue-600 hover:bg-blue-700'
-                                : 'bg-gray-400 cursor-not-allowed'
+                                    ? 'bg-blue-600 hover:bg-blue-700'
+                                    : 'bg-gray-400 cursor-not-allowed'
                                 } text-white`}
                             title="Rehacer"
                         >
@@ -250,7 +241,7 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
                             <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
                                 Selecciona una combinación de colores predefinida:
                             </p>
-                            {colorPresets[template.type]?.map((preset, index) => (
+                            {colorPresets[template.type as keyof typeof colorPresets]?.map((preset, index) => (
                                 <button
                                     key={index}
                                     onClick={() => applyPreset(preset.name)}
@@ -349,15 +340,12 @@ export const EditorPanel: React.FC<EditorPanelProps> = ({
                         />
                     </div>
 
-                  // Cambiamos la sección de acciones donde está el error:
-
                     {userLoggedIn ? (
                         <ActionButton
                             onClick={() => {
                                 if (onSaveToUser) {
                                     onSaveToUser();
                                 } else {
-                                    // Si no hay función, mostramos notificación
                                     setEditorConfig({
                                         notifications: {
                                             show: true,
@@ -430,8 +418,8 @@ export const TabButton: React.FC<{
     <button
         onClick={onClick}
         className={`flex-1 px-4 py-3 text-sm font-medium transition-colors flex items-center justify-center space-x-2 ${active
-            ? 'text-blue-600 border-b-2 border-blue-600'
-            : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                ? 'text-blue-600 border-b-2 border-blue-600'
+                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
             }`}
     >
         {icon}
