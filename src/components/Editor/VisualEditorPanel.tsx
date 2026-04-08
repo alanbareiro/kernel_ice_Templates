@@ -3,7 +3,6 @@ import {
     ChevronDown, ChevronRight, Eye,
     Layout, Link,
     Palette,
-    Sparkles,
     Type
 } from 'lucide-react';
 import React, { useState } from 'react';
@@ -16,14 +15,14 @@ export const VisualEditorPanel: React.FC = () => {
     const { template, updateSectionColors, updateTypography, updateUI, updateButtons } = useTemplate();
     const [expandedSection, setExpandedSection] = useState<EditorSection>('hero');
 
-    const sections = [
-        { id: 'hero' as EditorSection, label: '🎨 Hero (Sección principal)', icon: Eye },
-        { id: 'buttons' as EditorSection, label: '🔘 Botones', icon: Link },
-        { id: 'header' as EditorSection, label: '📋 Header (Barra superior)', icon: Layout },
-        { id: 'typography' as EditorSection, label: '✏️ Tipografía', icon: Type },
-        { id: 'ui' as EditorSection, label: '🎨 Bordes y sombras', icon: Palette },
-        { id: 'global' as EditorSection, label: '🌍 Configuración global', icon: Sparkles },
-    ];
+    // const sections = [
+    //     { id: 'hero' as EditorSection, label: '🎨 Hero (Sección principal)', icon: Eye },
+    //     { id: 'buttons' as EditorSection, label: '🔘 Botones', icon: Link },
+    //     { id: 'header' as EditorSection, label: '📋 Header (Barra superior)', icon: Layout },
+    //     { id: 'typography' as EditorSection, label: '✏️ Tipografía', icon: Type },
+    //     { id: 'ui' as EditorSection, label: '🎨 Bordes y sombras', icon: Palette },
+    //     { id: 'global' as EditorSection, label: '🌍 Configuración global', icon: Sparkles },
+    // ];
 
     const SectionHeader = ({ section, label, icon: Icon }: { section: EditorSection; label: string; icon: React.ElementType }) => (
         <button
