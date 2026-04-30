@@ -1,15 +1,15 @@
+// src/templates/LawFirm/LawFirmFeatures.tsx
 import { Building2, FileText, Gavel, Scale, Shield, Users } from 'lucide-react';
 import React from 'react';
 import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
+import { defaultSectionColors, defaultTypography } from '../../types/template.types';
 
 const LawFirmFeatures: React.FC = () => {
     const { template } = useTemplate();
-    const colors = template?.colors || {
-        primary: '#7f1d1d',
-        secondary: '#991b1b',
-        accent: '#450a0a',
-    };
+
+    const sectionColors = template?.sectionColors || defaultSectionColors;
+    const typography = template?.typography || defaultTypography;
 
     const features = [
         {
@@ -57,17 +57,28 @@ const LawFirmFeatures: React.FC = () => {
     ];
 
     return (
-        <section className="section-padding bg-white dark:bg-neutral-900">
+        <section
+            className="section-padding"
+            style={{ backgroundColor: sectionColors.featuresBackground }}
+        >
             <div className="container-custom">
                 <div className="text-center max-w-3xl mx-auto mb-16">
-                    <h2 className="text-4xl md:text-5xl font-bold mb-6 text-stone-900 dark:text-stone-100">
+                    <h2
+                        className="font-bold mb-6"
+                        style={{
+                            fontSize: typography.sectionTitleSize,
+                            color: sectionColors.featuresTitleColor
+                        }}
+                    >
                         <EditableText
                             elementId="lf_features_title_1"
                             defaultText="¿Por qué"
                             tag="span"
                         />{' '}
-                        <span className="text-transparent bg-clip-text"
-                            style={{ backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                        <span
+                            className="text-transparent bg-clip-text"
+                            style={{ backgroundImage: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                        >
                             <EditableText
                                 elementId="lf_features_title_2"
                                 defaultText="elegirnos?"
@@ -75,7 +86,10 @@ const LawFirmFeatures: React.FC = () => {
                             />
                         </span>
                     </h2>
-                    <p className="text-xl text-stone-600 dark:text-stone-400">
+                    <p
+                        className="text-xl"
+                        style={{ color: sectionColors.bodyTextColor }}
+                    >
                         <EditableText
                             elementId="lf_features_description"
                             defaultText="Nuestra trayectoria y compromiso nos avalan. Te ofrecemos la mejor defensa legal con ética y profesionalismo."
@@ -86,13 +100,25 @@ const LawFirmFeatures: React.FC = () => {
 
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {features.map((feature, index) => (
-                        <div key={index} className="group p-8 rounded-2xl bg-stone-50 dark:bg-stone-800/50 border border-stone-200 dark:border-stone-700 hover:shadow-xl transition-all duration-300">
-                            <div className="w-16 h-16 rounded-xl mb-6 flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
-                                style={{ backgroundColor: `${colors.primary}15`, color: colors.primary }}>
+                        <div
+                            key={index}
+                            className="group p-8 rounded-2xl border hover:shadow-xl transition-all duration-300"
+                            style={{
+                                backgroundColor: sectionColors.featuresCardBackground,
+                                borderColor: sectionColors.featuresCardBorder
+                            }}
+                        >
+                            <div
+                                className="w-16 h-16 rounded-xl mb-6 flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
+                                style={{ backgroundColor: `${sectionColors.buttonPrimaryBackground}15`, color: sectionColors.buttonPrimaryBackground }}
+                            >
                                 {feature.icon}
                             </div>
 
-                            <h3 className="text-2xl font-bold mb-3 text-stone-900 dark:text-stone-100 group-hover:text-stone-700 transition-colors">
+                            <h3
+                                className="text-2xl font-bold mb-3 transition-colors"
+                                style={{ color: sectionColors.featuresTitleColor }}
+                            >
                                 <EditableText
                                     elementId={feature.titleId}
                                     defaultText={feature.titleDefault}
@@ -100,7 +126,10 @@ const LawFirmFeatures: React.FC = () => {
                                 />
                             </h3>
 
-                            <p className="text-stone-600 dark:text-stone-400 leading-relaxed">
+                            <p
+                                className="leading-relaxed"
+                                style={{ color: sectionColors.bodyTextColor }}
+                            >
                                 <EditableText
                                     elementId={feature.descId}
                                     defaultText={feature.descDefault}

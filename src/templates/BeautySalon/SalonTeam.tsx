@@ -1,17 +1,17 @@
+// src/templates/BeautySalon/SalonTeam.tsx
 import { Instagram } from 'lucide-react';
 import React from 'react';
 import { defaultImages } from '../../assets/default-images';
-import EditableText from '../../components/Editor/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
+import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
+import { defaultSectionColors, defaultTypography } from '../../types/template.types';
 
 const SalonTeam: React.FC = () => {
     const { template } = useTemplate();
-    const colors = template?.colors || {
-        primary: '#db2777',
-        secondary: '#be185d',
-        accent: '#9d174d',
-    };
+
+    const sectionColors = template?.sectionColors || defaultSectionColors;
+    const typography = template?.typography || defaultTypography;
 
     const teamImages = {
         team1: defaultImages.beauty.team1,
@@ -60,17 +60,32 @@ const SalonTeam: React.FC = () => {
     ];
 
     return (
-        <section id="team" className="section-padding bg-pink-50 dark:bg-pink-950">
+        <section
+            id="team"
+            className="section-padding"
+            style={{ backgroundColor: sectionColors.featuresBackground }}
+        >
             <div className="container-custom">
                 <div className="text-center max-w-3xl mx-auto mb-16">
-                    <h2 className="text-4xl md:text-5xl font-bold mb-6 text-pink-900 dark:text-pink-100">
+                    <h2
+                        className="font-bold mb-6"
+                        style={{
+                            fontSize: typography.sectionTitleSize,
+                            color: sectionColors.featuresTitleColor
+                        }}
+                    >
                         <EditableText elementId="sl_team_title_1" defaultText="Nuestras" tag="span" />{' '}
-                        <span className="text-transparent bg-clip-text"
-                            style={{ backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                        <span
+                            className="text-transparent bg-clip-text"
+                            style={{ backgroundImage: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                        >
                             <EditableText elementId="sl_team_title_2" defaultText="profesionales" tag="span" />
                         </span>
                     </h2>
-                    <p className="text-xl text-pink-700 dark:text-pink-300">
+                    <p
+                        className="text-xl"
+                        style={{ color: sectionColors.bodyTextColor }}
+                    >
                         <EditableText elementId="sl_team_description" defaultText="Un equipo apasionado por la belleza y el bienestar." tag="span" />
                     </p>
                 </div>
@@ -78,20 +93,28 @@ const SalonTeam: React.FC = () => {
                 <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
                     {team.map((member) => (
                         <div key={member.id} className="group text-center">
-                            <div className="relative mb-4 mx-auto w-48 h-48 rounded-full overflow-hidden border-4 transition-all group-hover:scale-105 duration-300"
-                                style={{ borderColor: colors.primary }}>
+                            <div
+                                className="relative mb-4 mx-auto w-48 h-48 rounded-full overflow-hidden border-4 transition-all group-hover:scale-105 duration-300"
+                                style={{ borderColor: sectionColors.buttonPrimaryBackground }}
+                            >
                                 <EditableImage elementId={member.imageId} defaultImage={member.defaultImage} alt={member.nameDefault} className="w-full h-full object-cover" category="beauty" />
                             </div>
-                            <h3 className="text-xl font-bold text-pink-900 dark:text-pink-100 mb-1">
+                            <h3
+                                className="text-xl font-bold mb-1"
+                                style={{ color: sectionColors.featuresTitleColor }}
+                            >
                                 <EditableText elementId={member.nameId} defaultText={member.nameDefault} tag="span" />
                             </h3>
-                            <p className="text-sm mb-2" style={{ color: colors.primary }}>
+                            <p className="text-sm mb-2" style={{ color: sectionColors.buttonPrimaryBackground }}>
                                 <EditableText elementId={member.roleId} defaultText={member.roleDefault} tag="span" />
                             </p>
-                            <p className="text-sm text-pink-600 dark:text-pink-400 mb-3">
+                            <p
+                                className="text-sm mb-3"
+                                style={{ color: sectionColors.bodyTextColor }}
+                            >
                                 <EditableText elementId={member.descId} defaultText={member.descDefault} tag="span" />
                             </p>
-                            <a href="#" className="inline-flex items-center text-pink-500 hover:text-pink-700">
+                            <a href="#" className="inline-flex items-center" style={{ color: sectionColors.buttonPrimaryBackground }}>
                                 <Instagram className="w-4 h-4 mr-1" /> {member.instagram}
                             </a>
                         </div>

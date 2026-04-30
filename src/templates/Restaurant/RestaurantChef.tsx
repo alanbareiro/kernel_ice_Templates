@@ -1,25 +1,31 @@
+// src/templates/Restaurant/RestaurantChef.tsx
 import { Award, BookOpen, ChefHat, Instagram, Star } from 'lucide-react';
 import { defaultImages } from '../../assets/default-images';
 import EditableImage from '../../components/Editor/EditableImage';
 import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
+import { defaultSectionColors, defaultTypography } from '../../types/template.types';
 
 const RestaurantChef = () => {
     const { template } = useTemplate();
-    const colors = template?.colors || {
-        primary: '#dc2626',
-        secondary: '#b91c1c',
-        accent: '#7f1d1d',
-    };
+
+    const sectionColors = template?.sectionColors || defaultSectionColors;
+    const typography = template?.typography || defaultTypography;
 
     return (
-        <section id="chef" className="section-padding bg-white dark:bg-neutral-900">
+        <section
+            id="chef"
+            className="section-padding"
+            style={{ backgroundColor: sectionColors.featuresBackground }}
+        >
             <div className="container-custom">
                 <div className="grid lg:grid-cols-2 gap-12 items-center">
                     {/* Imagen del chef */}
                     <div className="relative group order-2 lg:order-1">
-                        <div className="absolute -inset-4 rounded-3xl opacity-20 group-hover:opacity-30 transition-opacity duration-500 blur-xl"
-                            style={{ background: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }} />
+                        <div
+                            className="absolute -inset-4 rounded-3xl opacity-20 group-hover:opacity-30 transition-opacity duration-500 blur-xl"
+                            style={{ background: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                        />
 
                         <div className="relative z-10 overflow-hidden rounded-2xl shadow-2xl">
                             <EditableImage
@@ -48,7 +54,7 @@ const RestaurantChef = () => {
                                         tag="span"
                                     />
                                 </h3>
-                                <p className="text-red-300">
+                                <p style={{ color: sectionColors.buttonPrimaryBackground }}>
                                     <EditableText
                                         elementId="r_chef_title"
                                         defaultText="Chef Ejecutivo"
@@ -59,18 +65,21 @@ const RestaurantChef = () => {
                         </div>
 
                         {/* Logros flotantes */}
-                        <div className="absolute -top-4 -right-4 bg-white dark:bg-red-900 rounded-xl p-4 shadow-xl">
+                        <div
+                            className="absolute -top-4 -right-4 rounded-xl p-4 shadow-xl"
+                            style={{ backgroundColor: sectionColors.featuresCardBackground, border: `1px solid ${sectionColors.buttonPrimaryBackground}` }}
+                        >
                             <div className="flex items-center space-x-3">
                                 <Star className="w-8 h-8 text-yellow-500 fill-yellow-500" />
                                 <div>
-                                    <p className="font-bold text-red-900 dark:text-white">
+                                    <p className="font-bold" style={{ color: sectionColors.featuresTitleColor }}>
                                         <EditableText
                                             elementId="r_chef_michelin"
                                             defaultText="Estrella Michelin"
                                             tag="span"
                                         />
                                     </p>
-                                    <p className="text-xs text-red-600 dark:text-red-300">
+                                    <p className="text-xs" style={{ color: sectionColors.buttonPrimaryBackground }}>
                                         <EditableText
                                             elementId="r_chef_michelin_years"
                                             defaultText="2022 - 2024"
@@ -85,8 +94,10 @@ const RestaurantChef = () => {
                     {/* Contenido */}
                     <div className="space-y-8 order-1 lg:order-2">
                         <div>
-                            <span className="inline-block px-4 py-2 rounded-full text-sm font-medium mb-4"
-                                style={{ backgroundColor: `${colors.primary}15`, color: colors.primary }}>
+                            <span
+                                className="inline-block px-4 py-2 rounded-full text-sm font-medium mb-4"
+                                style={{ backgroundColor: `${sectionColors.buttonPrimaryBackground}15`, color: sectionColors.buttonPrimaryBackground }}
+                            >
                                 <ChefHat className="w-4 h-4 inline mr-1" />
                                 <EditableText
                                     elementId="r_chef_badge"
@@ -95,14 +106,22 @@ const RestaurantChef = () => {
                                 />
                             </span>
 
-                            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-red-900 dark:text-red-100">
+                            <h2
+                                className="font-bold mb-6"
+                                style={{
+                                    fontSize: typography.sectionTitleSize,
+                                    color: sectionColors.featuresTitleColor
+                                }}
+                            >
                                 <EditableText
                                     elementId="r_chef_name_display"
                                     defaultText="Martín Rossi"
                                     tag="span"
                                 />,
-                                <span className="text-transparent bg-clip-text block"
-                                    style={{ backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                                <span
+                                    className="text-transparent bg-clip-text block"
+                                    style={{ backgroundImage: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                                >
                                     <EditableText
                                         elementId="r_chef_subtitle"
                                         defaultText="el arte de cocinar"
@@ -111,7 +130,10 @@ const RestaurantChef = () => {
                                 </span>
                             </h2>
 
-                            <p className="text-lg text-red-700 dark:text-red-300 mb-6">
+                            <p
+                                className="text-lg mb-6"
+                                style={{ color: sectionColors.bodyTextColor }}
+                            >
                                 <EditableText
                                     elementId="r_chef_desc_1"
                                     defaultText="Con más de 20 años de experiencia en cocinas de Argentina, Italia y España, Martín lidera nuestro equipo con la pasión y el respeto por la tradición que aprendió de su abuela piamontesa."
@@ -119,7 +141,7 @@ const RestaurantChef = () => {
                                 />
                             </p>
 
-                            <p className="text-red-700 dark:text-red-300">
+                            <p style={{ color: sectionColors.bodyTextColor }}>
                                 <EditableText
                                     elementId="r_chef_desc_2"
                                     defaultText="Formado en el Instituto Gato Dumas y con paso por restaurantes como 'El Bulli' (España) y 'Don Julio' (Buenos Aires), hoy plasma su conocimiento en cada plato que sale de nuestra cocina, fusionando técnicas vanguardistas con sabores de la nonna."
@@ -129,10 +151,12 @@ const RestaurantChef = () => {
                         </div>
 
                         {/* Filosofía */}
-                        <div className="p-6 rounded-2xl"
-                            style={{ background: `linear-gradient(to right, ${colors.primary}15, ${colors.accent}15)` }}>
-                            <h3 className="text-xl font-bold text-red-900 dark:text-red-100 mb-4">Su filosofía:</h3>
-                            <p className="text-red-700 dark:text-red-300 italic">
+                        <div
+                            className="p-6 rounded-2xl"
+                            style={{ background: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}15, ${sectionColors.buttonPrimaryBackground}15)` }}
+                        >
+                            <h3 className="text-xl font-bold mb-4" style={{ color: sectionColors.featuresTitleColor }}>Su filosofía:</h3>
+                            <p className="italic" style={{ color: sectionColors.bodyTextColor }}>
                                 "<EditableText
                                     elementId="r_chef_philosophy"
                                     defaultText="Cocinar es un acto de amor. Cada ingrediente merece respeto, cada comensal merece una experiencia inolvidable. No busco recetas perfectas, busco emociones en cada bocado."
@@ -144,8 +168,8 @@ const RestaurantChef = () => {
                         {/* Logros */}
                         <div className="grid grid-cols-2 gap-4">
                             <div className="flex items-center space-x-3">
-                                <Award className="w-5 h-5" style={{ color: colors.primary }} />
-                                <span className="text-sm text-red-700 dark:text-red-300">
+                                <Award className="w-5 h-5" style={{ color: sectionColors.buttonPrimaryBackground }} />
+                                <span className="text-sm" style={{ color: sectionColors.bodyTextColor }}>
                                     <EditableText
                                         elementId="r_chef_award_1"
                                         defaultText="15 premios internacionales"
@@ -154,8 +178,8 @@ const RestaurantChef = () => {
                                 </span>
                             </div>
                             <div className="flex items-center space-x-3">
-                                <BookOpen className="w-5 h-5" style={{ color: colors.primary }} />
-                                <span className="text-sm text-red-700 dark:text-red-300">
+                                <BookOpen className="w-5 h-5" style={{ color: sectionColors.buttonPrimaryBackground }} />
+                                <span className="text-sm" style={{ color: sectionColors.bodyTextColor }}>
                                     <EditableText
                                         elementId="r_chef_award_2"
                                         defaultText="2 libros publicados"
@@ -166,10 +190,10 @@ const RestaurantChef = () => {
                         </div>
 
                         {/* Redes del chef */}
-                        <div className="pt-6 border-t" style={{ borderColor: `${colors.primary}30` }}>
-                            <p className="text-sm mb-3" style={{ color: colors.primary }}>Seguí al chef:</p>
+                        <div className="pt-6 border-t" style={{ borderColor: `${sectionColors.buttonPrimaryBackground}30` }}>
+                            <p className="text-sm mb-3" style={{ color: sectionColors.buttonPrimaryBackground }}>Seguí al chef:</p>
                             <div className="flex space-x-4">
-                                <a href="#" className="text-red-700 hover:text-red-900 dark:text-red-300 dark:hover:text-white">
+                                <a href="#" className="transition-colors" style={{ color: sectionColors.bodyTextColor }}>
                                     <Instagram className="w-6 h-6" />
                                 </a>
                             </div>

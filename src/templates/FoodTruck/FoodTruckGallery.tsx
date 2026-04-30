@@ -1,17 +1,18 @@
+// src/templates/FoodTruck/FoodTruckGallery.tsx
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import React, { useState } from 'react';
 import { defaultImages } from '../../assets/default-images';
-import EditableText from '../../components/Editor/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
+import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
+import { defaultSectionColors, defaultTypography } from '../../types/template.types';
 
 const FoodTruckGallery: React.FC = () => {
     const { template } = useTemplate();
-    const colors = template?.colors || {
-        primary: '#e67e22',
-        secondary: '#d35400',
-        accent: '#a04000',
-    };
+
+    const sectionColors = template?.sectionColors || defaultSectionColors;
+    const typography = template?.typography || defaultTypography;
+
     const [selectedImage, setSelectedImage] = useState<number | null>(null);
 
     const galleryImages = {
@@ -38,24 +39,44 @@ const FoodTruckGallery: React.FC = () => {
     const goNext = () => selectedImage !== null && selectedImage < images.length - 1 && setSelectedImage(selectedImage + 1);
 
     return (
-        <section id="gallery" className="section-padding bg-orange-50 dark:bg-orange-950">
+        <section
+            id="gallery"
+            className="section-padding"
+            style={{ backgroundColor: sectionColors.featuresBackground }}
+        >
             <div className="container-custom">
                 <div className="text-center max-w-3xl mx-auto mb-16">
-                    <h2 className="text-4xl md:text-5xl font-bold mb-6 text-orange-900 dark:text-orange-100">
+                    <h2
+                        className="font-bold mb-6"
+                        style={{
+                            fontSize: typography.sectionTitleSize,
+                            color: sectionColors.featuresTitleColor
+                        }}
+                    >
                         <EditableText elementId="ft_gallery_title_1" defaultText="Galería de" tag="span" />{' '}
-                        <span className="text-transparent bg-clip-text"
-                            style={{ backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                        <span
+                            className="text-transparent bg-clip-text"
+                            style={{ backgroundImage: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                        >
                             <EditableText elementId="ft_gallery_title_2" defaultText="sabores" tag="span" />
                         </span>
                     </h2>
-                    <p className="text-xl text-orange-700 dark:text-orange-300">
+                    <p
+                        className="text-xl"
+                        style={{ color: sectionColors.bodyTextColor }}
+                    >
                         <EditableText elementId="ft_gallery_description" defaultText="Momentos de nuestra comida sobre ruedas." tag="span" />
                     </p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {images.map((img, index) => (
-                        <div key={img.id} onClick={() => openLightbox(index)} className="group relative overflow-hidden rounded-2xl cursor-pointer aspect-square">
+                        <div
+                            key={img.id}
+                            onClick={() => openLightbox(index)}
+                            className="group relative overflow-hidden rounded-2xl cursor-pointer aspect-square"
+                            style={{ backgroundColor: sectionColors.featuresCardBackground }}
+                        >
                             <EditableImage
                                 elementId={img.id}
                                 defaultImage={img.defaultImage}
@@ -65,8 +86,12 @@ const FoodTruckGallery: React.FC = () => {
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                                 <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                                    <p className="text-lg font-bold"><EditableText elementId={img.titleId} defaultText={img.titleDefault} tag="span" /></p>
-                                    <p className="text-orange-300 text-sm"><EditableText elementId={img.categoryId} defaultText={img.categoryDefault} tag="span" /></p>
+                                    <p className="text-lg font-bold">
+                                        <EditableText elementId={img.titleId} defaultText={img.titleDefault} tag="span" />
+                                    </p>
+                                    <p className="text-orange-300 text-sm">
+                                        <EditableText elementId={img.categoryId} defaultText={img.categoryDefault} tag="span" />
+                                    </p>
                                 </div>
                             </div>
                         </div>

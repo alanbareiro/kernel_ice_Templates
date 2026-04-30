@@ -1,13 +1,26 @@
-
+// src/templates/FoodTruck/FoodTruckMenu.tsx
 import { Star } from 'lucide-react';
 import React, { useState } from 'react';
 import { defaultImages } from '../../assets/default-images';
-import EditableText from '../../components/Editor/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
+import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
+import { defaultSectionColors, defaultTypography } from '../../types/template.types';
 
 const FoodTruckMenu: React.FC = () => {
     const { template } = useTemplate();
+
+    const sectionColors = template?.sectionColors || defaultSectionColors;
+    const typography = template?.typography || defaultTypography;
+
+    const [activeCategory, setActiveCategory] = useState('burgers');
+
+    const categories = [
+        { id: 'burgers', name: 'Hamburguesas', nameId: 'ft_cat_burgers' },
+        { id: 'tacos', name: 'Tacos', nameId: 'ft_cat_tacos' },
+        { id: 'sides', name: 'Acompañamientos', nameId: 'ft_cat_sides' },
+        { id: 'drinks', name: 'Bebidas', nameId: 'ft_cat_drinks' },
+    ];
 
     const menuImages = {
         burger1: defaultImages.foodtruck.burger1,
@@ -18,20 +31,6 @@ const FoodTruckMenu: React.FC = () => {
         side1: defaultImages.foodtruck.side1,
         drink1: defaultImages.foodtruck.drink1,
     };
-
-    const colors = template?.colors || {
-        primary: '#e67e22',
-        secondary: '#d35400',
-        accent: '#a04000',
-    };
-    const [activeCategory, setActiveCategory] = useState('burgers');
-
-    const categories = [
-        { id: 'burgers', name: 'Hamburguesas', nameId: 'ft_cat_burgers' },
-        { id: 'tacos', name: 'Tacos', nameId: 'ft_cat_tacos' },
-        { id: 'sides', name: 'Acompañamientos', nameId: 'ft_cat_sides' },
-        { id: 'drinks', name: 'Bebidas', nameId: 'ft_cat_drinks' },
-    ];
 
     const menuItems = {
         burgers: [
@@ -58,17 +57,32 @@ const FoodTruckMenu: React.FC = () => {
     };
 
     return (
-        <section id="menu" className="section-padding bg-white dark:bg-neutral-900">
+        <section
+            id="menu"
+            className="section-padding"
+            style={{ backgroundColor: sectionColors.featuresBackground }}
+        >
             <div className="container-custom">
                 <div className="text-center max-w-3xl mx-auto mb-16">
-                    <h2 className="text-4xl md:text-5xl font-bold mb-6 text-orange-900 dark:text-orange-100">
+                    <h2
+                        className="font-bold mb-6"
+                        style={{
+                            fontSize: typography.sectionTitleSize,
+                            color: sectionColors.featuresTitleColor
+                        }}
+                    >
                         <EditableText elementId="ft_menu_title_1" defaultText="Nuestro" tag="span" />{' '}
-                        <span className="text-transparent bg-clip-text"
-                            style={{ backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                        <span
+                            className="text-transparent bg-clip-text"
+                            style={{ backgroundImage: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                        >
                             <EditableText elementId="ft_menu_title_2" defaultText="Menú" tag="span" />
                         </span>
                     </h2>
-                    <p className="text-xl text-orange-700 dark:text-orange-300">
+                    <p
+                        className="text-xl"
+                        style={{ color: sectionColors.bodyTextColor }}
+                    >
                         <EditableText elementId="ft_menu_description" defaultText="Comida callejera gourmet, hecha al momento con ingredientes frescos." tag="span" />
                     </p>
                 </div>
@@ -79,11 +93,16 @@ const FoodTruckMenu: React.FC = () => {
                         <button
                             key={cat.id}
                             onClick={() => setActiveCategory(cat.id)}
-                            className={`px-6 py-3 rounded-full font-semibold transition-all ${activeCategory === cat.id
-                                ? 'text-white shadow-lg'
-                                : 'bg-orange-100 dark:bg-orange-800/50 text-orange-700 dark:text-orange-300 hover:bg-orange-200 dark:hover:bg-orange-700'
+                            className={`px-6 py-3 rounded-full font-semibold transition-all ${activeCategory === cat.id ? 'text-white shadow-lg' : ''
                                 }`}
-                            style={activeCategory === cat.id ? { background: colors.primary } : {}}
+                            style={
+                                activeCategory === cat.id
+                                    ? { background: sectionColors.buttonPrimaryBackground }
+                                    : {
+                                        backgroundColor: sectionColors.featuresCardBackground,
+                                        color: sectionColors.bodyTextColor
+                                    }
+                            }
                         >
                             <EditableText elementId={cat.nameId} defaultText={cat.name} tag="span" />
                         </button>
@@ -93,26 +112,38 @@ const FoodTruckMenu: React.FC = () => {
                 {/* Grid de productos */}
                 <div className="grid md:grid-cols-2 gap-6">
                     {menuItems[activeCategory as keyof typeof menuItems].map((item) => (
-                        <div key={item.id} className="flex bg-orange-50 dark:bg-orange-900/20 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all">
+                        <div
+                            key={item.id}
+                            className="flex rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all"
+                            style={{ backgroundColor: sectionColors.featuresCardBackground }}
+                        >
                             <div className="w-32 h-32 flex-shrink-0">
-                                <EditableImage elementId={item.imageId} defaultImage="" alt={item.nameDefault} className="w-full h-full object-cover" category="foodtruck" />
+                                <EditableImage elementId={item.imageId} defaultImage={item.defaultImage} alt={item.nameDefault} className="w-full h-full object-cover" category="foodtruck" />
                             </div>
                             <div className="flex-1 p-4">
                                 <div className="flex justify-between items-start mb-1">
-                                    <h3 className="text-lg font-bold text-orange-900 dark:text-orange-100">
+                                    <h3
+                                        className="text-lg font-bold"
+                                        style={{ color: sectionColors.featuresTitleColor }}
+                                    >
                                         <EditableText elementId={item.nameId} defaultText={item.nameDefault} tag="span" />
                                     </h3>
-                                    <span className="text-lg font-bold text-transparent bg-clip-text"
-                                        style={{ backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                                    <span
+                                        className="text-lg font-bold text-transparent bg-clip-text"
+                                        style={{ backgroundImage: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                                    >
                                         <EditableText elementId={item.priceId} defaultText={item.priceDefault} tag="span" />
                                     </span>
                                 </div>
-                                <p className="text-sm text-orange-600 dark:text-orange-400 mb-2">
+                                <p
+                                    className="text-sm mb-2"
+                                    style={{ color: sectionColors.bodyTextColor }}
+                                >
                                     <EditableText elementId={item.descId} defaultText={item.descDefault} tag="span" />
                                 </p>
                                 <div className="flex items-center text-sm">
                                     <Star className="w-4 h-4 fill-yellow-400 text-yellow-400 mr-1" />
-                                    <span className="text-orange-700 dark:text-orange-300">{item.rating}</span>
+                                    <span style={{ color: sectionColors.bodyTextColor }}>{item.rating}</span>
                                 </div>
                             </div>
                         </div>

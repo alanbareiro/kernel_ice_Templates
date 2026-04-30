@@ -1,15 +1,15 @@
+// src/templates/RealEstate/RealEstateTestimonials.tsx
 import { Quote, Star } from 'lucide-react';
 import React from 'react';
 import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
+import { defaultSectionColors, defaultTypography } from '../../types/template.types';
 
 const RealEstateTestimonials: React.FC = () => {
     const { template } = useTemplate();
-    const colors = template?.colors || {
-        primary: '#2d6a4f',
-        secondary: '#1e4b3a',
-        accent: '#0d2f24',
-    };
+
+    const sectionColors = template?.sectionColors || defaultSectionColors;
+    const typography = template?.typography || defaultTypography;
 
     const testimonials = [
         {
@@ -39,15 +39,30 @@ const RealEstateTestimonials: React.FC = () => {
     ];
 
     return (
-        <section className="section-padding bg-white dark:bg-neutral-900">
+        <section
+            className="section-padding"
+            style={{ backgroundColor: sectionColors.featuresBackground }}
+        >
             <div className="container-custom">
                 <div className="text-center max-w-3xl mx-auto mb-16">
-                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-6" style={{ background: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                    <div
+                        className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-6"
+                        style={{ background: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                    >
                         <Quote className="w-8 h-8 text-white" />
                     </div>
-                    <h2 className="text-4xl md:text-5xl font-bold mb-6 text-emerald-900 dark:text-emerald-100">
+                    <h2
+                        className="font-bold mb-6"
+                        style={{
+                            fontSize: typography.sectionTitleSize,
+                            color: sectionColors.featuresTitleColor
+                        }}
+                    >
                         <EditableText elementId="re_test_title_1" defaultText="Lo que dicen" tag="span" />{' '}
-                        <span className="text-transparent bg-clip-text" style={{ backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                        <span
+                            className="text-transparent bg-clip-text"
+                            style={{ backgroundImage: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                        >
                             <EditableText elementId="re_test_title_2" defaultText="nuestros clientes" tag="span" />
                         </span>
                     </h2>
@@ -55,16 +70,40 @@ const RealEstateTestimonials: React.FC = () => {
 
                 <div className="grid md:grid-cols-3 gap-8">
                     {testimonials.map((t) => (
-                        <div key={t.id} className="bg-emerald-50 dark:bg-emerald-900/20 rounded-2xl p-8 shadow-lg">
-                            <div className="flex mb-4">{[...Array(t.rating)].map((_, i) => <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />)}</div>
-                            <p className="text-lg text-emerald-800 dark:text-emerald-200 italic mb-6">"<EditableText elementId={t.contentId} defaultText={t.contentDefault} tag="span" />"</p>
+                        <div
+                            key={t.id}
+                            className="rounded-2xl p-8 shadow-lg"
+                            style={{ backgroundColor: sectionColors.featuresCardBackground }}
+                        >
+                            <div className="flex mb-4">
+                                {[...Array(t.rating)].map((_, i) => <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />)}
+                            </div>
+                            <p
+                                className="text-lg italic mb-6"
+                                style={{ color: sectionColors.bodyTextColor }}
+                            >
+                                "<EditableText elementId={t.contentId} defaultText={t.contentDefault} tag="span" />"
+                            </p>
                             <div className="flex items-center">
-                                <div className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold" style={{ background: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                                <div
+                                    className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold"
+                                    style={{ background: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                                >
                                     {t.nameDefault.charAt(0)}
                                 </div>
                                 <div className="ml-4">
-                                    <h4 className="font-semibold text-emerald-900 dark:text-emerald-100"><EditableText elementId={t.nameId} defaultText={t.nameDefault} tag="span" /></h4>
-                                    <p className="text-sm text-emerald-600 dark:text-emerald-400"><EditableText elementId={t.roleId} defaultText={t.roleDefault} tag="span" /></p>
+                                    <h4
+                                        className="font-semibold"
+                                        style={{ color: sectionColors.featuresTitleColor }}
+                                    >
+                                        <EditableText elementId={t.nameId} defaultText={t.nameDefault} tag="span" />
+                                    </h4>
+                                    <p
+                                        className="text-sm"
+                                        style={{ color: sectionColors.bodyTextColor }}
+                                    >
+                                        <EditableText elementId={t.roleId} defaultText={t.roleDefault} tag="span" />
+                                    </p>
                                 </div>
                             </div>
                         </div>

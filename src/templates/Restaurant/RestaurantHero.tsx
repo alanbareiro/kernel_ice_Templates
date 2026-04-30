@@ -1,16 +1,17 @@
+// src/templates/Restaurant/RestaurantHero.tsx
 import { ArrowRight, Clock, MapPin, Star } from 'lucide-react';
 import { defaultImages } from '../../assets/default-images';
 import EditableImage from '../../components/Editor/EditableImage';
 import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
+import { defaultButtons, defaultSectionColors, defaultTypography } from '../../types/template.types';
 
 const RestaurantHero = () => {
     const { template } = useTemplate();
-    const colors = template?.colors || {
-        primary: '#dc2626',
-        secondary: '#b91c1c',
-        accent: '#7f1d1d',
-    };
+
+    const sectionColors = template?.sectionColors || defaultSectionColors;
+    const typography = template?.typography || defaultTypography;
+    const buttons = template?.buttons || defaultButtons;
 
     return (
         <section className="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden">
@@ -41,14 +42,22 @@ const RestaurantHero = () => {
                         </span>
                     </div>
 
-                    <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+                    <h1
+                        className="font-bold mb-6 leading-tight"
+                        style={{
+                            fontSize: typography.heroTitleSize,
+                            color: 'white'
+                        }}
+                    >
                         <EditableText
                             elementId="r_hero_title_1"
                             defaultText="Sabores que"
                             tag="span"
                         />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-red-600 block"
-                            style={{ backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                        <span
+                            className="text-transparent bg-clip-text block"
+                            style={{ backgroundImage: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                        >
                             <EditableText
                                 elementId="r_hero_title_2"
                                 defaultText="enamoran los sentidos"
@@ -57,7 +66,12 @@ const RestaurantHero = () => {
                         </span>
                     </h1>
 
-                    <p className="text-xl md:text-2xl mb-12 text-white/90 max-w-2xl mx-auto">
+                    <p
+                        className="mb-12 text-white/90 max-w-2xl mx-auto"
+                        style={{
+                            fontSize: typography.heroDescriptionSize
+                        }}
+                    >
                         <EditableText
                             elementId="r_hero_description"
                             defaultText="Descubre una experiencia gastronómica única donde la tradición y la innovación se encuentran en cada plato."
@@ -67,30 +81,46 @@ const RestaurantHero = () => {
 
                     {/* Botones CTA */}
                     <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-                        <button
-                            className="group text-white font-semibold px-8 py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center text-lg"
-                            style={{ background: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}
+                        <a
+                            href={buttons.primary.url}
+                            target={buttons.primary.openInNewTab ? '_blank' : '_self'}
+                            className="group font-semibold px-8 py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center text-lg"
+                            style={{
+                                backgroundColor: sectionColors.buttonPrimaryBackground,
+                                color: sectionColors.buttonPrimaryText,
+                            }}
+                            onMouseEnter={(e) => {
+                                e.currentTarget.style.backgroundColor = sectionColors.buttonPrimaryHoverBackground;
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.style.backgroundColor = sectionColors.buttonPrimaryBackground;
+                            }}
                         >
                             <EditableText
                                 elementId="r_cta_primary"
-                                defaultText="Ver nuestro menú"
+                                defaultText={buttons.primary.text}
                                 tag="span"
                             />
                             <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                        </button>
-                        <button className="group bg-transparent border-2 border-white hover:bg-white/10 text-white font-semibold px-8 py-4 rounded-full transition-all duration-300 flex items-center justify-center text-lg">
+                        </a>
+                        <a
+                            href={buttons.secondary.url}
+                            target={buttons.secondary.openInNewTab ? '_blank' : '_self'}
+                            className="group bg-transparent border-2 hover:bg-white/10 font-semibold px-8 py-4 rounded-full transition-all duration-300 flex items-center justify-center text-lg"
+                            style={{ borderColor: 'white', color: 'white' }}
+                        >
                             <EditableText
                                 elementId="r_cta_secondary"
-                                defaultText="Reservar mesa"
+                                defaultText={buttons.secondary.text}
                                 tag="span"
                             />
-                        </button>
+                        </a>
                     </div>
 
                     {/* Info adicional */}
                     <div className="flex flex-wrap justify-center gap-8 text-white/80">
                         <div className="flex items-center">
-                            <Clock className="w-5 h-5 mr-2" style={{ color: colors.primary }} />
+                            <Clock className="w-5 h-5 mr-2" style={{ color: sectionColors.buttonPrimaryBackground }} />
                             <span>
                                 <EditableText
                                     elementId="r_hero_hours"
@@ -100,7 +130,7 @@ const RestaurantHero = () => {
                             </span>
                         </div>
                         <div className="flex items-center">
-                            <MapPin className="w-5 h-5 mr-2" style={{ color: colors.primary }} />
+                            <MapPin className="w-5 h-5 mr-2" style={{ color: sectionColors.buttonPrimaryBackground }} />
                             <span>
                                 <EditableText
                                     elementId="r_hero_location"

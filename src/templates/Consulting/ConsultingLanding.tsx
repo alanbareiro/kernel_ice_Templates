@@ -1,7 +1,7 @@
-import EditModeToggle from '../../components/Editor/EditModeToggle';
+import { useLayoutEffect, useRef } from 'react';
 import EditorDashboard from '../../components/Editor/EditorDashboard';
-// import { TemplateProvider } from '../../contexts/TemplateContext';
-// import { TemplateEditorProvider } from '../../contexts/TemplateEditorContext';
+import { useTemplate } from '../../contexts/TemplateContext';
+import { defaultTypography } from '../../types/template.types';
 import ConsultingAbout from './ConsultingAbout';
 import ConsultingContact from './ConsultingContact';
 import ConsultingFeatures from './ConsultingFeatures';
@@ -10,31 +10,45 @@ import ConsultingHeader from './ConsultingHeader';
 import ConsultingHero from './ConsultingHero';
 import ConsultingTestimonials from './ConsultingTestimonials';
 
-// En ConsultingLanding.tsx
 interface ConsultingLandingProps {
     onHomeClick?: () => void;
 }
 
 const ConsultingLanding: React.FC<ConsultingLandingProps> = ({ onHomeClick }) => {
-    console.log('🏠 ConsultingLanding renderizado, onHomeClick:', onHomeClick);
+    const { template } = useTemplate();
+    const typography = template?.typography || defaultTypography;
+    const rootRef = useRef<HTMLDivElement>(null);
+
+    useLayoutEffect(() => {
+        if (rootRef.current) {
+            rootRef.current.style.setProperty('--font-heading', typography.headingFont);
+            rootRef.current.style.setProperty('--font-body', typography.bodyFont);
+        }
+    }, [typography]);
+
     return (
-        // <TemplateProvider>
-        //     <TemplateEditorProvider>
-        <div className="min-h-screen flex flex-col">
-            <ConsultingHeader />
-            <main className="flex-grow">
-                <ConsultingHero />
-                <ConsultingFeatures />
-                <ConsultingAbout />
-                <ConsultingTestimonials />
-                <ConsultingContact />
-            </main>
-            <ConsultingFooter />
+        <div className="min-h-screen flex">
             <EditorDashboard onHomeClick={onHomeClick} />
-            <EditModeToggle />
+            <div
+                ref={rootRef}
+                id="template-root"
+                className="flex-1 flex flex-col"
+                style={{
+                    '--font-heading': typography.headingFont,
+                    '--font-body': typography.bodyFont,
+                } as React.CSSProperties}
+            >
+                <ConsultingHeader />
+                <main className="flex-grow">
+                    <ConsultingHero />
+                    <ConsultingFeatures />
+                    <ConsultingAbout />
+                    <ConsultingTestimonials />
+                    <ConsultingContact />
+                </main>
+                <ConsultingFooter />
+            </div>
         </div>
-        //     </TemplateEditorProvider>
-        // </TemplateProvider>
     );
 };
 

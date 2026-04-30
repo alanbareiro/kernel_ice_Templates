@@ -1,16 +1,15 @@
-
+// src/templates/FoodTruck/FoodTruckSchedule.tsx
 import { Clock, MapPin } from 'lucide-react';
 import React from 'react';
 import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
+import { defaultSectionColors, defaultTypography } from '../../types/template.types';
 
 const FoodTruckSchedule: React.FC = () => {
     const { template } = useTemplate();
-    const colors = template?.colors || {
-        primary: '#e67e22',
-        secondary: '#d35400',
-        accent: '#a04000',
-    };
+
+    const sectionColors = template?.sectionColors || defaultSectionColors;
+    const typography = template?.typography || defaultTypography;
 
     const schedule = [
         { id: 'sched_1', day: 'Lunes', dayId: 'ft_sched_1_day', dayDefault: 'Lunes', timeId: 'ft_sched_1_time', timeDefault: '12:00 - 15:30 / 18:00 - 23:00', locationId: 'ft_sched_1_loc', locationDefault: 'Plaza San Martín' },
@@ -23,34 +22,53 @@ const FoodTruckSchedule: React.FC = () => {
     ];
 
     return (
-        <section className="section-padding bg-white dark:bg-neutral-900">
+        <section
+            className="section-padding"
+            style={{ backgroundColor: sectionColors.featuresBackground }}
+        >
             <div className="container-custom">
                 <div className="text-center max-w-3xl mx-auto mb-16">
-                    <h2 className="text-4xl md:text-5xl font-bold mb-6 text-orange-900 dark:text-orange-100">
+                    <h2
+                        className="font-bold mb-6"
+                        style={{
+                            fontSize: typography.sectionTitleSize,
+                            color: sectionColors.featuresTitleColor
+                        }}
+                    >
                         <EditableText elementId="ft_schedule_title_1" defaultText="Horarios y" tag="span" />{' '}
-                        <span className="text-transparent bg-clip-text"
-                            style={{ backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                        <span
+                            className="text-transparent bg-clip-text"
+                            style={{ backgroundImage: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                        >
                             <EditableText elementId="ft_schedule_title_2" defaultText="ubicaciones" tag="span" />
                         </span>
                     </h2>
-                    <p className="text-xl text-orange-700 dark:text-orange-300">
+                    <p
+                        className="text-xl"
+                        style={{ color: sectionColors.bodyTextColor }}
+                    >
                         <EditableText elementId="ft_schedule_description" defaultText="Nuestra agenda semanal. Siempre estamos en movimiento." tag="span" />
                     </p>
                 </div>
 
                 <div className="max-w-4xl mx-auto">
                     {schedule.map((item, index) => (
-                        <div key={item.id} className={`flex items-center p-4 ${index % 2 === 0 ? 'bg-orange-50 dark:bg-orange-900/10' : ''} rounded-lg`}>
-                            <div className="w-24 font-bold text-orange-900 dark:text-orange-100">
+                        <div
+                            key={item.id}
+                            className={`flex items-center p-4 rounded-lg ${index % 2 === 0 ? '' : ''
+                                }`}
+                            style={index % 2 === 0 ? { backgroundColor: `${sectionColors.buttonPrimaryBackground}08` } : {}}
+                        >
+                            <div className="w-24 font-bold" style={{ color: sectionColors.featuresTitleColor }}>
                                 <EditableText elementId={item.dayId} defaultText={item.dayDefault} tag="span" />
                             </div>
-                            <div className="flex-1 flex items-center">
-                                <Clock className="w-4 h-4 mr-2" style={{ color: colors.primary }} />
-                                <span className="text-orange-700 dark:text-orange-300 mr-4">
+                            <div className="flex-1 flex items-center flex-wrap gap-2">
+                                <Clock className="w-4 h-4" style={{ color: sectionColors.buttonPrimaryBackground }} />
+                                <span className="mr-4" style={{ color: sectionColors.bodyTextColor }}>
                                     <EditableText elementId={item.timeId} defaultText={item.timeDefault} tag="span" />
                                 </span>
-                                <MapPin className="w-4 h-4 mr-2" style={{ color: colors.primary }} />
-                                <span className="text-orange-700 dark:text-orange-300">
+                                <MapPin className="w-4 h-4" style={{ color: sectionColors.buttonPrimaryBackground }} />
+                                <span style={{ color: sectionColors.bodyTextColor }}>
                                     <EditableText elementId={item.locationId} defaultText={item.locationDefault} tag="span" />
                                 </span>
                             </div>

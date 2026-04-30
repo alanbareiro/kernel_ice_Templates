@@ -1,15 +1,16 @@
+// src/templates/SaaS/SaaSFAQ.tsx
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import React, { useState } from 'react';
 import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
+import { defaultSectionColors, defaultTypography } from '../../types/template.types';
 
 const SaaSFAQ: React.FC = () => {
     const { template } = useTemplate();
-    const colors = template?.colors || {
-        primary: '#7c3aed',
-        secondary: '#6d28d9',
-        accent: '#5b21b6',
-    };
+
+    const sectionColors = template?.sectionColors || defaultSectionColors;
+    const typography = template?.typography || defaultTypography;
+
     const [openIndex, setOpenIndex] = useState<number | null>(0);
 
     const faqs = [
@@ -41,13 +42,24 @@ const SaaSFAQ: React.FC = () => {
     ];
 
     return (
-        <section className="section-padding bg-violet-50 dark:bg-violet-950">
+        <section
+            className="section-padding"
+            style={{ backgroundColor: sectionColors.featuresBackground }}
+        >
             <div className="container-custom">
                 <div className="text-center max-w-3xl mx-auto mb-16">
-                    <h2 className="text-4xl md:text-5xl font-bold mb-6 text-violet-900 dark:text-violet-100">
+                    <h2
+                        className="font-bold mb-6"
+                        style={{
+                            fontSize: typography.sectionTitleSize,
+                            color: sectionColors.featuresTitleColor
+                        }}
+                    >
                         <EditableText elementId="sa_faq_title_1" defaultText="Preguntas" tag="span" />{' '}
-                        <span className="text-transparent bg-clip-text"
-                            style={{ backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                        <span
+                            className="text-transparent bg-clip-text"
+                            style={{ backgroundImage: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                        >
                             <EditableText elementId="sa_faq_title_2" defaultText="frecuentes" tag="span" />
                         </span>
                     </h2>
@@ -55,19 +67,20 @@ const SaaSFAQ: React.FC = () => {
 
                 <div className="max-w-3xl mx-auto">
                     {faqs.map((faq, index) => (
-                        <div key={faq.id} className="mb-4 border border-violet-200 dark:border-violet-800 rounded-lg overflow-hidden">
+                        <div key={faq.id} className="mb-4 border rounded-lg overflow-hidden" style={{ borderColor: `${sectionColors.buttonPrimaryBackground}30` }}>
                             <button
                                 onClick={() => setOpenIndex(openIndex === index ? null : index)}
-                                className="w-full px-6 py-4 flex items-center justify-between bg-white dark:bg-violet-900/30 hover:bg-violet-50 dark:hover:bg-violet-900/50 transition-colors text-left"
+                                className="w-full px-6 py-4 flex items-center justify-between transition-colors text-left"
+                                style={{ backgroundColor: sectionColors.featuresCardBackground }}
                             >
-                                <span className="font-semibold text-violet-900 dark:text-violet-100">
+                                <span className="font-semibold" style={{ color: sectionColors.featuresTitleColor }}>
                                     <EditableText elementId={faq.questionId} defaultText={faq.questionDefault} tag="span" />
                                 </span>
-                                {openIndex === index ? <ChevronUp className="w-5 h-5" style={{ color: colors.primary }} /> : <ChevronDown className="w-5 h-5" style={{ color: colors.primary }} />}
+                                {openIndex === index ? <ChevronUp className="w-5 h-5" style={{ color: sectionColors.buttonPrimaryBackground }} /> : <ChevronDown className="w-5 h-5" style={{ color: sectionColors.buttonPrimaryBackground }} />}
                             </button>
                             {openIndex === index && (
-                                <div className="px-6 py-4 bg-white dark:bg-violet-900/10 border-t border-violet-200 dark:border-violet-800">
-                                    <p className="text-violet-700 dark:text-violet-300">
+                                <div className="px-6 py-4 border-t" style={{ backgroundColor: `${sectionColors.buttonPrimaryBackground}05`, borderColor: `${sectionColors.buttonPrimaryBackground}30` }}>
+                                    <p style={{ color: sectionColors.bodyTextColor }}>
                                         <EditableText elementId={faq.answerId} defaultText={faq.answerDefault} tag="span" />
                                     </p>
                                 </div>

@@ -1,15 +1,16 @@
+// src/templates/CoffeeShop/CoffeeMenu.tsx
 import { Cake, Clock, Coffee, CupSoda, Sandwich } from 'lucide-react';
 import React, { useState } from 'react';
 import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
+import { defaultSectionColors, defaultTypography } from '../../types/template.types';
 
 const CoffeeMenu: React.FC = () => {
     const { template } = useTemplate();
-    const colors = template?.colors || {
-        primary: '#b45309',
-        secondary: '#92400e',
-        accent: '#78350f',
-    };
+
+    const sectionColors = template?.sectionColors || defaultSectionColors;
+    const typography = template?.typography || defaultTypography;
+
     const [activeCategory, setActiveCategory] = useState('coffee');
 
     const categories = [
@@ -49,17 +50,29 @@ const CoffeeMenu: React.FC = () => {
     };
 
     return (
-        <section id="menu" className="section-padding bg-white dark:bg-neutral-900">
+        <section
+            id="menu"
+            className="section-padding"
+            style={{ backgroundColor: sectionColors.featuresBackground }}
+        >
             <div className="container-custom">
                 <div className="text-center max-w-3xl mx-auto mb-16">
-                    <h2 className="text-4xl md:text-5xl font-bold mb-6 text-amber-900 dark:text-amber-100">
+                    <h2
+                        className="font-bold mb-6"
+                        style={{
+                            fontSize: typography.sectionTitleSize,
+                            color: sectionColors.featuresTitleColor
+                        }}
+                    >
                         <EditableText
                             elementId="cf_menu_title_1"
                             defaultText="Nuestro"
                             tag="span"
                         />{' '}
-                        <span className="text-transparent bg-clip-text"
-                            style={{ backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                        <span
+                            className="text-transparent bg-clip-text"
+                            style={{ backgroundImage: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                        >
                             <EditableText
                                 elementId="cf_menu_title_2"
                                 defaultText="Menú"
@@ -67,7 +80,10 @@ const CoffeeMenu: React.FC = () => {
                             />
                         </span>
                     </h2>
-                    <p className="text-xl text-amber-700 dark:text-amber-300">
+                    <p
+                        className="text-xl"
+                        style={{ color: sectionColors.bodyTextColor }}
+                    >
                         <EditableText
                             elementId="cf_menu_description"
                             defaultText="Selección de cafés, bebidas, comidas y postres para disfrutar en cualquier momento."
@@ -76,17 +92,21 @@ const CoffeeMenu: React.FC = () => {
                     </p>
                 </div>
 
-                {/* Categorías */}
                 <div className="flex flex-wrap justify-center gap-4 mb-12">
                     {categories.map((cat) => (
                         <button
                             key={cat.id}
                             onClick={() => setActiveCategory(cat.id)}
-                            className={`px-6 py-3 rounded-full font-semibold transition-all flex items-center space-x-2 ${activeCategory === cat.id
-                                    ? 'text-white shadow-lg'
-                                    : 'bg-amber-100 dark:bg-amber-800/50 text-amber-700 dark:text-amber-300 hover:bg-amber-200 dark:hover:bg-amber-700'
+                            className={`px-6 py-3 rounded-full font-semibold transition-all flex items-center space-x-2 ${activeCategory === cat.id ? 'text-white shadow-lg' : ''
                                 }`}
-                            style={activeCategory === cat.id ? { background: colors.primary } : {}}
+                            style={
+                                activeCategory === cat.id
+                                    ? { background: sectionColors.buttonPrimaryBackground }
+                                    : {
+                                        backgroundColor: sectionColors.featuresCardBackground,
+                                        color: sectionColors.bodyTextColor
+                                    }
+                            }
                         >
                             <span>{cat.icon}</span>
                             <EditableText elementId={cat.nameId} defaultText={cat.name} tag="span" />
@@ -94,26 +114,37 @@ const CoffeeMenu: React.FC = () => {
                     ))}
                 </div>
 
-                {/* Items del menú */}
                 <div className="max-w-4xl mx-auto">
                     {menuItems[activeCategory as keyof typeof menuItems].map((item) => (
-                        <div key={item.id} className="group p-6 mb-4 bg-amber-50 dark:bg-amber-900/20 rounded-2xl hover:shadow-xl transition-all">
+                        <div
+                            key={item.id}
+                            className="group p-6 mb-4 rounded-2xl hover:shadow-xl transition-all"
+                            style={{ backgroundColor: sectionColors.featuresCardBackground }}
+                        >
                             <div className="flex justify-between items-start">
                                 <div className="flex-1">
-                                    <h3 className="text-xl font-bold text-amber-900 dark:text-amber-100 mb-2">
+                                    <h3
+                                        className="text-xl font-bold mb-2"
+                                        style={{ color: sectionColors.featuresTitleColor }}
+                                    >
                                         <EditableText elementId={item.nameId} defaultText={item.nameDefault} tag="span" />
                                     </h3>
-                                    <p className="text-amber-700 dark:text-amber-300 mb-2">
+                                    <p
+                                        className="mb-2"
+                                        style={{ color: sectionColors.bodyTextColor }}
+                                    >
                                         <EditableText elementId={item.descId} defaultText={item.descDefault} tag="span" />
                                     </p>
-                                    <div className="flex items-center text-sm text-amber-500">
+                                    <div className="flex items-center text-sm" style={{ color: sectionColors.buttonPrimaryBackground }}>
                                         <Clock className="w-4 h-4 mr-1" />
                                         <span>10-15 min</span>
                                     </div>
                                 </div>
                                 <div className="text-right ml-4">
-                                    <span className="text-2xl font-bold text-transparent bg-clip-text"
-                                        style={{ backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                                    <span
+                                        className="text-2xl font-bold text-transparent bg-clip-text"
+                                        style={{ backgroundImage: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                                    >
                                         <EditableText elementId={item.priceId} defaultText={item.priceDefault} tag="span" />
                                     </span>
                                 </div>

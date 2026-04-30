@@ -1,17 +1,17 @@
+// src/templates/MarketingAgency/AgencyTeam.tsx
 import { Linkedin, Mail } from 'lucide-react';
 import React from 'react';
 import { defaultImages } from '../../assets/default-images';
-import EditableText from '../../components/Editor/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
+import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
+import { defaultSectionColors, defaultTypography } from '../../types/template.types';
 
 const AgencyTeam: React.FC = () => {
     const { template } = useTemplate();
-    const colors = template?.colors || {
-        primary: '#c026d3',
-        secondary: '#a21caf',
-        accent: '#86198f',
-    };
+
+    const sectionColors = template?.sectionColors || defaultSectionColors;
+    const typography = template?.typography || defaultTypography;
 
     const teamImages = {
         team1: defaultImages.marketing.team1,
@@ -72,17 +72,29 @@ const AgencyTeam: React.FC = () => {
     ];
 
     return (
-        <section id="team" className="section-padding bg-purple-50 dark:bg-purple-950">
+        <section
+            id="team"
+            className="section-padding"
+            style={{ backgroundColor: sectionColors.featuresBackground }}
+        >
             <div className="container-custom">
                 <div className="text-center max-w-3xl mx-auto mb-16">
-                    <h2 className="text-4xl md:text-5xl font-bold mb-6 text-purple-900 dark:text-purple-100">
+                    <h2
+                        className="font-bold mb-6"
+                        style={{
+                            fontSize: typography.sectionTitleSize,
+                            color: sectionColors.featuresTitleColor
+                        }}
+                    >
                         <EditableText
                             elementId="ag_team_title_1"
                             defaultText="Nuestro"
                             tag="span"
                         />{' '}
-                        <span className="text-transparent bg-clip-text"
-                            style={{ backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                        <span
+                            className="text-transparent bg-clip-text"
+                            style={{ backgroundImage: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                        >
                             <EditableText
                                 elementId="ag_team_title_2"
                                 defaultText="Equipo"
@@ -90,7 +102,10 @@ const AgencyTeam: React.FC = () => {
                             />
                         </span>
                     </h2>
-                    <p className="text-xl text-purple-700 dark:text-purple-300">
+                    <p
+                        className="text-xl"
+                        style={{ color: sectionColors.bodyTextColor }}
+                    >
                         <EditableText
                             elementId="ag_team_description"
                             defaultText="Profesionales apasionados por el marketing digital."
@@ -102,8 +117,10 @@ const AgencyTeam: React.FC = () => {
                 <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
                     {team.map((member) => (
                         <div key={member.id} className="group text-center">
-                            <div className="relative mb-4 mx-auto w-48 h-48 rounded-full overflow-hidden border-4 transition-all group-hover:scale-105 duration-300"
-                                style={{ borderColor: colors.primary }}>
+                            <div
+                                className="relative mb-4 mx-auto w-48 h-48 rounded-full overflow-hidden border-4 transition-all group-hover:scale-105 duration-300"
+                                style={{ borderColor: sectionColors.buttonPrimaryBackground }}
+                            >
                                 <EditableImage
                                     elementId={member.imageId}
                                     defaultImage={member.defaultImage}
@@ -112,21 +129,27 @@ const AgencyTeam: React.FC = () => {
                                     category="marketing"
                                 />
                             </div>
-                            <h3 className="text-xl font-bold text-purple-900 dark:text-purple-100 mb-1">
+                            <h3
+                                className="text-xl font-bold mb-1"
+                                style={{ color: sectionColors.featuresTitleColor }}
+                            >
                                 <EditableText
                                     elementId={member.nameId}
                                     defaultText={member.nameDefault}
                                     tag="span"
                                 />
                             </h3>
-                            <p className="text-sm mb-2" style={{ color: colors.primary }}>
+                            <p className="text-sm mb-2" style={{ color: sectionColors.buttonPrimaryBackground }}>
                                 <EditableText
                                     elementId={member.roleId}
                                     defaultText={member.roleDefault}
                                     tag="span"
                                 />
                             </p>
-                            <p className="text-sm text-purple-600 dark:text-purple-400 mb-3">
+                            <p
+                                className="text-sm mb-3"
+                                style={{ color: sectionColors.bodyTextColor }}
+                            >
                                 <EditableText
                                     elementId={member.descId}
                                     defaultText={member.descDefault}
@@ -134,10 +157,10 @@ const AgencyTeam: React.FC = () => {
                                 />
                             </p>
                             <div className="flex items-center justify-center space-x-3">
-                                <a href={`mailto:${member.email}`} className="text-purple-500 hover:text-purple-700 transition-colors">
+                                <a href={`mailto:${member.email}`} className="transition-colors" style={{ color: sectionColors.bodyTextColor }}>
                                     <Mail className="w-4 h-4" />
                                 </a>
-                                <a href="#" className="text-purple-500 hover:text-purple-700 transition-colors">
+                                <a href="#" className="transition-colors" style={{ color: sectionColors.bodyTextColor }}>
                                     <Linkedin className="w-4 h-4" />
                                 </a>
                             </div>

@@ -1,24 +1,20 @@
+// src/templates/FoodTruck/FoodTruckHeader.tsx
 import { Menu, X } from 'lucide-react';
 import React, { useState } from 'react';
 import { defaultImages } from '../../assets/default-images';
-import EditableText from '../../components/Editor/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
+import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
 import { useTemplateEditor } from '../../contexts/TemplateEditorContext';
 import ThemeToggle from '../../Theme/ThemeToogle';
+import { defaultSectionColors } from '../../types/template.types';
 
 const FoodTruckHeader: React.FC = () => {
     const { template } = useTemplate();
     const { config } = useTemplateEditor();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-    const colors = template?.colors || {
-        primary: '#e67e22',
-        secondary: '#d35400',
-        accent: '#a04000',
-        background: '#fef9e7',
-        text: '#5d3a1a'
-    };
+    const sectionColors = template?.sectionColors || defaultSectionColors;
 
     const navItems = [
         { id: 'ft_nav_home', label: 'Inicio', href: '#home', visible: true },
@@ -44,7 +40,13 @@ const FoodTruckHeader: React.FC = () => {
     };
 
     return (
-        <header className="sticky top-0 z-50 bg-white/95 dark:bg-orange-950/95 backdrop-blur-md border-b border-orange-200 dark:border-orange-800">
+        <header
+            className="sticky top-0 z-50 backdrop-blur-md border-b"
+            style={{
+                backgroundColor: `${sectionColors.headerBackground}cc`,
+                borderColor: sectionColors.featuresCardBorder
+            }}
+        >
             <div className="container-custom px-6 py-4">
                 <div className="flex items-center justify-between">
                     {/* Logo editable */}
@@ -59,19 +61,26 @@ const FoodTruckHeader: React.FC = () => {
                             />
                         </div>
                         <div>
-                            <EditableText
-                                elementId="ft_header_brand_1"
-                                defaultText="Kernelize"
-                                tag="span"
-                                className="text-2xl font-bold text-orange-800 dark:text-orange-200"
-                            />
-                            <EditableText
-                                elementId="ft_header_brand_2"
-                                defaultText="Food Truck"
-                                tag="span"
-                                className="text-xl font-semibold text-orange-600 dark:text-orange-400 ml-1"
-                           //     style={{ color: colors.primary }}
-                            />
+                            <span
+                                className="text-2xl font-bold"
+                                style={{ color: sectionColors.headerTextColor }}
+                            >
+                                <EditableText
+                                    elementId="ft_header_brand_1"
+                                    defaultText="Kernelize"
+                                    tag="span"
+                                />
+                            </span>
+                            <span
+                                className="text-xl font-semibold ml-1"
+                                style={{ color: sectionColors.buttonPrimaryBackground }}
+                            >
+                                <EditableText
+                                    elementId="ft_header_brand_2"
+                                    defaultText="Food Truck"
+                                    tag="span"
+                                />
+                            </span>
                         </div>
                     </a>
 
@@ -84,7 +93,10 @@ const FoodTruckHeader: React.FC = () => {
                                 data-element-id={item.id}
                                 href={item.href}
                                 onClick={(e) => handleNavClick(e, item.href)}
-                                className="text-orange-700 dark:text-orange-300 hover:text-orange-900 dark:hover:text-orange-100 font-medium transition-colors"
+                                className="font-medium transition-colors"
+                                style={{ color: sectionColors.headerLinkColor }}
+                                onMouseEnter={(e) => { e.currentTarget.style.color = sectionColors.headerLinkHoverColor; }}
+                                onMouseLeave={(e) => { e.currentTarget.style.color = sectionColors.headerLinkColor; }}
                             >
                                 <EditableText elementId={item.id} defaultText={item.label} tag="span" />
                             </a>
@@ -95,7 +107,7 @@ const FoodTruckHeader: React.FC = () => {
                             data-element-id="ft_header_cta"
                             onClick={(e) => handleNavClick(e, '#contact')}
                             className="px-5 py-2.5 text-white font-semibold rounded-full transition-all shadow-md hover:shadow-lg"
-                            style={{ background: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}
+                            style={{ background: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
                         >
                             <EditableText elementId="ft_header_cta" defaultText="Seguinos en IG" tag="span" />
                         </a>
@@ -107,7 +119,8 @@ const FoodTruckHeader: React.FC = () => {
                         <ThemeToggle />
                         <button
                             onClick={() => setIsMenuOpen(!isMenuOpen)}
-                            className="p-2 text-orange-700 dark:text-orange-300"
+                            className="p-2"
+                            style={{ color: sectionColors.headerTextColor }}
                         >
                             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
                         </button>
@@ -117,13 +130,20 @@ const FoodTruckHeader: React.FC = () => {
 
             {/* Mobile Menu */}
             {isMenuOpen && (
-                <div className="md:hidden bg-white dark:bg-orange-950 border-t border-orange-200 dark:border-orange-800">
+                <div
+                    className="md:hidden border-t"
+                    style={{
+                        backgroundColor: sectionColors.headerBackground,
+                        borderColor: sectionColors.featuresCardBorder
+                    }}
+                >
                     <div className="px-2 pt-2 pb-3 space-y-1">
                         {navItems.filter(item => item.visible).map((item) => (
                             <a
                                 key={item.id}
                                 href={item.href}
-                                className="block px-3 py-2 text-orange-700 dark:text-orange-300 hover:text-orange-900 dark:hover:text-orange-100 transition-colors"
+                                className="block px-3 py-2 transition-colors"
+                                style={{ color: sectionColors.headerLinkColor }}
                                 onClick={(e) => {
                                     handleNavClick(e, item.href);
                                     setIsMenuOpen(false);
@@ -136,7 +156,7 @@ const FoodTruckHeader: React.FC = () => {
                             <a
                                 href="#contact"
                                 className="block w-full text-center px-4 py-2 text-white font-semibold rounded-full"
-                                style={{ background: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}
+                                style={{ background: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
                                 onClick={(e) => {
                                     handleNavClick(e, '#contact');
                                     setIsMenuOpen(false);
@@ -152,4 +172,4 @@ const FoodTruckHeader: React.FC = () => {
     );
 };
 
-export default FoodTruckHeader;
+export default FoodTruckHeader; 

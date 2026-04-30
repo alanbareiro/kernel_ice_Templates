@@ -1,16 +1,17 @@
+// src/templates/Bakery/BakeryGallery.tsx
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import React, { useState } from 'react';
-import EditableText from '../../components/Editor/EditableText';;
 import EditableImage from '../../components/Editor/EditableImage';
+import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
+import { defaultSectionColors, defaultTypography } from '../../types/template.types';
 
 const BakeryGallery: React.FC = () => {
     const { template } = useTemplate();
-    const colors = template?.colors || {
-        primary: '#e11d48',
-        secondary: '#be123c',
-        accent: '#9f1239',
-    };
+
+    const sectionColors = template?.sectionColors || defaultSectionColors;
+    const typography = template?.typography || defaultTypography;
+
     const [selectedImage, setSelectedImage] = useState<number | null>(null);
 
     const images = [
@@ -28,29 +29,59 @@ const BakeryGallery: React.FC = () => {
     const goNext = () => selectedImage !== null && selectedImage < images.length - 1 && setSelectedImage(selectedImage + 1);
 
     return (
-        <section id="gallery" className="section-padding bg-white dark:bg-neutral-900">
+        <section
+            id="gallery"
+            className="section-padding"
+            style={{ backgroundColor: sectionColors.featuresBackground }}
+        >
             <div className="container-custom">
                 <div className="text-center max-w-3xl mx-auto mb-16">
-                    <h2 className="text-4xl md:text-5xl font-bold mb-6 text-rose-900 dark:text-rose-100">
+                    <h2
+                        className="font-bold mb-6"
+                        style={{
+                            fontSize: typography.sectionTitleSize,
+                            color: sectionColors.featuresTitleColor
+                        }}
+                    >
                         <EditableText elementId="bk_gallery_title_1" defaultText="Galería de" tag="span" />{' '}
-                        <span className="text-transparent bg-clip-text"
-                            style={{ backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                        <span
+                            className="text-transparent bg-clip-text"
+                            style={{ backgroundImage: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                        >
                             <EditableText elementId="bk_gallery_title_2" defaultText="sabores" tag="span" />
                         </span>
                     </h2>
-                    <p className="text-xl text-rose-700 dark:text-rose-300">
+                    <p
+                        className="text-xl"
+                        style={{ color: sectionColors.bodyTextColor }}
+                    >
                         <EditableText elementId="bk_gallery_description" defaultText="Momentos de nuestra panadería que capturan la esencia de lo artesanal." tag="span" />
                     </p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {images.map((img, index) => (
-                        <div key={img.id} onClick={() => openLightbox(index)} className="group relative overflow-hidden rounded-2xl cursor-pointer aspect-video">
-                            <EditableImage elementId={img.id} defaultImage="" alt={img.titleDefault} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" category="bakery" />
+                        <div
+                            key={img.id}
+                            onClick={() => openLightbox(index)}
+                            className="group relative overflow-hidden rounded-2xl cursor-pointer aspect-video"
+                            style={{ backgroundColor: sectionColors.featuresCardBackground }}
+                        >
+                            <EditableImage
+                                elementId={img.id}
+                                defaultImage=""
+                                alt={img.titleDefault}
+                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                category="bakery"
+                            />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                                 <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                                    <p className="text-lg font-bold"><EditableText elementId={img.titleId} defaultText={img.titleDefault} tag="span" /></p>
-                                    <p className="text-rose-300 text-sm"><EditableText elementId={img.categoryId} defaultText={img.categoryDefault} tag="span" /></p>
+                                    <p className="text-lg font-bold">
+                                        <EditableText elementId={img.titleId} defaultText={img.titleDefault} tag="span" />
+                                    </p>
+                                    <p style={{ color: sectionColors.buttonPrimaryBackground }}>
+                                        <EditableText elementId={img.categoryId} defaultText={img.categoryDefault} tag="span" />
+                                    </p>
                                 </div>
                             </div>
                         </div>

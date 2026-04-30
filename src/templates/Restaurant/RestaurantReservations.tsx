@@ -1,15 +1,15 @@
+// src/templates/Restaurant/RestaurantReservations.tsx
 import { Calendar, CheckCircle, Clock, Mail, Phone, Send, Users } from 'lucide-react';
 import React, { useState } from 'react';
 import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
+import { defaultSectionColors, defaultTypography } from '../../types/template.types';
 
 const RestaurantReservations = () => {
     const { template } = useTemplate();
-    const colors = template?.colors || {
-        primary: '#dc2626',
-        secondary: '#b91c1c',
-        accent: '#7f1d1d',
-    };
+
+    const sectionColors = template?.sectionColors || defaultSectionColors;
+    const typography = template?.typography || defaultTypography;
 
     const [formData, setFormData] = useState({
         name: '',
@@ -58,18 +58,28 @@ const RestaurantReservations = () => {
     ];
 
     return (
-        <section id="reservations" className="section-padding text-white"
-            style={{ background: `linear-gradient(135deg, ${colors.accent}, ${colors.secondary})` }}>
+        <section
+            id="reservations"
+            className="section-padding text-white"
+            style={{ background: `linear-gradient(135deg, ${sectionColors.footerBackground}, ${sectionColors.footerBackground})` }}
+        >
             <div className="container-custom">
                 <div className="text-center max-w-3xl mx-auto mb-16">
-                    <h2 className="text-4xl md:text-5xl font-bold mb-6">
+                    <h2
+                        className="font-bold mb-6"
+                        style={{
+                            fontSize: typography.sectionTitleSize
+                        }}
+                    >
                         <EditableText
                             elementId="r_reservations_title_1"
                             defaultText="Reservá tu"
                             tag="span"
                         />{' '}
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-300 to-red-400"
-                            style={{ backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                        <span
+                            className="text-transparent bg-clip-text"
+                            style={{ backgroundImage: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                        >
                             <EditableText
                                 elementId="r_reservations_title_2"
                                 defaultText="mesa"
@@ -77,7 +87,7 @@ const RestaurantReservations = () => {
                             />
                         </span>
                     </h2>
-                    <p className="text-xl text-red-100">
+                    <p className="text-xl" style={{ color: sectionColors.footerTextColor }}>
                         <EditableText
                             elementId="r_reservations_description"
                             defaultText="Asegurá tu lugar para disfrutar de una experiencia única. Reservá con anticipación para evitar contratiempos."
@@ -159,7 +169,7 @@ const RestaurantReservations = () => {
                             </h3>
                             <div className="space-y-4">
                                 <div className="flex items-center space-x-3">
-                                    <Phone className="w-5 h-5 text-red-300" />
+                                    <Phone className="w-5 h-5" style={{ color: sectionColors.buttonPrimaryBackground }} />
                                     <span>
                                         <EditableText
                                             elementId="r_quick_contact_phone"
@@ -169,7 +179,7 @@ const RestaurantReservations = () => {
                                     </span>
                                 </div>
                                 <div className="flex items-center space-x-3">
-                                    <Mail className="w-5 h-5 text-red-300" />
+                                    <Mail className="w-5 h-5" style={{ color: sectionColors.buttonPrimaryBackground }} />
                                     <span>
                                         <EditableText
                                             elementId="r_quick_contact_email"
@@ -189,7 +199,7 @@ const RestaurantReservations = () => {
                                     tag="span"
                                 />
                             </h3>
-                            <p className="text-sm text-red-200">
+                            <p className="text-sm" style={{ color: sectionColors.footerTextColor }}>
                                 <EditableText
                                     elementId="r_policy_text"
                                     defaultText="Las reservas se mantienen por 15 minutos pasada la hora. Para grupos de más de 8 personas, por favor contactanos directamente."
@@ -204,11 +214,13 @@ const RestaurantReservations = () => {
                         <div className="bg-white dark:bg-red-900 rounded-2xl p-8 shadow-2xl">
                             {isSubmitted ? (
                                 <div className="text-center py-12">
-                                    <div className="w-20 h-20 mx-auto mb-6 rounded-full flex items-center justify-center"
-                                        style={{ background: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                                    <div
+                                        className="w-20 h-20 mx-auto mb-6 rounded-full flex items-center justify-center"
+                                        style={{ background: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                                    >
                                         <CheckCircle className="w-10 h-10 text-white" />
                                     </div>
-                                    <h3 className="text-2xl font-bold text-red-900 dark:text-white mb-4">
+                                    <h3 className="text-2xl font-bold mb-4 text-red-900 dark:text-white">
                                         <EditableText
                                             elementId="r_success_title"
                                             defaultText="¡Reserva confirmada!"
@@ -225,7 +237,7 @@ const RestaurantReservations = () => {
                                     <button
                                         onClick={() => setIsSubmitted(false)}
                                         className="text-white font-semibold px-8 py-3 rounded-full transition-all"
-                                        style={{ background: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}
+                                        style={{ background: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
                                     >
                                         <EditableText
                                             elementId="r_success_button"
@@ -260,10 +272,10 @@ const RestaurantReservations = () => {
                                                     value={formData.name}
                                                     onChange={handleChange}
                                                     required
-                                                    className="w-full px-4 py-3 bg-red-50 dark:bg-red-800 border border-red-200 dark:border-red-700 rounded-lg focus:outline-none"
+                                                    className="w-full px-4 py-3 bg-red-50 dark:bg-red-800 border border-red-200 dark:border-red-700 rounded-lg focus:outline-none focus:ring-2 transition-all"
                                                     style={{
-                                                        '--tw-ring-color': colors.primary,
-                                                        outlineColor: colors.primary
+                                                        '--tw-ring-color': sectionColors.buttonPrimaryBackground,
+                                                        outlineColor: sectionColors.buttonPrimaryBackground
                                                     } as React.CSSProperties}
                                                     placeholder="Tu nombre"
                                                 />
@@ -418,7 +430,7 @@ const RestaurantReservations = () => {
                                                 type="submit"
                                                 disabled={isSubmitting}
                                                 className="w-full text-white font-semibold px-8 py-4 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center text-lg"
-                                                style={{ background: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}
+                                                style={{ background: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
                                             >
                                                 {isSubmitting ? (
                                                     <EditableText

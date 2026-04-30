@@ -1,140 +1,140 @@
 // src/data/templateDefaultColors.ts
-import type { TemplateColors } from "../../types/template.types"
+import type { TemplateColors } from "../../types/template.types";
 
 // Colores por defecto para cada tipo de template
 export const templateDefaultColors: Record<string, TemplateColors> = {
     consulting: {
         primary: '#2563eb',
-        secondary: '#475569',
+        secondary: '#4b5563',
         accent: '#1e293b',
         background: '#ffffff',
-        text: '#0f172a',
+        text: '#111827'
     },
     catering: {
         primary: '#f59e0b',
-        secondary: '#ea580c',
+        secondary: '#d97706',
         accent: '#b45309',
-        background: '#ffffff',
-        text: '#422006',
+        background: '#fffbeb',
+        text: '#78350f'
     },
     accounting: {
         primary: '#059669',
         secondary: '#047857',
         accent: '#064e3b',
-        background: '#ffffff',
-        text: '#022c22',
+        background: '#f0fdf4',
+        text: '#022c22'
     },
     restaurant: {
         primary: '#dc2626',
         secondary: '#b91c1c',
-        accent: '#7f1d1d',
-        background: '#ffffff',
-        text: '#450a0a',
+        accent: '#991b1b',
+        background: '#fef2f2',
+        text: '#450a0a'
     },
     lawFirm: {
-        primary: '#1e293b',
-        secondary: '#334155',
-        accent: '#0f172a',
-        background: '#ffffff',
-        text: '#020617',
+        primary: '#7f1d1d',
+        secondary: '#991b1b',
+        accent: '#450a0a',
+        background: '#faf7f2',
+        text: '#292524'
     },
     medical: {
-        primary: '#0891b2',
-        secondary: '#0e7490',
-        accent: '#155e75',
-        background: '#ffffff',
-        text: '#0f172a',
+        primary: '#0d9488',
+        secondary: '#0f766e',
+        accent: '#115e59',
+        background: '#f0fdfa',
+        text: '#042f2e'
     },
     architecture: {
-        primary: '#78716c',
-        secondary: '#57534e',
-        accent: '#44403c',
-        background: '#ffffff',
-        text: '#1c1917',
+        primary: '#57534e',
+        secondary: '#44403c',
+        accent: '#292524',
+        background: '#fafaf9',
+        text: '#1c1917'
     },
     marketingAgency: {
-        primary: '#8b5cf6',
-        secondary: '#7c3aed',
-        accent: '#6d28d9',
-        background: '#ffffff',
-        text: '#1e1b4b',
+        primary: '#c026d3',
+        secondary: '#a21caf',
+        accent: '#86198f',
+        background: '#faf5ff',
+        text: '#4a044e'
     },
     coffeeShop: {
-        primary: '#d97706',
-        secondary: '#b45309',
-        accent: '#92400e',
-        background: '#ffffff',
-        text: '#431407',
+        primary: '#b45309',
+        secondary: '#92400e',
+        accent: '#78350f',
+        background: '#fef3c7',
+        text: '#422006'
     },
     bakery: {
-        primary: '#f97316',
-        secondary: '#ea580c',
-        accent: '#c2410c',
-        background: '#ffffff',
-        text: '#2b0b0b',
+        primary: '#e11d48',
+        secondary: '#be123c',
+        accent: '#9f1239',
+        background: '#fff1f2',
+        text: '#4c0519'
     },
     foodTruck: {
-        primary: '#f97316',
-        secondary: '#ea580c',
-        accent: '#c2410c',
-        background: '#ffffff',
-        text: '#2b0b0b',
+        primary: '#e67e22',
+        secondary: '#d35400',
+        accent: '#a04000',
+        background: '#fef3c7',
+        text: '#5d3a1a'
     },
     beautySalon: {
-        primary: '#ec489a',
-        secondary: '#db2777',
-        accent: '#be185d',
-        background: '#ffffff',
-        text: '#2c0b1e',
+        primary: '#db2777',
+        secondary: '#be185d',
+        accent: '#9d174d',
+        background: '#fdf2f8',
+        text: '#831843'
     },
     gym: {
         primary: '#ea580c',
         secondary: '#c2410c',
         accent: '#9a3412',
-        background: '#030712',
-        text: '#fafafa',
+        background: '#f5f5f4',
+        text: '#1c1917'
     },
     realEstate: {
-        primary: '#059669',
-        secondary: '#047857',
-        accent: '#065f46',
-        background: '#ffffff',
-        text: '#022c22',
+        primary: '#2d6a4f',
+        secondary: '#1e4b3a',
+        accent: '#0d2f24',
+        background: '#f8fafc',
+        text: '#081c15'
     },
     fashion: {
-        primary: '#db2777',
-        secondary: '#be185d',
-        accent: '#9d174d',
+        primary: '#000000',
+        secondary: '#1f2937',
+        accent: '#4b5563',
         background: '#ffffff',
-        text: '#1e0b17',
+        text: '#111827'
     },
     cleaning: {
         primary: '#0284c7',
         secondary: '#0369a1',
         accent: '#075985',
-        background: '#ffffff',
-        text: '#082f49',
+        background: '#f0f9ff',
+        text: '#0c4a6e'
     },
     saas: {
-        primary: '#6366f1',
-        secondary: '#4f46e5',
-        accent: '#4338ca',
-        background: '#ffffff',
-        text: '#0f172a',
+        primary: '#7c3aed',
+        secondary: '#6d28d9',
+        accent: '#5b21b6',
+        background: '#f5f3ff',
+        text: '#1e1e3f'
     },
     digitalAgency: {
-        primary: '#06b6d4',
-        secondary: '#0891b2',
-        accent: '#0e7490',
-        background: '#ffffff',
-        text: '#164e63',
+        primary: '#0891b2',
+        secondary: '#0e7490',
+        accent: '#155e75',
+        background: '#ecfeff',
+        text: '#164e63'
     },
     startup: {
-        primary: '#f59e0b',
-        secondary: '#d97706',
-        accent: '#b45309',
-        background: '#ffffff',
-        text: '#2b0b0b',
+        primary: '#059669',
+        secondary: '#047857',
+        accent: '#065f46',
+        background: '#ecfdf5',
+        text: '#064e3b'
     },
 };
 

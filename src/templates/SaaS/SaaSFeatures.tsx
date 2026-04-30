@@ -1,15 +1,15 @@
+// src/templates/SaaS/SaaSFeatures.tsx
 import { BarChart, Clock, Cloud, Lock, Shield, Smartphone, Users, Zap } from 'lucide-react';
 import React from 'react';
 import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
+import { defaultSectionColors, defaultTypography } from '../../types/template.types';
 
 const SaaSFeatures: React.FC = () => {
     const { template } = useTemplate();
-    const colors = template?.colors || {
-        primary: '#7c3aed',
-        secondary: '#6d28d9',
-        accent: '#5b21b6',
-    };
+
+    const sectionColors = template?.sectionColors || defaultSectionColors;
+    const typography = template?.typography || defaultTypography;
 
     const features = [
         {
@@ -55,32 +55,62 @@ const SaaSFeatures: React.FC = () => {
     ];
 
     return (
-        <section id="features" className="section-padding bg-white dark:bg-neutral-900">
+        <section
+            id="features"
+            className="section-padding"
+            style={{ backgroundColor: sectionColors.featuresBackground }}
+        >
             <div className="container-custom">
                 <div className="text-center max-w-3xl mx-auto mb-16">
-                    <h2 className="text-4xl md:text-5xl font-bold mb-6 text-violet-900 dark:text-violet-100">
+                    <h2
+                        className="font-bold mb-6"
+                        style={{
+                            fontSize: typography.sectionTitleSize,
+                            color: sectionColors.featuresTitleColor
+                        }}
+                    >
                         <EditableText elementId="sa_features_title_1" defaultText="Características" tag="span" />{' '}
-                        <span className="text-transparent bg-clip-text"
-                            style={{ backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                        <span
+                            className="text-transparent bg-clip-text"
+                            style={{ backgroundImage: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                        >
                             <EditableText elementId="sa_features_title_2" defaultText="principales" tag="span" />
                         </span>
                     </h2>
-                    <p className="text-xl text-violet-700 dark:text-violet-300">
+                    <p
+                        className="text-xl"
+                        style={{ color: sectionColors.bodyTextColor }}
+                    >
                         <EditableText elementId="sa_features_description" defaultText="Todo lo que necesitás para llevar tu negocio al siguiente nivel." tag="span" />
                     </p>
                 </div>
 
                 <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {features.map((feature, index) => (
-                        <div key={index} className="group p-6 rounded-xl border border-violet-200 dark:border-violet-800 hover:shadow-xl transition-all">
-                            <div className="w-14 h-14 rounded-lg mb-4 flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
-                                style={{ backgroundColor: `${colors.primary}15`, color: colors.primary }}>
+                        <div
+                            key={index}
+                            className="group p-6 rounded-xl border transition-all hover:shadow-xl"
+                            style={{
+                                backgroundColor: sectionColors.featuresCardBackground,
+                                borderColor: `${sectionColors.buttonPrimaryBackground}20`
+                            }}
+                        >
+                            <div
+                                className="w-14 h-14 rounded-lg mb-4 flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
+                                style={{ backgroundColor: `${sectionColors.buttonPrimaryBackground}15`, color: sectionColors.buttonPrimaryBackground }}
+                            >
                                 {feature.icon}
                             </div>
-                            <h3 className="text-lg font-bold mb-2 text-violet-900 dark:text-violet-100">
+                            <h3
+                                className="text-lg font-bold mb-2"
+                                style={{ color: sectionColors.featuresTitleColor }}
+                            >
                                 <EditableText elementId={feature.titleId} defaultText={feature.titleDefault} tag="span" />
                             </h3>
-                            <p className="text-sm text-violet-700 dark:text-violet-300">
+                            <p
+                                className="text-sm leading-relaxed"
+                                style={{ color: sectionColors.bodyTextColor }}
+                            >
                                 <EditableText elementId={feature.descId} defaultText={feature.descDefault} tag="span" />
                             </p>
                         </div>

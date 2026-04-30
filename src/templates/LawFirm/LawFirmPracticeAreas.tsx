@@ -1,15 +1,15 @@
+// src/templates/LawFirm/LawFirmPracticeAreas.tsx
 import { Briefcase, Building2, FileText, Gavel, Heart, Scale, Shield, Users } from 'lucide-react';
 import React from 'react';
 import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
+import { defaultSectionColors, defaultTypography } from '../../types/template.types';
 
 const LawFirmPracticeAreas: React.FC = () => {
     const { template } = useTemplate();
-    const colors = template?.colors || {
-        primary: '#7f1d1d',
-        secondary: '#991b1b',
-        accent: '#450a0a',
-    };
+
+    const sectionColors = template?.sectionColors || defaultSectionColors;
+    const typography = template?.typography || defaultTypography;
 
     const areas = [
         {
@@ -71,17 +71,29 @@ const LawFirmPracticeAreas: React.FC = () => {
     ];
 
     return (
-        <section id="practice-areas" className="section-padding bg-white dark:bg-neutral-900">
+        <section
+            id="practice-areas"
+            className="section-padding"
+            style={{ backgroundColor: sectionColors.featuresBackground }}
+        >
             <div className="container-custom">
                 <div className="text-center max-w-3xl mx-auto mb-16">
-                    <h2 className="text-4xl md:text-5xl font-bold mb-6 text-stone-900 dark:text-stone-100">
+                    <h2
+                        className="font-bold mb-6"
+                        style={{
+                            fontSize: typography.sectionTitleSize,
+                            color: sectionColors.featuresTitleColor
+                        }}
+                    >
                         <EditableText
                             elementId="lf_areas_title_1"
                             defaultText="Áreas de"
                             tag="span"
                         />{' '}
-                        <span className="text-transparent bg-clip-text"
-                            style={{ backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                        <span
+                            className="text-transparent bg-clip-text"
+                            style={{ backgroundImage: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                        >
                             <EditableText
                                 elementId="lf_areas_title_2"
                                 defaultText="Práctica"
@@ -89,7 +101,10 @@ const LawFirmPracticeAreas: React.FC = () => {
                             />
                         </span>
                     </h2>
-                    <p className="text-xl text-stone-600 dark:text-stone-400">
+                    <p
+                        className="text-xl"
+                        style={{ color: sectionColors.bodyTextColor }}
+                    >
                         <EditableText
                             elementId="lf_areas_description"
                             defaultText="Ofrecemos asesoramiento legal integral en todas las ramas del derecho."
@@ -100,17 +115,25 @@ const LawFirmPracticeAreas: React.FC = () => {
 
                 <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {areas.map((area, index) => (
-                        <div key={index} className="group p-6 rounded-xl border transition-all duration-300 hover:shadow-xl"
+                        <div
+                            key={index}
+                            className="group p-6 rounded-xl border transition-all duration-300 hover:shadow-xl"
                             style={{
-                                backgroundColor: `${colors.primary}02`,
-                                borderColor: `${colors.primary}20`,
-                            }}>
-                            <div className="w-14 h-14 rounded-lg mb-4 flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
-                                style={{ backgroundColor: `${colors.primary}15`, color: colors.primary }}>
+                                backgroundColor: sectionColors.featuresCardBackground,
+                                borderColor: `${sectionColors.buttonPrimaryBackground}20`,
+                            }}
+                        >
+                            <div
+                                className="w-14 h-14 rounded-lg mb-4 flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
+                                style={{ backgroundColor: `${sectionColors.buttonPrimaryBackground}15`, color: sectionColors.buttonPrimaryBackground }}
+                            >
                                 {area.icon}
                             </div>
 
-                            <h3 className="text-lg font-bold mb-2 text-stone-900 dark:text-stone-100 group-hover:text-stone-700 transition-colors">
+                            <h3
+                                className="text-lg font-bold mb-2 transition-colors"
+                                style={{ color: sectionColors.featuresTitleColor }}
+                            >
                                 <EditableText
                                     elementId={area.titleId}
                                     defaultText={area.titleDefault}
@@ -118,7 +141,10 @@ const LawFirmPracticeAreas: React.FC = () => {
                                 />
                             </h3>
 
-                            <p className="text-sm text-stone-600 dark:text-stone-400 leading-relaxed">
+                            <p
+                                className="text-sm leading-relaxed"
+                                style={{ color: sectionColors.bodyTextColor }}
+                            >
                                 <EditableText
                                     elementId={area.descId}
                                     defaultText={area.descDefault}

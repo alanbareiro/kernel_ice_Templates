@@ -1,15 +1,16 @@
+// src/templates/Startup/StartupSolution.tsx
 import { Shield, Users, Zap } from 'lucide-react';
 import React from 'react';
-import EditableText from '../../components/Editor/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
+import EditableText from '../../components/Editor/EditableText';
+import { useTemplate } from '../../contexts/TemplateContext';
+import { defaultSectionColors, defaultTypography } from '../../types/template.types';
 
 const StartupSolution: React.FC = () => {
-    // const { template } = useTemplate();
-    // const colors = template?.colors || {
-    //     primary: '#059669',
-    //     secondary: '#047857',
-    //     accent: '#065f46',
-    // };
+    const { template } = useTemplate();
+
+    const sectionColors = template?.sectionColors || defaultSectionColors;
+    const typography = template?.typography || defaultTypography;
 
     const benefits = [
         {
@@ -30,20 +31,28 @@ const StartupSolution: React.FC = () => {
     ];
 
     return (
-        <section id="solution" className="section-padding bg-gradient-to-br from-emerald-900 to-emerald-800 text-white">
+        <section
+            id="solution"
+            className="section-padding text-white"
+            style={{ background: `linear-gradient(135deg, ${sectionColors.buttonPrimaryBackground}cc, ${sectionColors.buttonPrimaryBackground})` }}
+        >
             <div className="container-custom">
                 <div className="grid lg:grid-cols-2 gap-12 items-center">
-                    {/* Contenido */}
                     <div className="space-y-8">
                         <div>
-                            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+                            <h2
+                                className="font-bold mb-6"
+                                style={{
+                                    fontSize: typography.sectionTitleSize
+                                }}
+                            >
                                 <EditableText elementId="st_sol_title_1" defaultText="Nuestra" tag="span" />{' '}
                                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-emerald-100">
                                     <EditableText elementId="st_sol_title_2" defaultText="solución" tag="span" />
                                 </span>
                             </h2>
 
-                            <p className="text-xl text-emerald-100 mb-6">
+                            <p className="text-xl mb-6" style={{ color: `${sectionColors.buttonPrimaryText}cc` }}>
                                 <EditableText
                                     elementId="st_sol_description"
                                     defaultText="Desarrollamos una plataforma que automatiza procesos, brinda información valiosa y reduce costos operativos."
@@ -54,10 +63,10 @@ const StartupSolution: React.FC = () => {
                             <ul className="space-y-4">
                                 {benefits.map((ben) => (
                                     <li key={ben.id} className="flex items-center gap-3">
-                                        <div className="w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center">
+                                        <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
                                             {ben.icon}
                                         </div>
-                                        <span className="text-lg text-emerald-100">
+                                        <span className="text-lg">
                                             <EditableText elementId={ben.textId} defaultText={ben.textDefault} tag="span" />
                                         </span>
                                     </li>
@@ -66,7 +75,6 @@ const StartupSolution: React.FC = () => {
                         </div>
                     </div>
 
-                    {/* Imagen */}
                     <div className="relative">
                         <div className="relative z-10 rounded-2xl overflow-hidden shadow-2xl">
                             <EditableImage

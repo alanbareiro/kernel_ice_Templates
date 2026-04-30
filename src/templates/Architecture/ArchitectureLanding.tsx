@@ -1,8 +1,6 @@
 import React from 'react';
 import EditModeToggle from '../../components/Editor/EditModeToggle';
 import EditorDashboard from '../../components/Editor/EditorDashboard';
-import { TemplateProvider } from '../../contexts/TemplateContext';
-import { TemplateEditorProvider } from '../../contexts/TemplateEditorContext';
 import ArchitectureAbout from './ArchitectureAbout';
 import ArchitectureContact from './ArchitectureContact';
 import ArchitectureFooter from './ArchitectureFooter';
@@ -18,24 +16,24 @@ interface ArchitectureLandingProps {
 
 const ArchitectureLanding: React.FC<ArchitectureLandingProps> = ({ onHomeClick }) => {
     return (
-        <TemplateProvider>
-            <TemplateEditorProvider>
-                <div className="min-h-screen flex flex-col">
-                    <ArchitectureHeader />
-                    <main className="flex-grow">
-                        <ArchitectureHero />
-                        <ArchitectureProjects />
-                        <ArchitectureServices />
-                        <ArchitectureAbout />
-                        <ArchitectureTeam />
-                        <ArchitectureContact />
-                    </main>
-                    <ArchitectureFooter />
-                    <EditorDashboard onHomeClick={onHomeClick} />
-                    <EditModeToggle />
-                </div>
-            </TemplateEditorProvider>
-        </TemplateProvider>
+        // <TemplateProvider>
+        //     <TemplateEditorProvider>
+        <div className="min-h-screen flex flex-col">
+            <ArchitectureHeader />
+            <main className="flex-grow">
+                <ArchitectureHero />
+                <ArchitectureProjects />
+                <ArchitectureServices />
+                <ArchitectureAbout />
+                <ArchitectureTeam />
+                <ArchitectureContact />
+            </main>
+            <ArchitectureFooter />
+            <EditorDashboard onHomeClick={onHomeClick} />
+            <EditModeToggle />
+        </div>
+        //     </TemplateEditorProvider>
+        // </TemplateProvider>
     );
 };
 

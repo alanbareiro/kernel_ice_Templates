@@ -1,17 +1,18 @@
+// src/templates/MarketingAgency/AgencyCaseStudies.tsx
 import { ExternalLink, ShoppingCart, TrendingUp, Users } from 'lucide-react';
 import React, { useState } from 'react';
 import { defaultImages } from '../../assets/default-images';
-import EditableText from '../../components/Editor/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
+import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
+import { defaultSectionColors, defaultTypography } from '../../types/template.types';
 
 const AgencyCaseStudies: React.FC = () => {
     const { template } = useTemplate();
-    const colors = template?.colors || {
-        primary: '#c026d3',
-        secondary: '#a21caf',
-        accent: '#86198f',
-    };
+
+    const sectionColors = template?.sectionColors || defaultSectionColors;
+    const typography = template?.typography || defaultTypography;
+
     const [activeCase, setActiveCase] = useState(0);
 
     const caseImages = {
@@ -78,17 +79,29 @@ const AgencyCaseStudies: React.FC = () => {
     ];
 
     return (
-        <section id="cases" className="section-padding bg-purple-50 dark:bg-purple-950">
+        <section
+            id="cases"
+            className="section-padding"
+            style={{ backgroundColor: sectionColors.featuresBackground }}
+        >
             <div className="container-custom">
                 <div className="text-center max-w-3xl mx-auto mb-16">
-                    <h2 className="text-4xl md:text-5xl font-bold mb-6 text-purple-900 dark:text-purple-100">
+                    <h2
+                        className="font-bold mb-6"
+                        style={{
+                            fontSize: typography.sectionTitleSize,
+                            color: sectionColors.featuresTitleColor
+                        }}
+                    >
                         <EditableText
                             elementId="ag_cases_title_1"
                             defaultText="Casos de"
                             tag="span"
                         />{' '}
-                        <span className="text-transparent bg-clip-text"
-                            style={{ backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                        <span
+                            className="text-transparent bg-clip-text"
+                            style={{ backgroundImage: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                        >
                             <EditableText
                                 elementId="ag_cases_title_2"
                                 defaultText="éxito"
@@ -96,7 +109,10 @@ const AgencyCaseStudies: React.FC = () => {
                             />
                         </span>
                     </h2>
-                    <p className="text-xl text-purple-700 dark:text-purple-300">
+                    <p
+                        className="text-xl"
+                        style={{ color: sectionColors.bodyTextColor }}
+                    >
                         <EditableText
                             elementId="ag_cases_description"
                             defaultText="Resultados reales que hablan por sí mismos."
@@ -111,11 +127,16 @@ const AgencyCaseStudies: React.FC = () => {
                         <button
                             key={item.id}
                             onClick={() => setActiveCase(index)}
-                            className={`px-6 py-3 rounded-full font-semibold transition-all ${activeCase === index
-                                ? 'text-white shadow-lg'
-                                : 'bg-white dark:bg-purple-800 text-purple-700 dark:text-purple-300 hover:bg-purple-100 dark:hover:bg-purple-700'
+                            className={`px-6 py-3 rounded-full font-semibold transition-all ${activeCase === index ? 'text-white shadow-lg' : ''
                                 }`}
-                            style={activeCase === index ? { background: colors.primary } : {}}
+                            style={
+                                activeCase === index
+                                    ? { background: sectionColors.buttonPrimaryBackground }
+                                    : {
+                                        backgroundColor: sectionColors.featuresCardBackground,
+                                        color: sectionColors.bodyTextColor
+                                    }
+                            }
                         >
                             <EditableText elementId={item.clientId} defaultText={item.clientDefault} tag="span" />
                         </button>
@@ -126,32 +147,44 @@ const AgencyCaseStudies: React.FC = () => {
                 <div className="grid lg:grid-cols-2 gap-12 items-center">
                     <div className="space-y-6">
                         <div>
-                            <span className="inline-block px-4 py-2 rounded-full text-sm font-medium mb-4"
-                                style={{ backgroundColor: `${colors.primary}15`, color: colors.primary }}>
+                            <span
+                                className="inline-block px-4 py-2 rounded-full text-sm font-medium mb-4"
+                                style={{ backgroundColor: `${sectionColors.buttonPrimaryBackground}15`, color: sectionColors.buttonPrimaryBackground }}
+                            >
                                 <EditableText elementId={cases[activeCase].industryId} defaultText={cases[activeCase].industryDefault} tag="span" />
                             </span>
-                            <h3 className="text-3xl font-bold mb-4 text-purple-900 dark:text-purple-100">
+                            <h3
+                                className="text-3xl font-bold mb-4"
+                                style={{ color: sectionColors.featuresTitleColor }}
+                            >
                                 <EditableText elementId={cases[activeCase].titleId} defaultText={cases[activeCase].titleDefault} tag="span" />
                             </h3>
-                            <p className="text-lg text-purple-700 dark:text-purple-300 mb-6">
+                            <p
+                                className="text-lg mb-6"
+                                style={{ color: sectionColors.bodyTextColor }}
+                            >
                                 <EditableText elementId={cases[activeCase].descId} defaultText={cases[activeCase].descDefault} tag="span" />
                             </p>
                         </div>
 
                         {/* Resultados */}
                         <div className="space-y-3">
-                            <h4 className="text-lg font-semibold text-purple-900 dark:text-purple-100">Resultados:</h4>
+                            <h4 className="text-lg font-semibold" style={{ color: sectionColors.featuresTitleColor }}>Resultados:</h4>
                             {cases[activeCase].results.map((result, i) => (
-                                <div key={i} className="flex items-center space-x-3 p-3 bg-white dark:bg-purple-800/50 rounded-lg">
-                                    <span className="text-purple-600">{result.icon}</span>
-                                    <span className="text-purple-700 dark:text-purple-300">
+                                <div
+                                    key={i}
+                                    className="flex items-center space-x-3 p-3 rounded-lg"
+                                    style={{ backgroundColor: sectionColors.featuresCardBackground }}
+                                >
+                                    <span style={{ color: sectionColors.buttonPrimaryBackground }}>{result.icon}</span>
+                                    <span style={{ color: sectionColors.bodyTextColor }}>
                                         <EditableText elementId={result.id} defaultText={result.text} tag="span" />
                                     </span>
                                 </div>
                             ))}
                         </div>
 
-                        <a href="#" className="inline-flex items-center text-purple-600 hover:text-purple-700 font-semibold">
+                        <a href="#" className="inline-flex items-center font-semibold" style={{ color: sectionColors.buttonPrimaryBackground }}>
                             Ver caso completo <ExternalLink className="ml-2 w-4 h-4" />
                         </a>
                     </div>

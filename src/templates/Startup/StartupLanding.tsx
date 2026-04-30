@@ -1,8 +1,6 @@
 import React from 'react';
 import EditModeToggle from '../../components/Editor/EditModeToggle';
 import EditorDashboard from '../../components/Editor/EditorDashboard';
-import { TemplateProvider } from '../../contexts/TemplateContext';
-import { TemplateEditorProvider } from '../../contexts/TemplateEditorContext';
 import StartupContact from './StartupContact';
 import StartupFeatures from './StartupFeatures';
 import StartupFooter from './StartupFooter';
@@ -18,24 +16,24 @@ interface StartupLandingProps {
 
 const StartupLanding: React.FC<StartupLandingProps> = ({ onHomeClick }) => {
     return (
-        <TemplateProvider>
-            <TemplateEditorProvider>
-                <div className="min-h-screen flex flex-col">
-                    <StartupHeader />
-                    <main className="flex-grow">
-                        <StartupHero />
-                        <StartupProblem />
-                        <StartupSolution />
-                        <StartupFeatures />
-                        <StartupTeam />
-                        <StartupContact />
-                    </main>
-                    <StartupFooter />
-                    <EditorDashboard onHomeClick={onHomeClick} />
-                    <EditModeToggle />
-                </div>
-            </TemplateEditorProvider>
-        </TemplateProvider>
+        // <TemplateProvider>
+        //     <TemplateEditorProvider>
+        <div className="min-h-screen flex flex-col">
+            <StartupHeader />
+            <main className="flex-grow">
+                <StartupHero />
+                <StartupProblem />
+                <StartupSolution />
+                <StartupFeatures />
+                <StartupTeam />
+                <StartupContact />
+            </main>
+            <StartupFooter />
+            <EditorDashboard onHomeClick={onHomeClick} />
+            <EditModeToggle />
+        </div>
+        //     </TemplateEditorProvider>
+        // </TemplateProvider>
     );
 };
 

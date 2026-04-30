@@ -1,16 +1,16 @@
+// src/templates/Startup/StartupTeam.tsx
 import { Linkedin, Twitter } from 'lucide-react';
 import React from 'react';
 import EditableImage from '../../components/Editor/EditableImage';
 import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
+import { defaultSectionColors, defaultTypography } from '../../types/template.types';
 
 const StartupTeam: React.FC = () => {
     const { template } = useTemplate();
-    const colors = template?.colors || {
-        primary: '#059669',
-        secondary: '#047857',
-        accent: '#065f46',
-    };
+
+    const sectionColors = template?.sectionColors || defaultSectionColors;
+    const typography = template?.typography || defaultTypography;
 
     const team = [
         {
@@ -48,17 +48,32 @@ const StartupTeam: React.FC = () => {
     ];
 
     return (
-        <section id="team" className="section-padding bg-emerald-50 dark:bg-emerald-950">
+        <section
+            id="team"
+            className="section-padding"
+            style={{ backgroundColor: sectionColors.featuresBackground }}
+        >
             <div className="container-custom">
                 <div className="text-center max-w-3xl mx-auto mb-16">
-                    <h2 className="text-4xl md:text-5xl font-bold mb-6 text-emerald-900 dark:text-emerald-100">
+                    <h2
+                        className="font-bold mb-6"
+                        style={{
+                            fontSize: typography.sectionTitleSize,
+                            color: sectionColors.featuresTitleColor
+                        }}
+                    >
                         <EditableText elementId="st_team_title_1" defaultText="Nuestro" tag="span" />{' '}
-                        <span className="text-transparent bg-clip-text"
-                            style={{ backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                        <span
+                            className="text-transparent bg-clip-text"
+                            style={{ backgroundImage: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                        >
                             <EditableText elementId="st_team_title_2" defaultText="equipo" tag="span" />
                         </span>
                     </h2>
-                    <p className="text-xl text-emerald-700 dark:text-emerald-300">
+                    <p
+                        className="text-xl"
+                        style={{ color: sectionColors.bodyTextColor }}
+                    >
                         <EditableText elementId="st_team_description" defaultText="Profesionales apasionados por la innovación." tag="span" />
                     </p>
                 </div>
@@ -66,21 +81,30 @@ const StartupTeam: React.FC = () => {
                 <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
                     {team.map((member) => (
                         <div key={member.id} className="group text-center">
-                            <div className="relative mb-4 mx-auto w-48 h-48 rounded-full overflow-hidden border-4 border-emerald-300 dark:border-emerald-700 group-hover:border-emerald-500 transition-all">
+                            <div
+                                className="relative mb-4 mx-auto w-48 h-48 rounded-full overflow-hidden border-4 transition-all group-hover:scale-105"
+                                style={{ borderColor: `${sectionColors.buttonPrimaryBackground}60` }}
+                            >
                                 <EditableImage elementId={member.imageId} defaultImage="" alt={member.nameDefault} className="w-full h-full object-cover" category="startup" />
                             </div>
-                            <h3 className="text-xl font-bold text-emerald-900 dark:text-emerald-100 mb-1">
+                            <h3
+                                className="text-xl font-bold mb-1"
+                                style={{ color: sectionColors.featuresTitleColor }}
+                            >
                                 <EditableText elementId={member.nameId} defaultText={member.nameDefault} tag="span" />
                             </h3>
-                            <p className="text-sm mb-2" style={{ color: colors.primary }}>
+                            <p className="text-sm mb-2" style={{ color: sectionColors.buttonPrimaryBackground }}>
                                 <EditableText elementId={member.roleId} defaultText={member.roleDefault} tag="span" />
                             </p>
-                            <p className="text-sm text-emerald-600 dark:text-emerald-400 mb-3">
+                            <p
+                                className="text-sm mb-3"
+                                style={{ color: sectionColors.bodyTextColor }}
+                            >
                                 <EditableText elementId={member.descId} defaultText={member.descDefault} tag="span" />
                             </p>
                             <div className="flex items-center justify-center space-x-3">
-                                <a href={member.linkedin} className="text-emerald-500 hover:text-emerald-700"><Linkedin className="w-4 h-4" /></a>
-                                <a href={member.twitter} className="text-emerald-500 hover:text-emerald-700"><Twitter className="w-4 h-4" /></a>
+                                <a href={member.linkedin} className="transition-colors" style={{ color: sectionColors.bodyTextColor }}><Linkedin className="w-4 h-4" /></a>
+                                <a href={member.twitter} className="transition-colors" style={{ color: sectionColors.bodyTextColor }}><Twitter className="w-4 h-4" /></a>
                             </div>
                         </div>
                     ))}

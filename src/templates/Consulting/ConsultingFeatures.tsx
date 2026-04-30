@@ -8,74 +8,76 @@ import {
 } from 'lucide-react';
 import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
+import { defaultSectionColors } from '../../types/template.types';
 
 const ConsultingFeatures = () => {
     const { template } = useTemplate();
-    const colors = template?.colors || {
-        primary: '#2563eb',
-        secondary: '#475569',
-        accent: '#1e293b',
-        background: '#ffffff',
-        text: '#0f172a'
-    };
+
+    // Fusionar valores por defecto con los del template
+    const s = { ...defaultSectionColors, ...(template?.sectionColors || {}) };
 
     const features = [
         {
-            icon: <BarChart className="w-8 h-8" />,
+            icon: <BarChart className={s.iconSize} />,
             title: 'Análisis Estratégico',
             description: 'Evaluación profunda de tu mercado, competencia y posición actual para identificar oportunidades.',
-            color: 'from-blue-600 to-blue-800',
             id: 'strategic'
         },
         {
-            icon: <Users className="w-8 h-8" />,
+            icon: <Users className={s.iconSize} />,
             title: 'Gestión del Talento',
             description: 'Desarrollo de equipos de alto rendimiento y cultura organizacional alineada a objetivos.',
-            color: 'from-slate-600 to-slate-800',
             id: 'talent'
         },
         {
-            icon: <Target className="w-8 h-8" />,
+            icon: <Target className={s.iconSize} />,
             title: 'Planificación Comercial',
             description: 'Estrategias de ventas y marketing para penetrar mercados y fidelizar clientes.',
-            color: 'from-blue-700 to-slate-900',
             id: 'commercial'
         },
         {
-            icon: <LineChart className="w-8 h-8" />,
+            icon: <LineChart className={s.iconSize} />,
             title: 'Optimización Financiera',
             description: 'Mejora de la rentabilidad, control de costos y planificación financiera a corto y largo plazo.',
-            color: 'from-blue-500 to-blue-700',
             id: 'financial'
         },
         {
-            icon: <Award className="w-8 h-8" />,
+            icon: <Award className={s.iconSize} />,
             title: 'Certificaciones y Normas',
             description: 'Asesoramiento para obtener certificaciones de calidad que mejoren tu competitividad.',
-            color: 'from-slate-500 to-slate-700',
             id: 'certifications'
         },
         {
-            icon: <Globe className="w-8 h-8" />,
+            icon: <Globe className={s.iconSize} />,
             title: 'Expansión Internacional',
             description: 'Estrategias para llevar tu negocio a nuevos mercados con el menor riesgo posible.',
-            color: 'from-blue-800 to-slate-800',
             id: 'international'
         },
     ];
 
     return (
-        <section className="section-padding bg-white dark:bg-neutral-900">
+        <section
+            id="services"
+            className="section-padding"
+            style={{ backgroundColor: s.featuresBackground }}
+        >
             <div className="container-custom">
                 <div className="text-center max-w-3xl mx-auto mb-16">
-                    <h2 className="text-4xl md:text-5xl font-bold mb-6 text-neutral-900 dark:text-white">
+                    <h2
+                        className="text-4xl md:text-5xl font-bold mb-6"
+                        style={{ color: s.featuresTitleColor }}
+                    >
                         <EditableText
                             elementId="features_title_1"
                             defaultText="Capacidades que"
                             tag="span"
                         />{' '}
-                        <span className="text-transparent bg-clip-text"
-                            style={{ backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                        <span
+                            className="text-transparent bg-clip-text"
+                            style={{
+                                backgroundImage: `linear-gradient(to right, ${s.featuresTitleColor}, ${s.featuresTitleColor})`,
+                            }}
+                        >
                             <EditableText
                                 elementId="features_title_2"
                                 defaultText="Transforman"
@@ -83,7 +85,10 @@ const ConsultingFeatures = () => {
                             />
                         </span>
                     </h2>
-                    <p className="text-xl text-neutral-600 dark:text-neutral-400">
+                    <p
+                        className="text-xl"
+                        style={{ color: s.featuresTitleColor }}
+                    >
                         <EditableText
                             elementId="features_description"
                             defaultText="No solo aconsejamos, implementamos. Te acompañamos en cada paso con herramientas y metodologías probadas."
@@ -94,16 +99,25 @@ const ConsultingFeatures = () => {
 
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {features.map((feature, index) => (
-                        <div key={index} className="group p-8 rounded-2xl bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 transition-all duration-300 hover:shadow-xl"
-                            style={{ borderColor: `hover:${colors.primary}` }}>
-                            <div className={`w-16 h-16 rounded-xl bg-gradient-to-r ${feature.color} p-0.5 mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                                <div className="w-full h-full rounded-xl bg-white dark:bg-neutral-900 flex items-center justify-center"
-                                    style={{ color: colors.primary }}>
-                                    {feature.icon}
-                                </div>
+                        <div
+                            key={index}
+                            className="group p-8 rounded-2xl transition-all duration-300 hover:shadow-xl"
+                            style={{
+                                backgroundColor: s.featuresCardBackground,
+                                border: `1px solid ${s.featuresCardBorder}`,
+                            }}
+                        >
+                            <div
+                                className="w-16 h-16 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300"
+                                style={{ color: s.featuresIconColor }}
+                            >
+                                {feature.icon}
                             </div>
 
-                            <h3 className="text-2xl font-bold mb-3 text-neutral-900 dark:text-white group-hover:text-blue-600 transition-colors">
+                            <h3
+                                className="text-2xl font-bold mb-3 transition-colors group-hover:text-blue-600"
+                                style={{ color: s.featuresTitleColor }}
+                            >
                                 <EditableText
                                     elementId={`feature_title_${feature.id}`}
                                     defaultText={feature.title}
@@ -111,7 +125,10 @@ const ConsultingFeatures = () => {
                                 />
                             </h3>
 
-                            <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed">
+                            <p
+                                className="leading-relaxed"
+                                style={{ color: s.featuresTitleColor }}
+                            >
                                 <EditableText
                                     elementId={`feature_desc_${feature.id}`}
                                     defaultText={feature.description}

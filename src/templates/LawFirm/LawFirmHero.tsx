@@ -1,25 +1,28 @@
+// src/templates/LawFirm/LawFirmHero.tsx
 import { ArrowRight, Gavel, Scale, Shield } from 'lucide-react';
 import React from 'react';
 import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
+import { defaultButtons, defaultSectionColors, defaultTypography } from '../../types/template.types';
 
 const LawFirmHero: React.FC = () => {
     const { template } = useTemplate();
-    const colors = template?.colors || {
-        primary: '#7f1d1d',
-        secondary: '#991b1b',
-        accent: '#450a0a',
-    };
+
+    const sectionColors = template?.sectionColors || defaultSectionColors;
+    const typography = template?.typography || defaultTypography;
+    const buttons = template?.buttons || defaultButtons;
 
     return (
-        <section className="relative section-padding overflow-hidden"
-            style={{ background: `linear-gradient(135deg, ${colors.accent} 0%, ${colors.secondary} 100%)` }}>
+        <section
+            className="relative section-padding overflow-hidden"
+            style={{ background: `linear-gradient(135deg, ${sectionColors.footerBackground} 0%, ${sectionColors.footerBackground} 100%)` }}
+        >
             {/* Elementos decorativos */}
             <div className="absolute inset-0 opacity-10">
                 <div className="absolute top-20 left-10 w-72 h-72 rounded-full mix-blend-multiply filter blur-3xl animate-blob"
-                    style={{ backgroundColor: colors.primary }} />
+                    style={{ backgroundColor: sectionColors.buttonPrimaryBackground }} />
                 <div className="absolute bottom-20 right-10 w-72 h-72 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000"
-                    style={{ backgroundColor: colors.primary }} />
+                    style={{ backgroundColor: sectionColors.buttonPrimaryBackground }} />
             </div>
 
             <div className="container-custom relative z-10">
@@ -36,14 +39,19 @@ const LawFirmHero: React.FC = () => {
                                 />
                             </span>
 
-                            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
+                            <h1
+                                className="font-bold leading-tight mb-6"
+                                style={{ fontSize: typography.heroTitleSize }}
+                            >
                                 <EditableText
                                     elementId="lf_hero_title_1"
                                     defaultText="Protegiendo tus"
                                     tag="span"
                                 />{' '}
-                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-amber-400"
-                                    style={{ backgroundImage: `linear-gradient(to right, #fef3c7, ${colors.primary})` }}>
+                                <span
+                                    className="text-transparent bg-clip-text"
+                                    style={{ backgroundImage: `linear-gradient(to right, #fef3c7, ${sectionColors.buttonPrimaryBackground})` }}
+                                >
                                     <EditableText
                                         elementId="lf_hero_title_2"
                                         defaultText="derechos"
@@ -57,7 +65,10 @@ const LawFirmHero: React.FC = () => {
                                 />
                             </h1>
 
-                            <p className="text-xl text-white/80 max-w-2xl">
+                            <p
+                                className="text-white/80 max-w-2xl"
+                                style={{ fontSize: typography.heroDescriptionSize }}
+                            >
                                 <EditableText
                                     elementId="lf_hero_description"
                                     defaultText="Más de 25 años de experiencia en derecho corporativo, civil y penal. Defendemos tus intereses con ética y profesionalismo."
@@ -67,22 +78,30 @@ const LawFirmHero: React.FC = () => {
                         </div>
 
                         <div className="flex flex-col sm:flex-row gap-4">
-                            <button className="group font-semibold px-8 py-4 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center text-white"
-                                style={{ background: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                            <a
+                                href={buttons.primary.url}
+                                target={buttons.primary.openInNewTab ? '_blank' : '_self'}
+                                className="group font-semibold px-8 py-4 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center text-white"
+                                style={{ background: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                            >
                                 <EditableText
                                     elementId="lf_cta_primary"
-                                    defaultText="Consulta Gratuita"
+                                    defaultText={buttons.primary.text}
                                     tag="span"
                                 />
                                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                            </button>
-                            <button className="group bg-transparent border-2 border-white/50 hover:border-white text-white font-semibold px-8 py-4 rounded-lg transition-all duration-300 flex items-center justify-center">
+                            </a>
+                            <a
+                                href={buttons.secondary.url}
+                                target={buttons.secondary.openInNewTab ? '_blank' : '_self'}
+                                className="group bg-transparent border-2 border-white/50 hover:border-white text-white font-semibold px-8 py-4 rounded-lg transition-all duration-300 flex items-center justify-center"
+                            >
                                 <EditableText
                                     elementId="lf_cta_secondary"
-                                    defaultText="Nuestras Áreas"
+                                    defaultText={buttons.secondary.text}
                                     tag="span"
                                 />
-                            </button>
+                            </a>
                         </div>
 
                         {/* Estadísticas */}

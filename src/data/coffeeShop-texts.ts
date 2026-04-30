@@ -13,7 +13,7 @@ export const COFFEE_SHOP_TEXTS = [
     { id: 'cf_hero_badge', label: 'Badge del Hero', section: 'Hero', default: 'Café de especialidad' },
     { id: 'cf_hero_title_1', label: 'Título principal (parte 1)', section: 'Hero', default: 'El mejor café' },
     { id: 'cf_hero_title_2', label: 'Título principal (parte 2)', section: 'Hero', default: 'de Buenos Aires' },
-    { id: 'cf_hero_description', label: 'Descripción del Hero', section: 'Hero', default: 'Granos seleccionados, tostado artesanal y un ambiente acogedor para disfrutar cada momento.' },
+    { id: 'cf_hero_description', label: 'Descripción del Hero', section: 'Hero', default: 'Granos seleccionados, tostado artesanal y un ambiente acogedor.' },
     { id: 'cf_cta_primary', label: 'Botón principal', section: 'Hero', default: 'Ver menú' },
     { id: 'cf_cta_secondary', label: 'Botón secundario', section: 'Hero', default: 'Conocé el local' },
     { id: 'cf_hours', label: 'Horarios', section: 'Hero', default: 'Lun-Dom 8:00 - 20:00' },
@@ -204,17 +204,15 @@ export const COFFEE_SHOP_TEXTS = [
     { id: 'cf_footer_cookies', label: 'Cookies', section: 'Footer', default: 'Cookies' },
 ];
 
+// src/data/coffeeShop-texts.ts - Agregar al final del archivo
 export const COFFEE_SHOP_IMAGES = [
-    { id: 'cf_logo', label: 'Logo', section: 'Header', defaultImage: '/images/coffee/logo-default.png' },
-    { id: 'cf_hero_image', label: 'Hero principal', section: 'Hero', defaultImage: 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735' },
-    { id: 'cf_about_image', label: 'Imagen About', section: 'Sobre Nosotros', defaultImage: 'https://images.unsplash.com/photo-1442512595331-e89e73853f31' },
-    { id: 'cf_gallery_1', label: 'Galería 1', section: 'Galería', defaultImage: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085' },
-    { id: 'cf_gallery_2', label: 'Galería 2', section: 'Galería', defaultImage: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93' },
-    { id: 'cf_gallery_3', label: 'Galería 3', section: 'Galería', defaultImage: 'https://images.unsplash.com/photo-1511920170033-f8396924c348' },
-    { id: 'cf_gallery_4', label: 'Galería 4', section: 'Galería', defaultImage: 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735' },
-    { id: 'cf_gallery_5', label: 'Galería 5', section: 'Galería', defaultImage: 'https://images.unsplash.com/photo-1442512595331-e89e73853f31' },
-    { id: 'cf_gallery_6', label: 'Galería 6', section: 'Galería', defaultImage: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085' },
-    { id: 'cf_event_1_image', label: 'Evento 1', section: 'Eventos', defaultImage: 'https://images.unsplash.com/photo-1511920170033-f8396924c348' },
-    { id: 'cf_event_2_image', label: 'Evento 2', section: 'Eventos', defaultImage: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93' },
-    { id: 'cf_event_3_image', label: 'Evento 3', section: 'Eventos', defaultImage: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085' },
+    { id: 'cf_logo', label: 'Logo', section: 'Header', defaultImage: 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=200' },
+    { id: 'cf_hero_image', label: 'Hero principal', section: 'Hero', defaultImage: 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=800' },
+    { id: 'cf_about_image', label: 'Imagen About', section: 'Sobre Nosotros', defaultImage: 'https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=800' },
+    { id: 'cf_gallery_1', label: 'Galería 1', section: 'Galería', defaultImage: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800' },
+    { id: 'cf_gallery_2', label: 'Galería 2', section: 'Galería', defaultImage: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800' },
+    { id: 'cf_gallery_3', label: 'Galería 3', section: 'Galería', defaultImage: 'https://images.unsplash.com/photo-1511920170033-f8396924c348?w=800' },
+    { id: 'cf_event_1_image', label: 'Evento 1', section: 'Eventos', defaultImage: 'https://images.unsplash.com/photo-1511920170033-f8396924c348?w=800' },
+    { id: 'cf_event_2_image', label: 'Evento 2', section: 'Eventos', defaultImage: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800' },
+    { id: 'cf_event_3_image', label: 'Evento 3', section: 'Eventos', defaultImage: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800' },
 ];

@@ -1,15 +1,15 @@
+// src/templates/CleaningService/CleaningServices.tsx
 import { Bug, Building2, Car, Droplets, Home, Sofa, Sparkles, Wind } from 'lucide-react';
 import React from 'react';
 import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
+import { defaultSectionColors, defaultTypography } from '../../types/template.types';
 
 const CleaningServices: React.FC = () => {
     const { template } = useTemplate();
-    const colors = template?.colors || {
-        primary: '#0284c7',
-        secondary: '#0369a1',
-        accent: '#075985',
-    };
+
+    const sectionColors = template?.sectionColors || defaultSectionColors;
+    const typography = template?.typography || defaultTypography;
 
     const services = [
         {
@@ -71,32 +71,62 @@ const CleaningServices: React.FC = () => {
     ];
 
     return (
-        <section id="services" className="section-padding bg-white dark:bg-neutral-900">
+        <section
+            id="services"
+            className="section-padding"
+            style={{ backgroundColor: sectionColors.featuresBackground }}
+        >
             <div className="container-custom">
                 <div className="text-center max-w-3xl mx-auto mb-16">
-                    <h2 className="text-4xl md:text-5xl font-bold mb-6 text-sky-900 dark:text-sky-100">
+                    <h2
+                        className="font-bold mb-6"
+                        style={{
+                            fontSize: typography.sectionTitleSize,
+                            color: sectionColors.featuresTitleColor
+                        }}
+                    >
                         <EditableText elementId="cl_services_title_1" defaultText="Nuestros" tag="span" />{' '}
-                        <span className="text-transparent bg-clip-text"
-                            style={{ backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                        <span
+                            className="text-transparent bg-clip-text"
+                            style={{ backgroundImage: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                        >
                             <EditableText elementId="cl_services_title_2" defaultText="servicios" tag="span" />
                         </span>
                     </h2>
-                    <p className="text-xl text-sky-700 dark:text-sky-300">
+                    <p
+                        className="text-xl"
+                        style={{ color: sectionColors.bodyTextColor }}
+                    >
                         <EditableText elementId="cl_services_description" defaultText="Soluciones profesionales para todo tipo de espacios." tag="span" />
                     </p>
                 </div>
 
                 <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {services.map((service) => (
-                        <div key={service.id} className="group p-6 rounded-xl border border-sky-200 dark:border-sky-800 hover:shadow-xl transition-all">
-                            <div className="w-14 h-14 rounded-lg mb-4 flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
-                                style={{ backgroundColor: `${colors.primary}15`, color: colors.primary }}>
+                        <div
+                            key={service.id}
+                            className="group p-6 rounded-xl border transition-all hover:shadow-xl"
+                            style={{
+                                backgroundColor: sectionColors.featuresCardBackground,
+                                borderColor: `${sectionColors.buttonPrimaryBackground}20`
+                            }}
+                        >
+                            <div
+                                className="w-14 h-14 rounded-lg mb-4 flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
+                                style={{ backgroundColor: `${sectionColors.buttonPrimaryBackground}15`, color: sectionColors.buttonPrimaryBackground }}
+                            >
                                 {service.icon}
                             </div>
-                            <h3 className="text-lg font-bold mb-2 text-sky-900 dark:text-sky-100">
+                            <h3
+                                className="text-lg font-bold mb-2"
+                                style={{ color: sectionColors.featuresTitleColor }}
+                            >
                                 <EditableText elementId={service.titleId} defaultText={service.titleDefault} tag="span" />
                             </h3>
-                            <p className="text-sm text-sky-700 dark:text-sky-300 leading-relaxed">
+                            <p
+                                className="text-sm leading-relaxed"
+                                style={{ color: sectionColors.bodyTextColor }}
+                            >
                                 <EditableText elementId={service.descId} defaultText={service.descDefault} tag="span" />
                             </p>
                         </div>

@@ -1,24 +1,28 @@
+// src/templates/Architecture/ArchitectureHero.tsx
 import { ArrowRight, Building, Ruler } from 'lucide-react';
 import React from 'react';
-import EditableText from '../../components/Editor/EditableText';
-import EditableImage from '../../components/Editor/EditableImage';
-import { useTemplate } from '../../contexts/TemplateContext';
 import { defaultImages } from '../../assets/default-images';
+import EditableImage from '../../components/Editor/EditableImage';
+import EditableText from '../../components/Editor/EditableText';
+import { useTemplate } from '../../contexts/TemplateContext';
+import { defaultButtons, defaultSectionColors, defaultTypography } from '../../types/template.types';
 
 const ArchitectureHero: React.FC = () => {
     const { template } = useTemplate();
-    const colors = template?.colors || {
-        primary: '#57534e',
-        secondary: '#44403c',
-        accent: '#292524',
-    };
+
+    const sectionColors = template?.sectionColors || defaultSectionColors;
+    const typography = template?.typography || defaultTypography;
+    const buttons = template?.buttons || defaultButtons;
 
     return (
-        <section className="relative section-padding overflow-hidden bg-stone-50 dark:bg-stone-950">
+        <section
+            className="relative section-padding overflow-hidden"
+            style={{ backgroundColor: sectionColors.heroBackground }}
+        >
             {/* Elementos decorativos geométricos */}
             <div className="absolute inset-0 opacity-10">
-                <div className="absolute top-20 left-10 w-96 h-96 border-8 border-stone-300 rotate-45"></div>
-                <div className="absolute bottom-20 right-10 w-64 h-64 border-8 border-stone-300 -rotate-12"></div>
+                <div className="absolute top-20 left-10 w-96 h-96 border-8 rotate-45" style={{ borderColor: sectionColors.buttonPrimaryBackground }}></div>
+                <div className="absolute bottom-20 right-10 w-64 h-64 border-8 -rotate-12" style={{ borderColor: sectionColors.buttonPrimaryBackground }}></div>
             </div>
 
             <div className="container-custom relative z-10">
@@ -26,8 +30,10 @@ const ArchitectureHero: React.FC = () => {
                     {/* Contenido izquierdo */}
                     <div className="space-y-8">
                         <div>
-                            <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium mb-4"
-                                style={{ backgroundColor: `${colors.primary}15`, color: colors.primary }}>
+                            <span
+                                className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium mb-4"
+                                style={{ backgroundColor: `${sectionColors.buttonPrimaryBackground}15`, color: sectionColors.buttonPrimaryBackground }}
+                            >
                                 <Building className="w-4 h-4 mr-2" />
                                 <EditableText
                                     elementId="ar_hero_badge"
@@ -36,14 +42,22 @@ const ArchitectureHero: React.FC = () => {
                                 />
                             </span>
 
-                            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 text-stone-900 dark:text-stone-100">
+                            <h1
+                                className="font-bold leading-tight mb-6"
+                                style={{
+                                    fontSize: typography.heroTitleSize,
+                                    color: sectionColors.heroTitleColor
+                                }}
+                            >
                                 <EditableText
                                     elementId="ar_hero_title_1"
                                     defaultText="Diseñamos"
                                     tag="span"
                                 />{' '}
-                                <span className="text-transparent bg-clip-text"
-                                    style={{ backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                                <span
+                                    className="text-transparent bg-clip-text"
+                                    style={{ backgroundImage: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                                >
                                     <EditableText
                                         elementId="ar_hero_title_2"
                                         defaultText="espacios"
@@ -57,7 +71,13 @@ const ArchitectureHero: React.FC = () => {
                                 />
                             </h1>
 
-                            <p className="text-xl text-stone-600 dark:text-stone-400 max-w-2xl">
+                            <p
+                                className="max-w-2xl"
+                                style={{
+                                    fontSize: typography.heroDescriptionSize,
+                                    color: sectionColors.heroDescriptionColor
+                                }}
+                            >
                                 <EditableText
                                     elementId="ar_hero_description"
                                     defaultText="Creemos que la arquitectura va más allá de construir edificios. Diseñamos espacios que mejoran la calidad de vida de las personas y respetan su entorno."
@@ -67,48 +87,74 @@ const ArchitectureHero: React.FC = () => {
                         </div>
 
                         <div className="flex flex-col sm:flex-row gap-4">
-                            <button className="group text-white font-semibold px-8 py-4 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center"
-                                style={{ background: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                            <a
+                                href={buttons.primary.url}
+                                target={buttons.primary.openInNewTab ? '_blank' : '_self'}
+                                className="group font-semibold px-8 py-4 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center text-white"
+                                style={{ background: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                            >
                                 <EditableText
                                     elementId="ar_cta_primary"
-                                    defaultText="Ver proyectos"
+                                    defaultText={buttons.primary.text}
                                     tag="span"
                                 />
                                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                            </button>
-                            <button className="group bg-transparent border-2 font-semibold px-8 py-4 rounded-lg transition-all duration-300 flex items-center justify-center"
-                                style={{ borderColor: colors.primary, color: colors.primary }}>
+                            </a>
+                            <a
+                                href={buttons.secondary.url}
+                                target={buttons.secondary.openInNewTab ? '_blank' : '_self'}
+                                className="group bg-transparent border-2 font-semibold px-8 py-4 rounded-lg transition-all duration-300 flex items-center justify-center"
+                                style={{ borderColor: sectionColors.buttonPrimaryBackground, color: sectionColors.buttonPrimaryBackground }}
+                            >
                                 <EditableText
                                     elementId="ar_cta_secondary"
-                                    defaultText="Contactar"
+                                    defaultText={buttons.secondary.text}
                                     tag="span"
                                 />
-                            </button>
+                            </a>
                         </div>
 
                         {/* Estadísticas */}
                         <div className="pt-8 grid grid-cols-3 gap-6">
                             <div className="text-center">
-                                <div className="text-3xl font-bold text-stone-900 dark:text-stone-100">
+                                <div
+                                    className="text-3xl font-bold"
+                                    style={{ color: sectionColors.heroTitleColor }}
+                                >
                                     <EditableText elementId="ar_stat_1_value" defaultText="15+" tag="span" />
                                 </div>
-                                <div className="text-sm text-stone-600 dark:text-stone-400">
+                                <div
+                                    className="text-sm"
+                                    style={{ color: sectionColors.heroDescriptionColor }}
+                                >
                                     <EditableText elementId="ar_stat_1_label" defaultText="Años de experiencia" tag="span" />
                                 </div>
                             </div>
                             <div className="text-center">
-                                <div className="text-3xl font-bold text-stone-900 dark:text-stone-100">
+                                <div
+                                    className="text-3xl font-bold"
+                                    style={{ color: sectionColors.heroTitleColor }}
+                                >
                                     <EditableText elementId="ar_stat_2_value" defaultText="200+" tag="span" />
                                 </div>
-                                <div className="text-sm text-stone-600 dark:text-stone-400">
+                                <div
+                                    className="text-sm"
+                                    style={{ color: sectionColors.heroDescriptionColor }}
+                                >
                                     <EditableText elementId="ar_stat_2_label" defaultText="Proyectos realizados" tag="span" />
                                 </div>
                             </div>
                             <div className="text-center">
-                                <div className="text-3xl font-bold text-stone-900 dark:text-stone-100">
+                                <div
+                                    className="text-3xl font-bold"
+                                    style={{ color: sectionColors.heroTitleColor }}
+                                >
                                     <EditableText elementId="ar_stat_3_value" defaultText="12" tag="span" />
                                 </div>
-                                <div className="text-sm text-stone-600 dark:text-stone-400">
+                                <div
+                                    className="text-sm"
+                                    style={{ color: sectionColors.heroDescriptionColor }}
+                                >
                                     <EditableText elementId="ar_stat_3_label" defaultText="Arquitectos" tag="span" />
                                 </div>
                             </div>
@@ -128,14 +174,17 @@ const ArchitectureHero: React.FC = () => {
                         </div>
 
                         {/* Badge flotante */}
-                        <div className="absolute -bottom-4 -left-4 bg-white dark:bg-stone-800 rounded-2xl shadow-xl p-4">
+                        <div
+                            className="absolute -bottom-4 -left-4 rounded-2xl shadow-xl p-4"
+                            style={{ backgroundColor: sectionColors.featuresCardBackground, border: `1px solid ${sectionColors.buttonPrimaryBackground}` }}
+                        >
                             <div className="flex items-center space-x-3">
-                                <Ruler className="w-8 h-8" style={{ color: colors.primary }} />
+                                <Ruler className="w-8 h-8" style={{ color: sectionColors.buttonPrimaryBackground }} />
                                 <div>
-                                    <p className="font-bold text-stone-900 dark:text-white">
+                                    <p className="font-bold" style={{ color: sectionColors.heroTitleColor }}>
                                         <EditableText elementId="ar_hero_badge_title" defaultText="Diseño personalizado" tag="span" />
                                     </p>
-                                    <p className="text-sm text-stone-600 dark:text-stone-400">
+                                    <p className="text-sm" style={{ color: sectionColors.heroDescriptionColor }}>
                                         <EditableText elementId="ar_hero_badge_text" defaultText="Para cada cliente" tag="span" />
                                     </p>
                                 </div>

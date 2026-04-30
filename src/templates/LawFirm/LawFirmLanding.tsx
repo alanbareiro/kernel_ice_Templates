@@ -1,8 +1,6 @@
 import React from 'react';
 import EditModeToggle from '../../components/Editor/EditModeToggle';
 import EditorDashboard from '../../components/Editor/EditorDashboard';
-import { TemplateProvider } from '../../contexts/TemplateContext';
-import { TemplateEditorProvider } from '../../contexts/TemplateEditorContext';
 import LawFirmAbout from './LawFirmAbout';
 import LawFirmAttorneys from './LawFirmAttorneys';
 import LawFirmContact from './LawFirmContact';
@@ -19,25 +17,25 @@ interface LawFirmLandingProps {
 
 const LawFirmLanding: React.FC<LawFirmLandingProps> = ({ onHomeClick }) => {
     return (
-        <TemplateProvider>
-            <TemplateEditorProvider>
-                <div className="min-h-screen flex flex-col">
-                    <LawFirmHeader />
-                    <main className="flex-grow">
-                        <LawFirmHero />
-                        <LawFirmFeatures />
-                        <LawFirmAbout />
-                        <LawFirmPracticeAreas />
-                        <LawFirmAttorneys />
-                        <LawFirmTestimonials />
-                        <LawFirmContact />
-                    </main>
-                    <LawFirmFooter />
-                    <EditorDashboard onHomeClick={onHomeClick} />
-                    <EditModeToggle />
-                </div>
-            </TemplateEditorProvider>
-        </TemplateProvider>
+        // <TemplateProvider>
+        //     <TemplateEditorProvider>
+        <div className="min-h-screen flex flex-col">
+            <LawFirmHeader />
+            <main className="flex-grow">
+                <LawFirmHero />
+                <LawFirmFeatures />
+                <LawFirmAbout />
+                <LawFirmPracticeAreas />
+                <LawFirmAttorneys />
+                <LawFirmTestimonials />
+                <LawFirmContact />
+            </main>
+            <LawFirmFooter />
+            <EditorDashboard onHomeClick={onHomeClick} />
+            <EditModeToggle />
+        </div>
+        //     </TemplateEditorProvider>
+        // </TemplateProvider>
     );
 };
 

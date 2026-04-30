@@ -1,15 +1,15 @@
+// src/templates/Startup/StartupFeatures.tsx
 import { Check } from 'lucide-react';
 import React from 'react';
 import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
+import { defaultSectionColors, defaultTypography } from '../../types/template.types';
 
 const StartupFeatures: React.FC = () => {
     const { template } = useTemplate();
-    const colors = template?.colors || {
-        primary: '#059669',
-        secondary: '#047857',
-        accent: '#065f46',
-    };
+
+    const sectionColors = template?.sectionColors || defaultSectionColors;
+    const typography = template?.typography || defaultTypography;
 
     const features = [
         {
@@ -45,13 +45,24 @@ const StartupFeatures: React.FC = () => {
     ];
 
     return (
-        <section className="section-padding bg-white dark:bg-neutral-900">
+        <section
+            className="section-padding"
+            style={{ backgroundColor: sectionColors.featuresBackground }}
+        >
             <div className="container-custom">
                 <div className="text-center max-w-3xl mx-auto mb-16">
-                    <h2 className="text-4xl md:text-5xl font-bold mb-6 text-emerald-900 dark:text-emerald-100">
+                    <h2
+                        className="font-bold mb-6"
+                        style={{
+                            fontSize: typography.sectionTitleSize,
+                            color: sectionColors.featuresTitleColor
+                        }}
+                    >
                         <EditableText elementId="st_features_title_1" defaultText="Características" tag="span" />{' '}
-                        <span className="text-transparent bg-clip-text"
-                            style={{ backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                        <span
+                            className="text-transparent bg-clip-text"
+                            style={{ backgroundImage: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                        >
                             <EditableText elementId="st_features_title_2" defaultText="principales" tag="span" />
                         </span>
                     </h2>
@@ -59,17 +70,27 @@ const StartupFeatures: React.FC = () => {
 
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {features.map((feature) => (
-                        <div key={feature.id} className="flex gap-4 p-6 bg-emerald-50 dark:bg-emerald-900/20 rounded-2xl">
+                        <div
+                            key={feature.id}
+                            className="flex gap-4 p-6 rounded-2xl"
+                            style={{ backgroundColor: sectionColors.featuresCardBackground }}
+                        >
                             <div className="flex-shrink-0">
-                                <div className="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center">
+                                <div
+                                    className="w-8 h-8 rounded-full flex items-center justify-center"
+                                    style={{ backgroundColor: sectionColors.buttonPrimaryBackground }}
+                                >
                                     <Check className="w-4 h-4 text-white" />
                                 </div>
                             </div>
                             <div>
-                                <h3 className="text-xl font-bold mb-2 text-emerald-900 dark:text-emerald-100">
+                                <h3
+                                    className="text-xl font-bold mb-2"
+                                    style={{ color: sectionColors.featuresTitleColor }}
+                                >
                                     <EditableText elementId={feature.titleId} defaultText={feature.titleDefault} tag="span" />
                                 </h3>
-                                <p className="text-emerald-700 dark:text-emerald-300">
+                                <p style={{ color: sectionColors.bodyTextColor }}>
                                     <EditableText elementId={feature.descId} defaultText={feature.descDefault} tag="span" />
                                 </p>
                             </div>

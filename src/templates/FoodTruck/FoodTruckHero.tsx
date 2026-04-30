@@ -1,26 +1,30 @@
+// src/templates/FoodTruck/FoodTruckHero.tsx
 import { ArrowRight, Instagram, MapPin, Truck } from 'lucide-react';
 import React from 'react';
 import { defaultImages } from '../../assets/default-images';
-import EditableText from '../../components/Editor/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
+import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
+import { defaultButtons, defaultSectionColors, defaultTypography } from '../../types/template.types';
 
 const FoodTruckHero: React.FC = () => {
     const { template } = useTemplate();
-    const colors = template?.colors || {
-        primary: '#e67e22',
-        secondary: '#d35400',
-        accent: '#a04000',
-    };
+
+    const sectionColors = template?.sectionColors || defaultSectionColors;
+    const typography = template?.typography || defaultTypography;
+    const buttons = template?.buttons || defaultButtons;
 
     return (
-        <section className="relative section-padding overflow-hidden bg-orange-50 dark:bg-orange-950">
+        <section
+            className="relative section-padding overflow-hidden"
+            style={{ backgroundColor: sectionColors.heroBackground }}
+        >
             {/* Elementos decorativos */}
             <div className="absolute inset-0 opacity-10">
                 <div className="absolute top-20 left-10 w-72 h-72 rounded-full mix-blend-multiply filter blur-3xl animate-blob"
-                    style={{ backgroundColor: colors.primary }} />
+                    style={{ backgroundColor: sectionColors.buttonPrimaryBackground }} />
                 <div className="absolute bottom-20 right-10 w-72 h-72 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000"
-                    style={{ backgroundColor: colors.accent }} />
+                    style={{ backgroundColor: sectionColors.buttonPrimaryBackground }} />
             </div>
 
             <div className="container-custom relative z-10">
@@ -28,8 +32,10 @@ const FoodTruckHero: React.FC = () => {
                     {/* Contenido izquierdo */}
                     <div className="space-y-8">
                         <div>
-                            <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium mb-4"
-                                style={{ backgroundColor: `${colors.primary}15`, color: colors.primary }}>
+                            <span
+                                className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium mb-4"
+                                style={{ backgroundColor: `${sectionColors.buttonPrimaryBackground}15`, color: sectionColors.buttonPrimaryBackground }}
+                            >
                                 <Truck className="w-4 h-4 mr-2" />
                                 <EditableText
                                     elementId="ft_hero_badge"
@@ -38,14 +44,22 @@ const FoodTruckHero: React.FC = () => {
                                 />
                             </span>
 
-                            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 text-orange-900 dark:text-orange-100">
+                            <h1
+                                className="font-bold leading-tight mb-6"
+                                style={{
+                                    fontSize: typography.heroTitleSize,
+                                    color: sectionColors.heroTitleColor
+                                }}
+                            >
                                 <EditableText
                                     elementId="ft_hero_title_1"
                                     defaultText="Gourmet que"
                                     tag="span"
                                 />{' '}
-                                <span className="text-transparent bg-clip-text"
-                                    style={{ backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                                <span
+                                    className="text-transparent bg-clip-text"
+                                    style={{ backgroundImage: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                                >
                                     <EditableText
                                         elementId="ft_hero_title_2"
                                         defaultText="viaja"
@@ -54,7 +68,13 @@ const FoodTruckHero: React.FC = () => {
                                 </span>
                             </h1>
 
-                            <p className="text-xl text-orange-700 dark:text-orange-300 max-w-2xl">
+                            <p
+                                className="max-w-2xl"
+                                style={{
+                                    fontSize: typography.heroDescriptionSize,
+                                    color: sectionColors.heroDescriptionColor
+                                }}
+                            >
                                 <EditableText
                                     elementId="ft_hero_description"
                                     defaultText="Comida callejera con identidad propia. Hamburguesas gourmet, tacos, y más. Cambiamos de ubicación cada día, seguinos para saber dónde estamos."
@@ -64,31 +84,39 @@ const FoodTruckHero: React.FC = () => {
                         </div>
 
                         <div className="flex flex-col sm:flex-row gap-4">
-                            <button className="group text-white font-semibold px-8 py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center"
-                                style={{ background: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                            <a
+                                href={buttons.primary.url}
+                                target={buttons.primary.openInNewTab ? '_blank' : '_self'}
+                                className="group font-semibold px-8 py-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center text-white"
+                                style={{ background: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                            >
                                 <EditableText
                                     elementId="ft_cta_primary"
-                                    defaultText="Ver menú"
+                                    defaultText={buttons.primary.text}
                                     tag="span"
                                 />
                                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                            </button>
-                            <button className="group bg-transparent border-2 font-semibold px-8 py-4 rounded-full transition-all duration-300 flex items-center justify-center"
-                                style={{ borderColor: colors.primary, color: colors.primary }}>
+                            </a>
+                            <a
+                                href={buttons.secondary.url}
+                                target={buttons.secondary.openInNewTab ? '_blank' : '_self'}
+                                className="group bg-transparent border-2 font-semibold px-8 py-4 rounded-full transition-all duration-300 flex items-center justify-center"
+                                style={{ borderColor: sectionColors.buttonPrimaryBackground, color: sectionColors.buttonPrimaryBackground }}
+                            >
                                 <MapPin className="mr-2 w-5 h-5" />
                                 <EditableText
                                     elementId="ft_cta_secondary"
-                                    defaultText="Dónde estamos hoy"
+                                    defaultText={buttons.secondary.text}
                                     tag="span"
                                 />
-                            </button>
+                            </a>
                         </div>
 
                         {/* Redes sociales */}
                         <div className="pt-4 flex items-center gap-4">
-                            <span className="text-orange-600 dark:text-orange-400">Seguinos:</span>
-                            <a href="#" className="p-2 bg-orange-100 dark:bg-orange-800 rounded-full hover:bg-orange-200 dark:hover:bg-orange-700 transition-colors">
-                                <Instagram className="w-5 h-5" style={{ color: colors.primary }} />
+                            <span style={{ color: sectionColors.heroDescriptionColor }}>Seguinos:</span>
+                            <a href="#" className="p-2 rounded-full transition-colors" style={{ backgroundColor: `${sectionColors.buttonPrimaryBackground}15`, color: sectionColors.buttonPrimaryBackground }}>
+                                <Instagram className="w-5 h-5" />
                             </a>
                         </div>
                     </div>
@@ -106,14 +134,17 @@ const FoodTruckHero: React.FC = () => {
                         </div>
 
                         {/* Badge flotante */}
-                        <div className="absolute -bottom-4 -left-4 bg-white dark:bg-orange-800 rounded-2xl shadow-xl p-4">
+                        <div
+                            className="absolute -bottom-4 -left-4 rounded-2xl shadow-xl p-4"
+                            style={{ backgroundColor: sectionColors.featuresCardBackground, border: `1px solid ${sectionColors.buttonPrimaryBackground}` }}
+                        >
                             <div className="flex items-center space-x-3">
-                                <Truck className="w-8 h-8" style={{ color: colors.primary }} />
+                                <Truck className="w-8 h-8" style={{ color: sectionColors.buttonPrimaryBackground }} />
                                 <div>
-                                    <p className="font-bold text-orange-900 dark:text-white">
+                                    <p className="font-bold" style={{ color: sectionColors.heroTitleColor }}>
                                         <EditableText elementId="ft_hero_badge_title" defaultText="Today's location" tag="span" />
                                     </p>
-                                    <p className="text-sm text-orange-600 dark:text-orange-300">
+                                    <p className="text-sm" style={{ color: sectionColors.heroDescriptionColor }}>
                                         <EditableText elementId="ft_hero_badge_text" defaultText="Parque Centenario" tag="span" />
                                     </p>
                                 </div>

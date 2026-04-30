@@ -1,17 +1,17 @@
+// src/templates/Gym/GymClasses.tsx
 import { Bike, Dumbbell, Heart, Target, Users, Zap } from 'lucide-react';
 import React from 'react';
 import { defaultImages } from '../../assets/default-images';
-import EditableText from '../../components/Editor/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
+import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
+import { defaultSectionColors, defaultTypography } from '../../types/template.types';
 
 const GymClasses: React.FC = () => {
     const { template } = useTemplate();
-    const colors = template?.colors || {
-        primary: '#ea580c',
-        secondary: '#c2410c',
-        accent: '#9a3412',
-    };
+
+    const sectionColors = template?.sectionColors || defaultSectionColors;
+    const typography = template?.typography || defaultTypography;
 
     const classImages = {
         class1: defaultImages.gym.class1,
@@ -80,24 +80,43 @@ const GymClasses: React.FC = () => {
     ];
 
     return (
-        <section id="classes" className="section-padding bg-black text-white">
+        <section
+            id="classes"
+            className="section-padding"
+            style={{ backgroundColor: sectionColors.featuresBackground }}
+        >
             <div className="container-custom">
                 <div className="text-center max-w-3xl mx-auto mb-16">
-                    <h2 className="text-4xl md:text-5xl font-bold mb-6">
+                    <h2
+                        className="font-bold mb-6"
+                        style={{
+                            fontSize: typography.sectionTitleSize,
+                            color: sectionColors.featuresTitleColor
+                        }}
+                    >
                         <EditableText elementId="gm_classes_title_1" defaultText="Nuestras" tag="span" />{' '}
-                        <span className="text-transparent bg-clip-text"
-                            style={{ backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                        <span
+                            className="text-transparent bg-clip-text"
+                            style={{ backgroundImage: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                        >
                             <EditableText elementId="gm_classes_title_2" defaultText="clases" tag="span" />
                         </span>
                     </h2>
-                    <p className="text-xl text-gray-400">
+                    <p
+                        className="text-xl"
+                        style={{ color: sectionColors.bodyTextColor }}
+                    >
                         <EditableText elementId="gm_classes_description" defaultText="Variedad de disciplinas para todos los gustos y niveles." tag="span" />
                     </p>
                 </div>
 
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {classes.map((cls) => (
-                        <div key={cls.id} className="group bg-gray-900 rounded-2xl overflow-hidden border border-gray-800 hover:border-orange-500 transition-all">
+                        <div
+                            key={cls.id}
+                            className="group rounded-2xl overflow-hidden border transition-all hover:border-orange-500"
+                            style={{ backgroundColor: sectionColors.featuresCardBackground, borderColor: sectionColors.featuresCardBorder }}
+                        >
                             <div className="h-48 overflow-hidden">
                                 <EditableImage
                                     elementId={cls.imageId}
@@ -108,16 +127,25 @@ const GymClasses: React.FC = () => {
                                 />
                             </div>
                             <div className="p-6">
-                                <div className="w-12 h-12 rounded-lg mb-4 flex items-center justify-center" style={{ backgroundColor: `${colors.primary}15`, color: colors.primary }}>
+                                <div
+                                    className="w-12 h-12 rounded-lg mb-4 flex items-center justify-center"
+                                    style={{ backgroundColor: `${sectionColors.buttonPrimaryBackground}15`, color: sectionColors.buttonPrimaryBackground }}
+                                >
                                     {cls.icon}
                                 </div>
-                                <h3 className="text-xl font-bold mb-2 text-white">
+                                <h3
+                                    className="text-xl font-bold mb-2"
+                                    style={{ color: sectionColors.featuresTitleColor }}
+                                >
                                     <EditableText elementId={cls.titleId} defaultText={cls.titleDefault} tag="span" />
                                 </h3>
-                                <p className="text-gray-400 mb-3">
+                                <p
+                                    className="mb-3"
+                                    style={{ color: sectionColors.bodyTextColor }}
+                                >
                                     <EditableText elementId={cls.descId} defaultText={cls.descDefault} tag="span" />
                                 </p>
-                                <p className="text-sm text-orange-400">
+                                <p className="text-sm" style={{ color: sectionColors.buttonPrimaryBackground }}>
                                     <EditableText elementId={cls.timeId} defaultText={cls.timeDefault} tag="span" />
                                 </p>
                             </div>

@@ -19,8 +19,8 @@ interface DigitalLandingProps {
 
 const DigitalLanding: React.FC<DigitalLandingProps> = ({ onHomeClick }) => {
     return (
-        <TemplateProvider>
-            <TemplateEditorProvider>
+        // <TemplateProvider>
+        //     <TemplateEditorProvider>
                 <div className="min-h-screen flex flex-col">
                     <DigitalHeader />
                     <main className="flex-grow">
@@ -35,8 +35,8 @@ const DigitalLanding: React.FC<DigitalLandingProps> = ({ onHomeClick }) => {
                     <EditorDashboard onHomeClick={onHomeClick} />
                     <EditModeToggle />
                 </div>
-            </TemplateEditorProvider>
-        </TemplateProvider>
+        //     </TemplateEditorProvider>
+        // </TemplateProvider>
     );
 };
 

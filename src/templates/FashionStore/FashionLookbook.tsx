@@ -1,15 +1,15 @@
+// src/templates/FashionStore/FashionLookbook.tsx
 import React from 'react';
-import EditableText from '../../components/Editor/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
+import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
+import { defaultSectionColors, defaultTypography } from '../../types/template.types';
 
 const FashionLookbook: React.FC = () => {
     const { template } = useTemplate();
-    const colors = template?.colors || {
-        primary: '#000000',
-        secondary: '#1f2937',
-        accent: '#4b5563',
-    };
+
+    const sectionColors = template?.sectionColors || defaultSectionColors;
+    const typography = template?.typography || defaultTypography;
 
     const looks = [
         { id: 'look_1', titleId: 'fa_look_1_title', titleDefault: 'Look 1 - Casual Elegante', imageId: 'fa_look_1_image' },
@@ -21,17 +21,32 @@ const FashionLookbook: React.FC = () => {
     ];
 
     return (
-        <section id="lookbook" className="section-padding bg-gray-50 dark:bg-gray-900">
+        <section
+            id="lookbook"
+            className="section-padding"
+            style={{ backgroundColor: sectionColors.featuresBackground }}
+        >
             <div className="container-custom">
                 <div className="text-center max-w-3xl mx-auto mb-16">
-                    <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900 dark:text-white">
+                    <h2
+                        className="font-bold mb-6"
+                        style={{
+                            fontSize: typography.sectionTitleSize,
+                            color: sectionColors.featuresTitleColor
+                        }}
+                    >
                         <EditableText elementId="fa_lookbook_title_1" defaultText="Nuestro" tag="span" />{' '}
-                        <span className="text-transparent bg-clip-text"
-                            style={{ backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                        <span
+                            className="text-transparent bg-clip-text"
+                            style={{ backgroundImage: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                        >
                             <EditableText elementId="fa_lookbook_title_2" defaultText="Lookbook" tag="span" />
                         </span>
                     </h2>
-                    <p className="text-xl text-gray-600 dark:text-gray-400">
+                    <p
+                        className="text-xl"
+                        style={{ color: sectionColors.bodyTextColor }}
+                    >
                         <EditableText elementId="fa_lookbook_description" defaultText="Inspirate con nuestras combinaciones." tag="span" />
                     </p>
                 </div>
@@ -44,7 +59,9 @@ const FashionLookbook: React.FC = () => {
                             </div>
                             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                                 <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                                    <p className="text-lg font-bold"><EditableText elementId={look.titleId} defaultText={look.titleDefault} tag="span" /></p>
+                                    <p className="text-lg font-bold">
+                                        <EditableText elementId={look.titleId} defaultText={look.titleDefault} tag="span" />
+                                    </p>
                                 </div>
                             </div>
                         </div>

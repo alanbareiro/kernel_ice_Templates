@@ -1,16 +1,17 @@
+// src/templates/DigitalAgency/DigitalPortfolio.tsx
 import { ExternalLink } from 'lucide-react';
 import React, { useState } from 'react';
-import EditableText from '../../components/Editor/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
+import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
+import { defaultSectionColors, defaultTypography } from '../../types/template.types';
 
 const DigitalPortfolio: React.FC = () => {
     const { template } = useTemplate();
-    const colors = template?.colors || {
-        primary: '#0891b2',
-        secondary: '#0e7490',
-        accent: '#155e75',
-    };
+
+    const sectionColors = template?.sectionColors || defaultSectionColors;
+    const typography = template?.typography || defaultTypography;
+
     const [activeFilter, setActiveFilter] = useState('all');
 
     const filters = [
@@ -70,58 +71,76 @@ const DigitalPortfolio: React.FC = () => {
         : projects.filter(p => p.category === activeFilter);
 
     return (
-        <section id="portfolio" className="section-padding bg-cyan-50 dark:bg-cyan-950">
+        <section
+            id="portfolio"
+            className="section-padding"
+            style={{ backgroundColor: sectionColors.featuresBackground }}
+        >
             <div className="container-custom">
                 <div className="text-center max-w-3xl mx-auto mb-16">
-                    <h2 className="text-4xl md:text-5xl font-bold mb-6 text-cyan-900 dark:text-cyan-100">
+                    <h2
+                        className="font-bold mb-6"
+                        style={{
+                            fontSize: typography.sectionTitleSize,
+                            color: sectionColors.featuresTitleColor
+                        }}
+                    >
                         <EditableText elementId="di_portfolio_title_1" defaultText="Nuestro" tag="span" />{' '}
-                        <span className="text-transparent bg-clip-text"
-                            style={{ backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                        <span
+                            className="text-transparent bg-clip-text"
+                            style={{ backgroundImage: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                        >
                             <EditableText elementId="di_portfolio_title_2" defaultText="portfolio" tag="span" />
                         </span>
                     </h2>
-                    <p className="text-xl text-cyan-700 dark:text-cyan-300">
+                    <p
+                        className="text-xl"
+                        style={{ color: sectionColors.bodyTextColor }}
+                    >
                         <EditableText elementId="di_portfolio_description" defaultText="Algunos de nuestros trabajos recientes." tag="span" />
                     </p>
                 </div>
 
-                {/* Filtros */}
                 <div className="flex flex-wrap justify-center gap-3 mb-12">
                     {filters.map((filter) => (
                         <button
                             key={filter.id}
                             onClick={() => setActiveFilter(filter.id)}
-                            className={`px-6 py-2 rounded-full font-medium transition-all ${activeFilter === filter.id
-                                    ? 'text-white'
-                                    : 'bg-white dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-300 hover:bg-cyan-100 dark:hover:bg-cyan-800'
+                            className={`px-6 py-2 rounded-full font-medium transition-all ${activeFilter === filter.id ? 'text-white' : ''
                                 }`}
-                            style={activeFilter === filter.id ? { background: colors.primary } : {}}
+                            style={
+                                activeFilter === filter.id
+                                    ? { background: sectionColors.buttonPrimaryBackground }
+                                    : {
+                                        backgroundColor: sectionColors.featuresCardBackground,
+                                        color: sectionColors.bodyTextColor
+                                    }
+                            }
                         >
                             <EditableText elementId={filter.nameId} defaultText={filter.name} tag="span" />
                         </button>
                     ))}
                 </div>
 
-                {/* Grid de proyectos */}
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {filteredProjects.map((proj) => (
-                        <div key={proj.id} className="group bg-white dark:bg-cyan-900/20 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all">
+                        <div key={proj.id} className="group rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all" style={{ backgroundColor: sectionColors.featuresCardBackground }}>
                             <div className="relative h-64 overflow-hidden">
                                 <EditableImage elementId={proj.imageId} defaultImage="" alt={proj.titleDefault} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" category="digital" />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-end p-4">
                                     <a href="#" className="p-2 bg-white rounded-full">
-                                        <ExternalLink className="w-5 h-5" style={{ color: colors.primary }} />
+                                        <ExternalLink className="w-5 h-5" style={{ color: sectionColors.buttonPrimaryBackground }} />
                                     </a>
                                 </div>
                             </div>
                             <div className="p-6">
-                                <h3 className="text-xl font-bold mb-2 text-cyan-900 dark:text-cyan-100">
+                                <h3 className="text-xl font-bold mb-2" style={{ color: sectionColors.featuresTitleColor }}>
                                     <EditableText elementId={proj.titleId} defaultText={proj.titleDefault} tag="span" />
                                 </h3>
-                                <p className="text-sm text-cyan-700 dark:text-cyan-300 mb-2">
+                                <p className="text-sm mb-2" style={{ color: sectionColors.bodyTextColor }}>
                                     <EditableText elementId={proj.descId} defaultText={proj.descDefault} tag="span" />
                                 </p>
-                                <p className="text-xs font-semibold" style={{ color: colors.primary }}>
+                                <p className="text-xs font-semibold" style={{ color: sectionColors.buttonPrimaryBackground }}>
                                     <EditableText elementId={proj.clientId} defaultText={proj.clientDefault} tag="span" />
                                 </p>
                             </div>

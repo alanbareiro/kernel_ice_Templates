@@ -1,15 +1,15 @@
+// src/templates/BeautySalon/SalonPricing.tsx
 import { Check } from 'lucide-react';
 import React from 'react';
 import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
+import { defaultSectionColors, defaultTypography } from '../../types/template.types';
 
 const SalonPricing: React.FC = () => {
     const { template } = useTemplate();
-    const colors = template?.colors || {
-        primary: '#db2777',
-        secondary: '#be185d',
-        accent: '#9d174d',
-    };
+
+    const sectionColors = template?.sectionColors || defaultSectionColors;
+    const typography = template?.typography || defaultTypography;
 
     const services = [
         { id: 'price_1', nameId: 'sl_price_1_name', nameDefault: 'Corte de cabello', priceId: 'sl_price_1_price', priceDefault: '$2500' },
@@ -29,41 +29,61 @@ const SalonPricing: React.FC = () => {
     ];
 
     return (
-        <section id="pricing" className="section-padding bg-pink-50 dark:bg-pink-950">
+        <section
+            id="pricing"
+            className="section-padding"
+            style={{ backgroundColor: sectionColors.featuresBackground }}
+        >
             <div className="container-custom">
                 <div className="text-center max-w-3xl mx-auto mb-16">
-                    <h2 className="text-4xl md:text-5xl font-bold mb-6 text-pink-900 dark:text-pink-100">
+                    <h2
+                        className="font-bold mb-6"
+                        style={{
+                            fontSize: typography.sectionTitleSize,
+                            color: sectionColors.featuresTitleColor
+                        }}
+                    >
                         <EditableText elementId="sl_pricing_title_1" defaultText="Nuestros" tag="span" />{' '}
-                        <span className="text-transparent bg-clip-text"
-                            style={{ backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                        <span
+                            className="text-transparent bg-clip-text"
+                            style={{ backgroundImage: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                        >
                             <EditableText elementId="sl_pricing_title_2" defaultText="precios" tag="span" />
                         </span>
                     </h2>
-                    <p className="text-xl text-pink-700 dark:text-pink-300">
+                    <p
+                        className="text-xl"
+                        style={{ color: sectionColors.bodyTextColor }}
+                    >
                         <EditableText elementId="sl_pricing_description" defaultText="Precios transparentes, sin sorpresas. Calidad garantizada." tag="span" />
                     </p>
                 </div>
 
                 <div className="max-w-4xl mx-auto">
-                    <div className="bg-white dark:bg-pink-900/20 rounded-2xl p-8 shadow-lg">
+                    <div
+                        className="rounded-2xl p-8 shadow-lg"
+                        style={{ backgroundColor: sectionColors.featuresCardBackground }}
+                    >
                         <div className="grid md:grid-cols-2 gap-4">
                             {services.map((service) => (
-                                <div key={service.id} className="flex items-center justify-between p-3 border-b border-pink-100 dark:border-pink-800 last:border-0">
+                                <div key={service.id} className="flex items-center justify-between p-3 border-b last:border-0" style={{ borderColor: `${sectionColors.buttonPrimaryBackground}30` }}>
                                     <div className="flex items-center">
-                                        <Check className="w-4 h-4 mr-3" style={{ color: colors.primary }} />
-                                        <span className="text-pink-900 dark:text-pink-100">
+                                        <Check className="w-4 h-4 mr-3" style={{ color: sectionColors.buttonPrimaryBackground }} />
+                                        <span style={{ color: sectionColors.featuresTitleColor }}>
                                             <EditableText elementId={service.nameId} defaultText={service.nameDefault} tag="span" />
                                         </span>
                                     </div>
-                                    <span className="font-bold text-transparent bg-clip-text"
-                                        style={{ backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                                    <span
+                                        className="font-bold text-transparent bg-clip-text"
+                                        style={{ backgroundImage: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                                    >
                                         <EditableText elementId={service.priceId} defaultText={service.priceDefault} tag="span" />
                                     </span>
                                 </div>
                             ))}
                         </div>
                     </div>
-                    <p className="text-center text-pink-600 dark:text-pink-400 mt-6 italic">
+                    <p className="text-center mt-6 italic" style={{ color: sectionColors.bodyTextColor }}>
                         <EditableText elementId="sl_pricing_note" defaultText="*Los precios son orientativos. Consultá por promociones y combos." tag="span" />
                     </p>
                 </div>

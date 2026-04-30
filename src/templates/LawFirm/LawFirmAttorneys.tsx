@@ -1,16 +1,16 @@
+// src/templates/LawFirm/LawFirmAttorneys.tsx
 import { Linkedin, Mail, Phone } from 'lucide-react';
 import React from 'react';
 import EditableImage from '../../components/Editor/EditableImage';
 import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
+import { defaultSectionColors, defaultTypography } from '../../types/template.types';
 
 const LawFirmAttorneys: React.FC = () => {
     const { template } = useTemplate();
-    const colors = template?.colors || {
-        primary: '#7f1d1d',
-        secondary: '#991b1b',
-        accent: '#450a0a',
-    };
+
+    const sectionColors = template?.sectionColors || defaultSectionColors;
+    const typography = template?.typography || defaultTypography;
 
     const attorneys = [
         {
@@ -56,17 +56,29 @@ const LawFirmAttorneys: React.FC = () => {
     ];
 
     return (
-        <section id="attorneys" className="section-padding bg-stone-50 dark:bg-stone-950">
+        <section
+            id="attorneys"
+            className="section-padding"
+            style={{ backgroundColor: sectionColors.featuresBackground }}
+        >
             <div className="container-custom">
                 <div className="text-center max-w-3xl mx-auto mb-16">
-                    <h2 className="text-4xl md:text-5xl font-bold mb-6 text-stone-900 dark:text-stone-100">
+                    <h2
+                        className="font-bold mb-6"
+                        style={{
+                            fontSize: typography.sectionTitleSize,
+                            color: sectionColors.featuresTitleColor
+                        }}
+                    >
                         <EditableText
                             elementId="lf_attorneys_title_1"
                             defaultText="Nuestro"
                             tag="span"
                         />{' '}
-                        <span className="text-transparent bg-clip-text"
-                            style={{ backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                        <span
+                            className="text-transparent bg-clip-text"
+                            style={{ backgroundImage: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                        >
                             <EditableText
                                 elementId="lf_attorneys_title_2"
                                 defaultText="Equipo Legal"
@@ -74,7 +86,10 @@ const LawFirmAttorneys: React.FC = () => {
                             />
                         </span>
                     </h2>
-                    <p className="text-xl text-stone-600 dark:text-stone-400">
+                    <p
+                        className="text-xl"
+                        style={{ color: sectionColors.bodyTextColor }}
+                    >
                         <EditableText
                             elementId="lf_attorneys_description"
                             defaultText="Profesionales de alto nivel, comprometidos con tu caso."
@@ -86,8 +101,10 @@ const LawFirmAttorneys: React.FC = () => {
                 <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
                     {attorneys.map((attorney) => (
                         <div key={attorney.id} className="group text-center">
-                            <div className="relative mb-4 mx-auto w-48 h-48 rounded-full overflow-hidden border-4 transition-all group-hover:scale-105 duration-300"
-                                style={{ borderColor: colors.primary }}>
+                            <div
+                                className="relative mb-4 mx-auto w-48 h-48 rounded-full overflow-hidden border-4 transition-all group-hover:scale-105 duration-300"
+                                style={{ borderColor: sectionColors.buttonPrimaryBackground }}
+                            >
                                 <EditableImage
                                     elementId={attorney.imageId}
                                     defaultImage=""
@@ -96,28 +113,31 @@ const LawFirmAttorneys: React.FC = () => {
                                     category="lawFirm"
                                 />
                             </div>
-                            <h3 className="text-xl font-bold text-stone-900 dark:text-stone-100 mb-1">
+                            <h3
+                                className="text-xl font-bold mb-1"
+                                style={{ color: sectionColors.featuresTitleColor }}
+                            >
                                 <EditableText
                                     elementId={attorney.nameId}
                                     defaultText={attorney.nameDefault}
                                     tag="span"
                                 />
                             </h3>
-                            <p className="text-sm mb-3" style={{ color: colors.primary }}>
+                            <p className="text-sm mb-3" style={{ color: sectionColors.buttonPrimaryBackground }}>
                                 <EditableText
                                     elementId={attorney.roleId}
                                     defaultText={attorney.roleDefault}
                                     tag="span"
                                 />
                             </p>
-                            <div className="flex items-center justify-center space-x-3 text-stone-500">
-                                <a href={`mailto:${attorney.email}`} className="hover:text-stone-900 transition-colors">
+                            <div className="flex items-center justify-center space-x-3">
+                                <a href={`mailto:${attorney.email}`} className="transition-colors" style={{ color: sectionColors.bodyTextColor }}>
                                     <Mail className="w-4 h-4" />
                                 </a>
-                                <a href={`tel:${attorney.phone}`} className="hover:text-stone-900 transition-colors">
+                                <a href={`tel:${attorney.phone}`} className="transition-colors" style={{ color: sectionColors.bodyTextColor }}>
                                     <Phone className="w-4 h-4" />
                                 </a>
-                                <a href="#" className="hover:text-stone-900 transition-colors">
+                                <a href="#" className="transition-colors" style={{ color: sectionColors.bodyTextColor }}>
                                     <Linkedin className="w-4 h-4" />
                                 </a>
                             </div>

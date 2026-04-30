@@ -1,20 +1,24 @@
+// src/templates/Gym/GymHero.tsx
 import { ArrowRight, Dumbbell, Trophy } from 'lucide-react';
 import React from 'react';
 import { defaultImages } from '../../assets/default-images';
-import EditableText from '../../components/Editor/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
+import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
+import { defaultButtons, defaultSectionColors, defaultTypography } from '../../types/template.types';
 
 const GymHero: React.FC = () => {
     const { template } = useTemplate();
-    const colors = template?.colors || {
-        primary: '#ea580c',
-        secondary: '#c2410c',
-        accent: '#9a3412',
-    };
+
+    const sectionColors = template?.sectionColors || defaultSectionColors;
+    const typography = template?.typography || defaultTypography;
+    const buttons = template?.buttons || defaultButtons;
 
     return (
-        <section className="relative section-padding overflow-hidden bg-black text-white">
+        <section
+            className="relative section-padding overflow-hidden"
+            style={{ backgroundColor: sectionColors.heroBackground }}
+        >
             {/* Imagen de fondo con overlay */}
             <div className="absolute inset-0">
                 <EditableImage
@@ -31,7 +35,10 @@ const GymHero: React.FC = () => {
                     {/* Contenido izquierdo */}
                     <div className="space-y-8">
                         <div>
-                            <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium mb-4 bg-orange-500/20 text-orange-400 border border-orange-500/30">
+                            <span
+                                className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium mb-4 border"
+                                style={{ backgroundColor: `${sectionColors.buttonPrimaryBackground}20`, color: sectionColors.buttonPrimaryBackground, borderColor: `${sectionColors.buttonPrimaryBackground}30` }}
+                            >
                                 <Dumbbell className="w-4 h-4 mr-2" />
                                 <EditableText
                                     elementId="gm_hero_badge"
@@ -40,14 +47,22 @@ const GymHero: React.FC = () => {
                                 />
                             </span>
 
-                            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
+                            <h1
+                                className="font-bold leading-tight mb-6"
+                                style={{
+                                    fontSize: typography.heroTitleSize,
+                                    color: sectionColors.heroTitleColor
+                                }}
+                            >
                                 <EditableText
                                     elementId="gm_hero_title_1"
                                     defaultText="Superá tus"
                                     tag="span"
                                 />{' '}
-                                <span className="text-transparent bg-clip-text"
-                                    style={{ backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                                <span
+                                    className="text-transparent bg-clip-text"
+                                    style={{ backgroundImage: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                                >
                                     <EditableText
                                         elementId="gm_hero_title_2"
                                         defaultText="límites"
@@ -56,7 +71,13 @@ const GymHero: React.FC = () => {
                                 </span>
                             </h1>
 
-                            <p className="text-xl text-gray-300 max-w-2xl">
+                            <p
+                                className="max-w-2xl"
+                                style={{
+                                    fontSize: typography.heroDescriptionSize,
+                                    color: sectionColors.heroDescriptionColor
+                                }}
+                            >
                                 <EditableText
                                     elementId="gm_hero_description"
                                     defaultText="Entrenamiento de alta calidad, instalaciones modernas y los mejores entrenadores para ayudarte a alcanzar tus metas fitness."
@@ -66,47 +87,74 @@ const GymHero: React.FC = () => {
                         </div>
 
                         <div className="flex flex-col sm:flex-row gap-4">
-                            <button className="group text-white font-semibold px-8 py-4 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center"
-                                style={{ background: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                            <a
+                                href={buttons.primary.url}
+                                target={buttons.primary.openInNewTab ? '_blank' : '_self'}
+                                className="group font-semibold px-8 py-4 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center text-white"
+                                style={{ background: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                            >
                                 <EditableText
                                     elementId="gm_cta_primary"
-                                    defaultText="Comenzá ahora"
+                                    defaultText={buttons.primary.text}
                                     tag="span"
                                 />
                                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                            </button>
-                            <button className="group bg-transparent border-2 border-orange-500 text-orange-400 hover:bg-orange-500 hover:text-white font-semibold px-8 py-4 rounded-lg transition-all duration-300 flex items-center justify-center">
+                            </a>
+                            <a
+                                href={buttons.secondary.url}
+                                target={buttons.secondary.openInNewTab ? '_blank' : '_self'}
+                                className="group bg-transparent border-2 font-semibold px-8 py-4 rounded-lg transition-all duration-300 flex items-center justify-center"
+                                style={{ borderColor: sectionColors.buttonPrimaryBackground, color: sectionColors.buttonPrimaryBackground }}
+                            >
                                 <EditableText
                                     elementId="gm_cta_secondary"
-                                    defaultText="Clases gratis"
+                                    defaultText={buttons.secondary.text}
                                     tag="span"
                                 />
-                            </button>
+                            </a>
                         </div>
 
                         {/* Estadísticas */}
                         <div className="pt-8 grid grid-cols-3 gap-6">
                             <div className="text-center">
-                                <div className="text-3xl font-bold text-white">
+                                <div
+                                    className="text-3xl font-bold"
+                                    style={{ color: sectionColors.heroTitleColor }}
+                                >
                                     <EditableText elementId="gm_stat_1_value" defaultText="15+" tag="span" />
                                 </div>
-                                <div className="text-sm text-gray-400">
+                                <div
+                                    className="text-sm"
+                                    style={{ color: sectionColors.heroDescriptionColor }}
+                                >
                                     <EditableText elementId="gm_stat_1_label" defaultText="Años de experiencia" tag="span" />
                                 </div>
                             </div>
                             <div className="text-center">
-                                <div className="text-3xl font-bold text-white">
+                                <div
+                                    className="text-3xl font-bold"
+                                    style={{ color: sectionColors.heroTitleColor }}
+                                >
                                     <EditableText elementId="gm_stat_2_value" defaultText="2000+" tag="span" />
                                 </div>
-                                <div className="text-sm text-gray-400">
+                                <div
+                                    className="text-sm"
+                                    style={{ color: sectionColors.heroDescriptionColor }}
+                                >
                                     <EditableText elementId="gm_stat_2_label" defaultText="Miembros activos" tag="span" />
                                 </div>
                             </div>
                             <div className="text-center">
-                                <div className="text-3xl font-bold text-white">
+                                <div
+                                    className="text-3xl font-bold"
+                                    style={{ color: sectionColors.heroTitleColor }}
+                                >
                                     <EditableText elementId="gm_stat_3_value" defaultText="20+" tag="span" />
                                 </div>
-                                <div className="text-sm text-gray-400">
+                                <div
+                                    className="text-sm"
+                                    style={{ color: sectionColors.heroDescriptionColor }}
+                                >
                                     <EditableText elementId="gm_stat_3_label" defaultText="Entrenadores" tag="span" />
                                 </div>
                             </div>
@@ -126,14 +174,17 @@ const GymHero: React.FC = () => {
                         </div>
 
                         {/* Badge flotante */}
-                        <div className="absolute -bottom-4 -left-4 bg-black border border-orange-500 rounded-2xl shadow-xl p-4">
+                        <div
+                            className="absolute -bottom-4 -left-4 border rounded-2xl shadow-xl p-4"
+                            style={{ backgroundColor: sectionColors.featuresCardBackground, borderColor: sectionColors.buttonPrimaryBackground }}
+                        >
                             <div className="flex items-center space-x-3">
-                                <Trophy className="w-8 h-8" style={{ color: colors.primary }} />
+                                <Trophy className="w-8 h-8" style={{ color: sectionColors.buttonPrimaryBackground }} />
                                 <div>
-                                    <p className="font-bold text-white">
+                                    <p className="font-bold" style={{ color: sectionColors.heroTitleColor }}>
                                         <EditableText elementId="gm_hero_badge_title" defaultText="Clase prueba" tag="span" />
                                     </p>
-                                    <p className="text-sm text-orange-400">
+                                    <p className="text-sm" style={{ color: sectionColors.buttonPrimaryBackground }}>
                                         <EditableText elementId="gm_hero_badge_text" defaultText="gratis" tag="span" />
                                     </p>
                                 </div>

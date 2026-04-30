@@ -1,24 +1,20 @@
+// src/templates/Bakery/BakeryHeader.tsx
 import { Menu, X } from 'lucide-react';
 import React, { useState } from 'react';
 import { defaultImages } from '../../assets/default-images';
-import EditableText from '../../components/Editor/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
+import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
 import { useTemplateEditor } from '../../contexts/TemplateEditorContext';
 import ThemeToggle from '../../Theme/ThemeToogle';
+import { defaultSectionColors } from '../../types/template.types';
 
 const BakeryHeader: React.FC = () => {
     const { template } = useTemplate();
     const { config } = useTemplateEditor();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-    const colors = template?.colors || {
-        primary: '#e11d48',
-        secondary: '#be123c',
-        accent: '#9f1239',
-        background: '#fff1f2',
-        text: '#4c0519'
-    };
+    const sectionColors = template?.sectionColors || defaultSectionColors;
 
     const navItems = [
         { id: 'bk_nav_home', label: 'Inicio', href: '#home', visible: true },
@@ -44,7 +40,13 @@ const BakeryHeader: React.FC = () => {
     };
 
     return (
-        <header className="sticky top-0 z-50 bg-white/95 dark:bg-rose-950/95 backdrop-blur-md border-b border-rose-200 dark:border-rose-800">
+        <header
+            className="sticky top-0 z-50 backdrop-blur-md border-b"
+            style={{
+                backgroundColor: `${sectionColors.headerBackground}cc`,
+                borderColor: sectionColors.featuresCardBorder
+            }}
+        >
             <div className="container-custom px-6 py-4">
                 <div className="flex items-center justify-between">
                     {/* Logo editable */}
@@ -59,19 +61,26 @@ const BakeryHeader: React.FC = () => {
                             />
                         </div>
                         <div>
-                            <EditableText
-                                elementId="bk_header_brand_1"
-                                defaultText="Kernelize"
-                                tag="span"
-                                className="text-2xl font-bold text-rose-800 dark:text-rose-200"
-                            />
-                            <EditableText
-                                elementId="bk_header_brand_2"
-                                defaultText="Bakery"
-                                tag="span"
-                                className="text-xl font-semibold text-rose-600 dark:text-rose-400 ml-1"
-                              // style={{ color: colors.primary }}
-                            />
+                            <span
+                                className="text-2xl font-bold"
+                                style={{ color: sectionColors.headerTextColor }}
+                            >
+                                <EditableText
+                                    elementId="bk_header_brand_1"
+                                    defaultText="Kernelize"
+                                    tag="span"
+                                />
+                            </span>
+                            <span
+                                className="text-xl font-semibold ml-1"
+                                style={{ color: sectionColors.buttonPrimaryBackground }}
+                            >
+                                <EditableText
+                                    elementId="bk_header_brand_2"
+                                    defaultText="Bakery"
+                                    tag="span"
+                                />
+                            </span>
                         </div>
                     </a>
 
@@ -84,7 +93,10 @@ const BakeryHeader: React.FC = () => {
                                 data-element-id={item.id}
                                 href={item.href}
                                 onClick={(e) => handleNavClick(e, item.href)}
-                                className="text-rose-700 dark:text-rose-300 hover:text-rose-900 dark:hover:text-rose-100 font-medium transition-colors"
+                                className="font-medium transition-colors"
+                                style={{ color: sectionColors.headerLinkColor }}
+                                onMouseEnter={(e) => { e.currentTarget.style.color = sectionColors.headerLinkHoverColor; }}
+                                onMouseLeave={(e) => { e.currentTarget.style.color = sectionColors.headerLinkColor; }}
                             >
                                 <EditableText elementId={item.id} defaultText={item.label} tag="span" />
                             </a>
@@ -95,7 +107,7 @@ const BakeryHeader: React.FC = () => {
                             data-element-id="bk_header_cta"
                             onClick={(e) => handleNavClick(e, '#contact')}
                             className="px-5 py-2.5 text-white font-semibold rounded-full transition-all shadow-md hover:shadow-lg"
-                            style={{ background: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}
+                            style={{ background: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
                         >
                             <EditableText elementId="bk_header_cta" defaultText="Pedí online" tag="span" />
                         </a>
@@ -107,7 +119,8 @@ const BakeryHeader: React.FC = () => {
                         <ThemeToggle />
                         <button
                             onClick={() => setIsMenuOpen(!isMenuOpen)}
-                            className="p-2 text-rose-700 dark:text-rose-300"
+                            className="p-2"
+                            style={{ color: sectionColors.headerTextColor }}
                         >
                             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
                         </button>
@@ -117,13 +130,20 @@ const BakeryHeader: React.FC = () => {
 
             {/* Mobile Menu */}
             {isMenuOpen && (
-                <div className="md:hidden bg-white dark:bg-rose-950 border-t border-rose-200 dark:border-rose-800">
+                <div
+                    className="md:hidden border-t"
+                    style={{
+                        backgroundColor: sectionColors.headerBackground,
+                        borderColor: sectionColors.featuresCardBorder
+                    }}
+                >
                     <div className="px-2 pt-2 pb-3 space-y-1">
                         {navItems.filter(item => item.visible).map((item) => (
                             <a
                                 key={item.id}
                                 href={item.href}
-                                className="block px-3 py-2 text-rose-700 dark:text-rose-300 hover:text-rose-900 dark:hover:text-rose-100 transition-colors"
+                                className="block px-3 py-2 transition-colors"
+                                style={{ color: sectionColors.headerLinkColor }}
                                 onClick={(e) => {
                                     handleNavClick(e, item.href);
                                     setIsMenuOpen(false);
@@ -136,7 +156,7 @@ const BakeryHeader: React.FC = () => {
                             <a
                                 href="#contact"
                                 className="block w-full text-center px-4 py-2 text-white font-semibold rounded-full"
-                                style={{ background: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}
+                                style={{ background: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
                                 onClick={(e) => {
                                     handleNavClick(e, '#contact');
                                     setIsMenuOpen(false);

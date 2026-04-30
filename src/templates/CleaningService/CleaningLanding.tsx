@@ -1,8 +1,6 @@
 import React from 'react';
 import EditModeToggle from '../../components/Editor/EditModeToggle';
 import EditorDashboard from '../../components/Editor/EditorDashboard';
-import { TemplateProvider } from '../../contexts/TemplateContext';
-import { TemplateEditorProvider } from '../../contexts/TemplateEditorContext';
 import CleaningAbout from './CleaningAbout';
 import CleaningContact from './CleaningContact';
 import CleaningFooter from './CleaningFooter';
@@ -19,25 +17,25 @@ interface CleaningLandingProps {
 
 const CleaningLanding: React.FC<CleaningLandingProps> = ({ onHomeClick }) => {
     return (
-        <TemplateProvider>
-            <TemplateEditorProvider>
-                <div className="min-h-screen flex flex-col">
-                    <CleaningHeader />
-                    <main className="flex-grow">
-                        <CleaningHero />
-                        <CleaningServices />
-                        <CleaningPricing />
-                        <CleaningAbout />
-                        <CleaningProcess />
-                        <CleaningTestimonials />
-                        <CleaningContact />
-                    </main>
-                    <CleaningFooter />
-                    <EditorDashboard onHomeClick={onHomeClick} />
-                    <EditModeToggle />
-                </div>
-            </TemplateEditorProvider>
-        </TemplateProvider>
+        // <TemplateProvider>
+        //     <TemplateEditorProvider>
+        <div className="min-h-screen flex flex-col">
+            <CleaningHeader />
+            <main className="flex-grow">
+                <CleaningHero />
+                <CleaningServices />
+                <CleaningPricing />
+                <CleaningAbout />
+                <CleaningProcess />
+                <CleaningTestimonials />
+                <CleaningContact />
+            </main>
+            <CleaningFooter />
+            <EditorDashboard onHomeClick={onHomeClick} />
+            <EditModeToggle />
+        </div>
+        //     </TemplateEditorProvider>
+        // </TemplateProvider>
     );
 };
 

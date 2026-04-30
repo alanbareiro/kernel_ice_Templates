@@ -1,26 +1,29 @@
+// src/templates/Medical/MedicalHero.tsx
 import { Activity, ArrowRight, Heart } from 'lucide-react';
 import React from 'react';
-import EditableText from '../../components/Editor/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
+import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
+import { defaultButtons, defaultSectionColors, defaultTypography } from '../../types/template.types';
 
 const MedicalHero: React.FC = () => {
     const { template } = useTemplate();
-    const colors = template?.colors || {
-        primary: '#0d9488',
-        secondary: '#0f766e',
-        accent: '#115e59',
-    };
+
+    const sectionColors = template?.sectionColors || defaultSectionColors;
+    const typography = template?.typography || defaultTypography;
+    const buttons = template?.buttons || defaultButtons;
 
     return (
-        <section className="relative section-padding overflow-hidden"
-            style={{ background: `linear-gradient(135deg, #e6f7f5 0%, #ffffff 100%)` }}>
+        <section
+            className="relative section-padding overflow-hidden"
+            style={{ background: `linear-gradient(135deg, ${sectionColors.heroBackground} 0%, ${sectionColors.heroBackground} 100%)` }}
+        >
             {/* Elementos decorativos */}
             <div className="absolute inset-0 opacity-10">
                 <div className="absolute top-20 left-10 w-72 h-72 rounded-full mix-blend-multiply filter blur-3xl animate-blob"
-                    style={{ backgroundColor: colors.primary }} />
+                    style={{ backgroundColor: sectionColors.buttonPrimaryBackground }} />
                 <div className="absolute bottom-20 right-10 w-72 h-72 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000"
-                    style={{ backgroundColor: colors.accent }} />
+                    style={{ backgroundColor: sectionColors.buttonPrimaryBackground }} />
             </div>
 
             <div className="container-custom relative z-10">
@@ -28,8 +31,10 @@ const MedicalHero: React.FC = () => {
                     {/* Contenido izquierdo */}
                     <div className="space-y-8">
                         <div>
-                            <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium mb-4"
-                                style={{ backgroundColor: `${colors.primary}15`, color: colors.primary }}>
+                            <span
+                                className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium mb-4"
+                                style={{ backgroundColor: `${sectionColors.buttonPrimaryBackground}15`, color: sectionColors.buttonPrimaryBackground }}
+                            >
                                 <Heart className="w-4 h-4 mr-2" />
                                 <EditableText
                                     elementId="md_hero_badge"
@@ -38,14 +43,22 @@ const MedicalHero: React.FC = () => {
                                 />
                             </span>
 
-                            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 text-teal-900">
+                            <h1
+                                className="font-bold leading-tight mb-6"
+                                style={{
+                                    fontSize: typography.heroTitleSize,
+                                    color: sectionColors.heroTitleColor
+                                }}
+                            >
                                 <EditableText
                                     elementId="md_hero_title_1"
                                     defaultText="Tu salud es"
                                     tag="span"
                                 />{' '}
-                                <span className="text-transparent bg-clip-text"
-                                    style={{ backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                                <span
+                                    className="text-transparent bg-clip-text"
+                                    style={{ backgroundImage: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                                >
                                     <EditableText
                                         elementId="md_hero_title_2"
                                         defaultText="nuestra prioridad"
@@ -54,7 +67,13 @@ const MedicalHero: React.FC = () => {
                                 </span>
                             </h1>
 
-                            <p className="text-xl text-teal-700 max-w-2xl">
+                            <p
+                                className="max-w-2xl"
+                                style={{
+                                    fontSize: typography.heroDescriptionSize,
+                                    color: sectionColors.heroDescriptionColor
+                                }}
+                            >
                                 <EditableText
                                     elementId="md_hero_description"
                                     defaultText="Contamos con especialistas de primer nivel y tecnología de última generación para brindarte la mejor atención médica."
@@ -64,48 +83,74 @@ const MedicalHero: React.FC = () => {
                         </div>
 
                         <div className="flex flex-col sm:flex-row gap-4">
-                            <button className="group text-white font-semibold px-8 py-4 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center"
-                                style={{ background: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                            <a
+                                href={buttons.primary.url}
+                                target={buttons.primary.openInNewTab ? '_blank' : '_self'}
+                                className="group font-semibold px-8 py-4 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center text-white"
+                                style={{ background: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                            >
                                 <EditableText
                                     elementId="md_cta_primary"
-                                    defaultText="Agendar Cita"
+                                    defaultText={buttons.primary.text}
                                     tag="span"
                                 />
                                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                            </button>
-                            <button className="group bg-transparent border-2 font-semibold px-8 py-4 rounded-lg transition-all duration-300 flex items-center justify-center"
-                                style={{ borderColor: colors.primary, color: colors.primary }}>
+                            </a>
+                            <a
+                                href={buttons.secondary.url}
+                                target={buttons.secondary.openInNewTab ? '_blank' : '_self'}
+                                className="group bg-transparent border-2 font-semibold px-8 py-4 rounded-lg transition-all duration-300 flex items-center justify-center"
+                                style={{ borderColor: sectionColors.buttonPrimaryBackground, color: sectionColors.buttonPrimaryBackground }}
+                            >
                                 <EditableText
                                     elementId="md_cta_secondary"
-                                    defaultText="Conoce nuestros servicios"
+                                    defaultText={buttons.secondary.text}
                                     tag="span"
                                 />
-                            </button>
+                            </a>
                         </div>
 
                         {/* Estadísticas */}
                         <div className="pt-8 grid grid-cols-3 gap-6">
                             <div className="text-center">
-                                <div className="text-3xl font-bold text-teal-900">
+                                <div
+                                    className="text-3xl font-bold"
+                                    style={{ color: sectionColors.heroTitleColor }}
+                                >
                                     <EditableText elementId="md_stat_1_value" defaultText="50+" tag="span" />
                                 </div>
-                                <div className="text-sm text-teal-600">
+                                <div
+                                    className="text-sm"
+                                    style={{ color: sectionColors.heroDescriptionColor }}
+                                >
                                     <EditableText elementId="md_stat_1_label" defaultText="Especialistas" tag="span" />
                                 </div>
                             </div>
                             <div className="text-center">
-                                <div className="text-3xl font-bold text-teal-900">
+                                <div
+                                    className="text-3xl font-bold"
+                                    style={{ color: sectionColors.heroTitleColor }}
+                                >
                                     <EditableText elementId="md_stat_2_value" defaultText="15k+" tag="span" />
                                 </div>
-                                <div className="text-sm text-teal-600">
+                                <div
+                                    className="text-sm"
+                                    style={{ color: sectionColors.heroDescriptionColor }}
+                                >
                                     <EditableText elementId="md_stat_2_label" defaultText="Pacientes atendidos" tag="span" />
                                 </div>
                             </div>
                             <div className="text-center">
-                                <div className="text-3xl font-bold text-teal-900">
+                                <div
+                                    className="text-3xl font-bold"
+                                    style={{ color: sectionColors.heroTitleColor }}
+                                >
                                     <EditableText elementId="md_stat_3_value" defaultText="24/7" tag="span" />
                                 </div>
-                                <div className="text-sm text-teal-600">
+                                <div
+                                    className="text-sm"
+                                    style={{ color: sectionColors.heroDescriptionColor }}
+                                >
                                     <EditableText elementId="md_stat_3_label" defaultText="Emergencias" tag="span" />
                                 </div>
                             </div>
@@ -125,14 +170,17 @@ const MedicalHero: React.FC = () => {
                         </div>
 
                         {/* Badge flotante */}
-                        <div className="absolute -bottom-4 -left-4 bg-white rounded-2xl shadow-xl p-4">
+                        <div
+                            className="absolute -bottom-4 -left-4 rounded-2xl shadow-xl p-4"
+                            style={{ backgroundColor: sectionColors.featuresCardBackground, border: `1px solid ${sectionColors.buttonPrimaryBackground}` }}
+                        >
                             <div className="flex items-center space-x-3">
-                                <Activity className="w-8 h-8" style={{ color: colors.primary }} />
+                                <Activity className="w-8 h-8" style={{ color: sectionColors.buttonPrimaryBackground }} />
                                 <div>
-                                    <p className="font-bold text-teal-900">
+                                    <p className="font-bold" style={{ color: sectionColors.heroTitleColor }}>
                                         <EditableText elementId="md_hero_badge_title" defaultText="Tecnología de punta" tag="span" />
                                     </p>
-                                    <p className="text-sm text-teal-600">
+                                    <p className="text-sm" style={{ color: sectionColors.heroDescriptionColor }}>
                                         <EditableText elementId="md_hero_badge_text" defaultText="Equipos modernos" tag="span" />
                                     </p>
                                 </div>

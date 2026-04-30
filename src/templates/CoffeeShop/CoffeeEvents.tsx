@@ -1,17 +1,17 @@
+// src/templates/CoffeeShop/CoffeeEvents.tsx
 import { Calendar, Clock, Users } from 'lucide-react';
 import React from 'react';
 import { defaultImages } from '../../assets/default-images';
-import EditableText from '../../components/Editor/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
+import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
+import { defaultSectionColors, defaultTypography } from '../../types/template.types';
 
 const CoffeeEvents: React.FC = () => {
     const { template } = useTemplate();
-    const colors = template?.colors || {
-        primary: '#b45309',
-        secondary: '#92400e',
-        accent: '#78350f',
-    };
+
+    const sectionColors = template?.sectionColors || defaultSectionColors;
+    const typography = template?.typography || defaultTypography;
 
     const eventImages = {
         event1: defaultImages.coffee.event1,
@@ -53,24 +53,55 @@ const CoffeeEvents: React.FC = () => {
     ];
 
     return (
-        <section id="events" className="section-padding bg-amber-50 dark:bg-amber-950">
+        <section
+            id="events"
+            className="section-padding"
+            style={{ backgroundColor: sectionColors.featuresBackground }}
+        >
             <div className="container-custom">
                 <div className="text-center max-w-3xl mx-auto mb-16">
-                    <h2 className="text-4xl md:text-5xl font-bold mb-6 text-amber-900 dark:text-amber-100">
-                        <EditableText elementId="cf_events_title_1" defaultText="Próximos" tag="span" />{' '}
-                        <span className="text-transparent bg-clip-text"
-                            style={{ backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
-                            <EditableText elementId="cf_events_title_2" defaultText="eventos" tag="span" />
+                    <h2
+                        className="font-bold mb-6"
+                        style={{
+                            fontSize: typography.sectionTitleSize,
+                            color: sectionColors.featuresTitleColor
+                        }}
+                    >
+                        <EditableText
+                            elementId="cf_events_title_1"
+                            defaultText="Próximos"
+                            tag="span"
+                        />{' '}
+                        <span
+                            className="text-transparent bg-clip-text"
+                            style={{ backgroundImage: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                        >
+                            <EditableText
+                                elementId="cf_events_title_2"
+                                defaultText="eventos"
+                                tag="span"
+                            />
                         </span>
                     </h2>
-                    <p className="text-xl text-amber-700 dark:text-amber-300">
-                        <EditableText elementId="cf_events_description" defaultText="Compartí experiencias únicas alrededor del café." tag="span" />
+                    <p
+                        className="text-xl"
+                        style={{ color: sectionColors.bodyTextColor }}
+                    >
+                        <EditableText
+                            elementId="cf_events_description"
+                            defaultText="Compartí experiencias únicas alrededor del café."
+                            tag="span"
+                        />
                     </p>
                 </div>
 
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {events.map((event) => (
-                        <div key={event.id} className="bg-white dark:bg-amber-900/30 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all">
+                        <div
+                            key={event.id}
+                            className="rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all"
+                            style={{ backgroundColor: sectionColors.featuresCardBackground }}
+                        >
                             <div className="relative h-48">
                                 <EditableImage
                                     elementId={event.imageId}
@@ -81,18 +112,35 @@ const CoffeeEvents: React.FC = () => {
                                 />
                             </div>
                             <div className="p-6">
-                                <h3 className="text-xl font-bold mb-3 text-amber-900 dark:text-amber-100">
+                                <h3
+                                    className="text-xl font-bold mb-3"
+                                    style={{ color: sectionColors.featuresTitleColor }}
+                                >
                                     <EditableText elementId={event.titleId} defaultText={event.titleDefault} tag="span" />
                                 </h3>
-                                <div className="space-y-2 mb-4 text-amber-700 dark:text-amber-300">
-                                    <div className="flex items-center"><Calendar className="w-4 h-4 mr-2" /><EditableText elementId={event.dateId} defaultText={event.dateDefault} tag="span" /></div>
-                                    <div className="flex items-center"><Clock className="w-4 h-4 mr-2" /><EditableText elementId={event.timeId} defaultText={event.timeDefault} tag="span" /></div>
-                                    <div className="flex items-center"><Users className="w-4 h-4 mr-2" /><EditableText elementId={event.capacityId} defaultText={event.capacityDefault} tag="span" /></div>
+                                <div className="space-y-2 mb-4" style={{ color: sectionColors.bodyTextColor }}>
+                                    <div className="flex items-center">
+                                        <Calendar className="w-4 h-4 mr-2" style={{ color: sectionColors.buttonPrimaryBackground }} />
+                                        <EditableText elementId={event.dateId} defaultText={event.dateDefault} tag="span" />
+                                    </div>
+                                    <div className="flex items-center">
+                                        <Clock className="w-4 h-4 mr-2" style={{ color: sectionColors.buttonPrimaryBackground }} />
+                                        <EditableText elementId={event.timeId} defaultText={event.timeDefault} tag="span" />
+                                    </div>
+                                    <div className="flex items-center">
+                                        <Users className="w-4 h-4 mr-2" style={{ color: sectionColors.buttonPrimaryBackground }} />
+                                        <EditableText elementId={event.capacityId} defaultText={event.capacityDefault} tag="span" />
+                                    </div>
                                 </div>
-                                <p className="text-amber-600 dark:text-amber-400 mb-4">
+                                <p className="mb-4" style={{ color: sectionColors.bodyTextColor }}>
                                     <EditableText elementId={event.descId} defaultText={event.descDefault} tag="span" />
                                 </p>
-                                <button className="w-full py-2 rounded-lg text-white font-semibold" style={{ background: colors.primary }}>Reservar lugar</button>
+                                <button
+                                    className="w-full py-2 rounded-lg text-white font-semibold"
+                                    style={{ background: sectionColors.buttonPrimaryBackground }}
+                                >
+                                    Reservar lugar
+                                </button>
                             </div>
                         </div>
                     ))}

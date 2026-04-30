@@ -1,16 +1,17 @@
+// src/templates/Bakery/BakeryProducts.tsx
 import { Heart, ShoppingCart } from 'lucide-react';
 import React, { useState } from 'react';
-import EditableText from '../../components/Editor/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
+import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
+import { defaultSectionColors, defaultTypography } from '../../types/template.types';
 
 const BakeryProducts: React.FC = () => {
     const { template } = useTemplate();
-    const colors = template?.colors || {
-        primary: '#e11d48',
-        secondary: '#be123c',
-        accent: '#9f1239',
-    };
+
+    const sectionColors = template?.sectionColors || defaultSectionColors;
+    const typography = template?.typography || defaultTypography;
+
     const [selectedCategory, setSelectedCategory] = useState('all');
 
     const categories = [
@@ -41,17 +42,32 @@ const BakeryProducts: React.FC = () => {
         : products.filter(p => p.category === selectedCategory);
 
     return (
-        <section id="products" className="section-padding bg-white dark:bg-neutral-900">
+        <section
+            id="products"
+            className="section-padding"
+            style={{ backgroundColor: sectionColors.featuresBackground }}
+        >
             <div className="container-custom">
                 <div className="text-center max-w-3xl mx-auto mb-16">
-                    <h2 className="text-4xl md:text-5xl font-bold mb-6 text-rose-900 dark:text-rose-100">
+                    <h2
+                        className="font-bold mb-6"
+                        style={{
+                            fontSize: typography.sectionTitleSize,
+                            color: sectionColors.featuresTitleColor
+                        }}
+                    >
                         <EditableText elementId="bk_products_title_1" defaultText="Nuestros" tag="span" />{' '}
-                        <span className="text-transparent bg-clip-text"
-                            style={{ backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                        <span
+                            className="text-transparent bg-clip-text"
+                            style={{ backgroundImage: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                        >
                             <EditableText elementId="bk_products_title_2" defaultText="productos" tag="span" />
                         </span>
                     </h2>
-                    <p className="text-xl text-rose-700 dark:text-rose-300">
+                    <p
+                        className="text-xl"
+                        style={{ color: sectionColors.bodyTextColor }}
+                    >
                         <EditableText elementId="bk_products_description" defaultText="Toda nuestra variedad de panes, facturas, tortas y galletitas hechas con recetas tradicionales." tag="span" />
                     </p>
                 </div>
@@ -62,11 +78,16 @@ const BakeryProducts: React.FC = () => {
                         <button
                             key={cat.id}
                             onClick={() => setSelectedCategory(cat.id)}
-                            className={`px-6 py-2 rounded-full font-medium transition-all ${selectedCategory === cat.id
-                                    ? 'text-white'
-                                    : 'bg-rose-100 dark:bg-rose-800/50 text-rose-700 dark:text-rose-300 hover:bg-rose-200 dark:hover:bg-rose-700'
+                            className={`px-6 py-2 rounded-full font-medium transition-all ${selectedCategory === cat.id ? 'text-white' : ''
                                 }`}
-                            style={selectedCategory === cat.id ? { background: colors.primary } : {}}
+                            style={
+                                selectedCategory === cat.id
+                                    ? { background: sectionColors.buttonPrimaryBackground }
+                                    : {
+                                        backgroundColor: sectionColors.featuresCardBackground,
+                                        color: sectionColors.bodyTextColor
+                                    }
+                            }
                         >
                             <EditableText elementId={cat.nameId} defaultText={cat.name} tag="span" />
                         </button>
@@ -76,27 +97,48 @@ const BakeryProducts: React.FC = () => {
                 {/* Grid de productos */}
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     {filteredProducts.map((product) => (
-                        <div key={product.id} className="group bg-rose-50 dark:bg-rose-900/20 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all">
+                        <div
+                            key={product.id}
+                            className="group rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all"
+                            style={{ backgroundColor: sectionColors.featuresCardBackground }}
+                        >
                             <div className="relative h-48 overflow-hidden">
-                                <EditableImage elementId={product.imageId} defaultImage="" alt={product.nameDefault} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" category="bakery" />
+                                <EditableImage
+                                    elementId={product.imageId}
+                                    defaultImage=""
+                                    alt={product.nameDefault}
+                                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                    category="bakery"
+                                />
                                 <button className="absolute top-3 right-3 p-2 bg-white/80 backdrop-blur-sm rounded-full hover:bg-white transition-colors">
-                                    <Heart className="w-4 h-4 text-rose-500" />
+                                    <Heart className="w-4 h-4" style={{ color: sectionColors.buttonPrimaryBackground }} />
                                 </button>
                             </div>
                             <div className="p-4">
-                                <h3 className="text-lg font-bold text-rose-900 dark:text-rose-100 mb-1">
+                                <h3
+                                    className="text-lg font-bold mb-1"
+                                    style={{ color: sectionColors.featuresTitleColor }}
+                                >
                                     <EditableText elementId={product.nameId} defaultText={product.nameDefault} tag="span" />
                                 </h3>
-                                <p className="text-sm text-rose-600 dark:text-rose-400 mb-2">
+                                <p
+                                    className="text-sm mb-2"
+                                    style={{ color: sectionColors.bodyTextColor }}
+                                >
                                     <EditableText elementId={product.descId} defaultText={product.descDefault} tag="span" />
                                 </p>
                                 <div className="flex items-center justify-between">
-                                    <span className="text-xl font-bold text-transparent bg-clip-text"
-                                        style={{ backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                                    <span
+                                        className="text-xl font-bold text-transparent bg-clip-text"
+                                        style={{ backgroundImage: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                                    >
                                         <EditableText elementId={product.priceId} defaultText={product.priceDefault} tag="span" />
                                     </span>
-                                    <button className="p-2 bg-rose-100 dark:bg-rose-700 rounded-full hover:bg-rose-200 dark:hover:bg-rose-600 transition-colors">
-                                        <ShoppingCart className="w-4 h-4" style={{ color: colors.primary }} />
+                                    <button
+                                        className="p-2 rounded-full transition-colors"
+                                        style={{ backgroundColor: `${sectionColors.buttonPrimaryBackground}15`, color: sectionColors.buttonPrimaryBackground }}
+                                    >
+                                        <ShoppingCart className="w-4 h-4" />
                                     </button>
                                 </div>
                             </div>

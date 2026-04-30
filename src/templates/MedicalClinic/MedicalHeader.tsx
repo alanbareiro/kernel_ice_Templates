@@ -1,23 +1,19 @@
+// src/templates/Medical/MedicalHeader.tsx
 import { Menu, X } from 'lucide-react';
 import React, { useState } from 'react';
-import EditableText from '../../components/Editor/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
+import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
 import { useTemplateEditor } from '../../contexts/TemplateEditorContext';
 import ThemeToggle from '../../Theme/ThemeToogle';
+import { defaultSectionColors } from '../../types/template.types';
 
 const MedicalHeader: React.FC = () => {
     const { template } = useTemplate();
     const { config } = useTemplateEditor();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-    const colors = template?.colors || {
-        primary: '#0d9488',
-        secondary: '#0f766e',
-        accent: '#115e59',
-        background: '#ffffff',
-        text: '#1e293b'
-    };
+    const sectionColors = template?.sectionColors || defaultSectionColors;
 
     const navItems = [
         { id: 'md_nav_home', label: 'Inicio', href: '#home', visible: true },
@@ -43,7 +39,13 @@ const MedicalHeader: React.FC = () => {
     };
 
     return (
-        <header className="sticky top-0 z-50 bg-white/95 dark:bg-teal-950/95 backdrop-blur-md border-b border-teal-200 dark:border-teal-800">
+        <header
+            className="sticky top-0 z-50 backdrop-blur-md border-b"
+            style={{
+                backgroundColor: `${sectionColors.headerBackground}cc`,
+                borderColor: sectionColors.featuresCardBorder
+            }}
+        >
             <div className="container-custom px-6 py-4">
                 <div className="flex items-center justify-between">
                     {/* Logo editable */}
@@ -58,19 +60,26 @@ const MedicalHeader: React.FC = () => {
                             />
                         </div>
                         <div>
-                            <EditableText
-                                elementId="md_header_brand_1"
-                                defaultText="Kernelize"
-                                tag="span"
-                                className="text-2xl font-bold text-teal-800 dark:text-teal-200"
-                            />
-                            <EditableText
-                                elementId="md_header_brand_2"
-                                defaultText="Salud"
-                                tag="span"
-                                className="text-xl font-semibold text-teal-600 dark:text-teal-400 ml-1"
-                               // style={{ color: colors.primary }}
-                            />
+                            <span
+                                className="text-2xl font-bold"
+                                style={{ color: sectionColors.headerTextColor }}
+                            >
+                                <EditableText
+                                    elementId="md_header_brand_1"
+                                    defaultText="Kernelize"
+                                    tag="span"
+                                />
+                            </span>
+                            <span
+                                className="text-xl font-semibold ml-1"
+                                style={{ color: sectionColors.buttonPrimaryBackground }}
+                            >
+                                <EditableText
+                                    elementId="md_header_brand_2"
+                                    defaultText="Salud"
+                                    tag="span"
+                                />
+                            </span>
                         </div>
                     </a>
 
@@ -83,7 +92,10 @@ const MedicalHeader: React.FC = () => {
                                 data-element-id={item.id}
                                 href={item.href}
                                 onClick={(e) => handleNavClick(e, item.href)}
-                                className="text-teal-700 dark:text-teal-300 hover:text-teal-900 dark:hover:text-teal-100 font-medium transition-colors"
+                                className="font-medium transition-colors"
+                                style={{ color: sectionColors.headerLinkColor }}
+                                onMouseEnter={(e) => { e.currentTarget.style.color = sectionColors.headerLinkHoverColor; }}
+                                onMouseLeave={(e) => { e.currentTarget.style.color = sectionColors.headerLinkColor; }}
                             >
                                 <EditableText elementId={item.id} defaultText={item.label} tag="span" />
                             </a>
@@ -94,7 +106,7 @@ const MedicalHeader: React.FC = () => {
                             data-element-id="md_header_cta"
                             onClick={(e) => handleNavClick(e, '#contact')}
                             className="px-5 py-2.5 text-white font-semibold rounded-lg transition-all shadow-md hover:shadow-lg"
-                            style={{ background: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}
+                            style={{ background: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
                         >
                             <EditableText elementId="md_header_cta" defaultText="Agendar Cita" tag="span" />
                         </a>
@@ -106,7 +118,8 @@ const MedicalHeader: React.FC = () => {
                         <ThemeToggle />
                         <button
                             onClick={() => setIsMenuOpen(!isMenuOpen)}
-                            className="p-2 text-teal-700 dark:text-teal-300"
+                            className="p-2"
+                            style={{ color: sectionColors.headerTextColor }}
                         >
                             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
                         </button>
@@ -116,13 +129,20 @@ const MedicalHeader: React.FC = () => {
 
             {/* Mobile Menu */}
             {isMenuOpen && (
-                <div className="md:hidden bg-white dark:bg-teal-950 border-t border-teal-200 dark:border-teal-800">
+                <div
+                    className="md:hidden border-t"
+                    style={{
+                        backgroundColor: sectionColors.headerBackground,
+                        borderColor: sectionColors.featuresCardBorder
+                    }}
+                >
                     <div className="px-2 pt-2 pb-3 space-y-1">
                         {navItems.filter(item => item.visible).map((item) => (
                             <a
                                 key={item.id}
                                 href={item.href}
-                                className="block px-3 py-2 text-teal-700 dark:text-teal-300 hover:text-teal-900 dark:hover:text-teal-100 transition-colors"
+                                className="block px-3 py-2 transition-colors"
+                                style={{ color: sectionColors.headerLinkColor }}
                                 onClick={(e) => {
                                     handleNavClick(e, item.href);
                                     setIsMenuOpen(false);
@@ -135,7 +155,7 @@ const MedicalHeader: React.FC = () => {
                             <a
                                 href="#contact"
                                 className="block w-full text-center px-4 py-2 text-white font-semibold rounded-lg"
-                                style={{ background: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}
+                                style={{ background: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
                                 onClick={(e) => {
                                     handleNavClick(e, '#contact');
                                     setIsMenuOpen(false);

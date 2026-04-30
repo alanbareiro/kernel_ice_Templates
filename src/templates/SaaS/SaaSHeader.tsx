@@ -1,24 +1,20 @@
+// src/templates/SaaS/SaaSHeader.tsx
 import { Menu, X } from 'lucide-react';
 import React, { useState } from 'react';
 import { defaultImages } from '../../assets/default-images';
-import EditableText from '../../components/Editor/EditableText';
 import EditableImage from '../../components/Editor/EditableImage';
+import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
 import { useTemplateEditor } from '../../contexts/TemplateEditorContext';
 import ThemeToggle from '../../Theme/ThemeToogle';
+import { defaultSectionColors } from '../../types/template.types';
 
 const SaaSHeader: React.FC = () => {
     const { template } = useTemplate();
     const { config } = useTemplateEditor();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-    const colors = template?.colors || {
-        primary: '#7c3aed',
-        secondary: '#6d28d9',
-        accent: '#5b21b6',
-        background: '#ffffff',
-        text: '#1e1e3f'
-    };
+    const sectionColors = template?.sectionColors || defaultSectionColors;
 
     const navItems = [
         { id: 'sa_nav_home', label: 'Inicio', href: '#home', visible: true },
@@ -45,10 +41,15 @@ const SaaSHeader: React.FC = () => {
     };
 
     return (
-        <header className="sticky top-0 z-50 bg-white/95 dark:bg-violet-950/95 backdrop-blur-md border-b border-violet-200 dark:border-violet-800">
+        <header
+            className="sticky top-0 z-50 backdrop-blur-md border-b"
+            style={{
+                backgroundColor: `${sectionColors.headerBackground}cc`,
+                borderColor: sectionColors.featuresCardBorder
+            }}
+        >
             <div className="container-custom px-6 py-4">
                 <div className="flex items-center justify-between">
-                    {/* Logo editable */}
                     <a href="/" onClick={handleLogoClick} className="flex items-center space-x-3 group">
                         <div id="sa_logo" data-element-id="sa_logo">
                             <EditableImage
@@ -60,23 +61,29 @@ const SaaSHeader: React.FC = () => {
                             />
                         </div>
                         <div>
-                            <EditableText
-                                elementId="sa_header_brand_1"
-                                defaultText="Kernelize"
-                                tag="span"
-                                className="text-2xl font-bold text-violet-800 dark:text-violet-200"
-                            />
-                            <EditableText
-                                elementId="sa_header_brand_2"
-                                defaultText="SaaS"
-                                tag="span"
-                                className="text-xl font-semibold text-violet-600 dark:text-violet-400 ml-1"
-                         //       style={{ color: colors.primary }}
-                            />
+                            <span
+                                className="text-2xl font-bold"
+                                style={{ color: sectionColors.headerTextColor }}
+                            >
+                                <EditableText
+                                    elementId="sa_header_brand_1"
+                                    defaultText="Kernelize"
+                                    tag="span"
+                                />
+                            </span>
+                            <span
+                                className="text-xl font-semibold ml-1"
+                                style={{ color: sectionColors.buttonPrimaryBackground }}
+                            >
+                                <EditableText
+                                    elementId="sa_header_brand_2"
+                                    defaultText="SaaS"
+                                    tag="span"
+                                />
+                            </span>
                         </div>
                     </a>
 
-                    {/* Desktop Navigation */}
                     <nav className="hidden md:flex items-center space-x-8">
                         {navItems.filter(item => item.visible).map((item) => (
                             <a
@@ -85,7 +92,10 @@ const SaaSHeader: React.FC = () => {
                                 data-element-id={item.id}
                                 href={item.href}
                                 onClick={(e) => handleNavClick(e, item.href)}
-                                className="text-violet-700 dark:text-violet-300 hover:text-violet-900 dark:hover:text-violet-100 font-medium transition-colors"
+                                className="font-medium transition-colors"
+                                style={{ color: sectionColors.headerLinkColor }}
+                                onMouseEnter={(e) => { e.currentTarget.style.color = sectionColors.headerLinkHoverColor; }}
+                                onMouseLeave={(e) => { e.currentTarget.style.color = sectionColors.headerLinkColor; }}
                             >
                                 <EditableText elementId={item.id} defaultText={item.label} tag="span" />
                             </a>
@@ -96,19 +106,19 @@ const SaaSHeader: React.FC = () => {
                             data-element-id="sa_header_cta"
                             onClick={(e) => handleNavClick(e, '#contact')}
                             className="px-5 py-2.5 text-white font-semibold rounded-lg transition-all shadow-md hover:shadow-lg"
-                            style={{ background: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}
+                            style={{ background: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
                         >
                             <EditableText elementId="sa_header_cta" defaultText="Comenzar prueba gratis" tag="span" />
                         </a>
                         <ThemeToggle />
                     </nav>
 
-                    {/* Mobile menu button */}
                     <div className="md:hidden flex items-center space-x-4">
                         <ThemeToggle />
                         <button
                             onClick={() => setIsMenuOpen(!isMenuOpen)}
-                            className="p-2 text-violet-700 dark:text-violet-300"
+                            className="p-2"
+                            style={{ color: sectionColors.headerTextColor }}
                         >
                             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
                         </button>
@@ -116,15 +126,21 @@ const SaaSHeader: React.FC = () => {
                 </div>
             </div>
 
-            {/* Mobile Menu */}
             {isMenuOpen && (
-                <div className="md:hidden bg-white dark:bg-violet-950 border-t border-violet-200 dark:border-violet-800">
+                <div
+                    className="md:hidden border-t"
+                    style={{
+                        backgroundColor: sectionColors.headerBackground,
+                        borderColor: sectionColors.featuresCardBorder
+                    }}
+                >
                     <div className="px-2 pt-2 pb-3 space-y-1">
                         {navItems.filter(item => item.visible).map((item) => (
                             <a
                                 key={item.id}
                                 href={item.href}
-                                className="block px-3 py-2 text-violet-700 dark:text-violet-300 hover:text-violet-900 dark:hover:text-violet-100 transition-colors"
+                                className="block px-3 py-2 transition-colors"
+                                style={{ color: sectionColors.headerLinkColor }}
                                 onClick={(e) => {
                                     handleNavClick(e, item.href);
                                     setIsMenuOpen(false);
@@ -137,7 +153,7 @@ const SaaSHeader: React.FC = () => {
                             <a
                                 href="#contact"
                                 className="block w-full text-center px-4 py-2 text-white font-semibold rounded-lg"
-                                style={{ background: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}
+                                style={{ background: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
                                 onClick={(e) => {
                                     handleNavClick(e, '#contact');
                                     setIsMenuOpen(false);

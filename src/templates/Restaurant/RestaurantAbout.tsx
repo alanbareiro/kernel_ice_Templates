@@ -1,16 +1,16 @@
+// src/templates/Restaurant/RestaurantAbout.tsx
 import { Award, ChefHat, Heart, Sparkles, Users } from 'lucide-react';
 import { defaultImages } from '../../assets/default-images';
 import EditableImage from '../../components/Editor/EditableImage';
 import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
+import { defaultSectionColors, defaultTypography } from '../../types/template.types';
 
 const RestaurantAbout = () => {
     const { template } = useTemplate();
-    const colors = template?.colors || {
-        primary: '#dc2626',
-        secondary: '#b91c1c',
-        accent: '#7f1d1d',
-    };
+
+    const sectionColors = template?.sectionColors || defaultSectionColors;
+    const typography = template?.typography || defaultTypography;
 
     const stats = [
         { icon: <Heart className="w-6 h-6" />, valueId: 'r_about_stat_1_value', valueDefault: '38 años', labelId: 'r_about_stat_1_label', labelDefault: 'De historia' },
@@ -20,13 +20,19 @@ const RestaurantAbout = () => {
     ];
 
     return (
-        <section className="section-padding bg-gradient-to-br from-red-900 to-red-950 text-white">
+        <section
+            className="section-padding"
+            style={{ backgroundColor: sectionColors.featuresBackground }}
+        >
             <div className="container-custom">
                 <div className="grid lg:grid-cols-2 gap-12 items-center">
                     {/* Contenido */}
                     <div className="space-y-8">
                         <div>
-                            <span className="inline-block px-4 py-2 rounded-full bg-white/20 text-white text-sm font-medium mb-4 backdrop-blur-sm">
+                            <span
+                                className="inline-block px-4 py-2 rounded-full text-sm font-medium mb-4 backdrop-blur-sm"
+                                style={{ backgroundColor: `${sectionColors.buttonPrimaryBackground}20`, color: sectionColors.buttonPrimaryBackground }}
+                            >
                                 <EditableText
                                     elementId="r_about_badge"
                                     defaultText="Nuestra Historia"
@@ -34,14 +40,22 @@ const RestaurantAbout = () => {
                                 />
                             </span>
 
-                            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+                            <h2
+                                className="font-bold mb-6"
+                                style={{
+                                    fontSize: typography.sectionTitleSize,
+                                    color: sectionColors.featuresTitleColor
+                                }}
+                            >
                                 <EditableText
                                     elementId="r_about_title_1"
                                     defaultText="Tradición que se"
                                     tag="span"
                                 />{' '}
-                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-300 to-red-400"
-                                    style={{ backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                                <span
+                                    className="text-transparent bg-clip-text"
+                                    style={{ backgroundImage: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                                >
                                     <EditableText
                                         elementId="r_about_title_2"
                                         defaultText="saborea"
@@ -50,7 +64,10 @@ const RestaurantAbout = () => {
                                 </span>
                             </h2>
 
-                            <p className="text-lg text-red-100 mb-6">
+                            <p
+                                className="text-lg mb-6"
+                                style={{ color: sectionColors.bodyTextColor }}
+                            >
                                 <EditableText
                                     elementId="r_about_desc_1"
                                     defaultText="Desde 1985, en el corazón de Palermo, venimos deleitando a generaciones con recetas que pasan de abuelos a nietos. Nuestro restaurante nació del sueño de Don Giuseppe, inmigrante italiano que trajo en su valija los secretos de la cocina tradicional."
@@ -58,7 +75,7 @@ const RestaurantAbout = () => {
                                 />
                             </p>
 
-                            <p className="text-red-100">
+                            <p style={{ color: sectionColors.bodyTextColor }}>
                                 <EditableText
                                     elementId="r_about_desc_2"
                                     defaultText="Hoy, su legado continúa en cada plato que sale de nuestra cocina. Combinamos las recetas originales con técnicas modernas para ofrecer una experiencia única que honra el pasado pero mira al futuro."
@@ -68,20 +85,29 @@ const RestaurantAbout = () => {
                         </div>
 
                         {/* Estadísticas */}
-                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-8 border-t border-white/20">
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-8 border-t" style={{ borderColor: `${sectionColors.buttonPrimaryBackground}30` }}>
                             {stats.map((stat, index) => (
                                 <div key={index} className="text-center group">
-                                    <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-white/10 text-red-300 mb-3 group-hover:bg-white/20 group-hover:text-white transition-all duration-300">
+                                    <div
+                                        className="inline-flex items-center justify-center w-12 h-12 rounded-xl mb-3 transition-all duration-300"
+                                        style={{ backgroundColor: `${sectionColors.buttonPrimaryBackground}20`, color: sectionColors.buttonPrimaryBackground }}
+                                    >
                                         {stat.icon}
                                     </div>
-                                    <div className="text-2xl font-bold text-white">
+                                    <div
+                                        className="text-2xl font-bold"
+                                        style={{ color: sectionColors.featuresTitleColor }}
+                                    >
                                         <EditableText
                                             elementId={stat.valueId}
                                             defaultText={stat.valueDefault}
                                             tag="span"
                                         />
                                     </div>
-                                    <div className="text-xs text-red-200">
+                                    <div
+                                        className="text-xs"
+                                        style={{ color: sectionColors.bodyTextColor }}
+                                    >
                                         <EditableText
                                             elementId={stat.labelId}
                                             defaultText={stat.labelDefault}
@@ -95,8 +121,8 @@ const RestaurantAbout = () => {
                         {/* Valores */}
                         <div className="grid grid-cols-3 gap-4">
                             <div className="text-center">
-                                <Sparkles className="w-6 h-6 mx-auto mb-2 text-red-300" />
-                                <p className="text-sm">
+                                <Sparkles className="w-6 h-6 mx-auto mb-2" style={{ color: sectionColors.buttonPrimaryBackground }} />
+                                <p className="text-sm" style={{ color: sectionColors.bodyTextColor }}>
                                     <EditableText
                                         elementId="r_value_1"
                                         defaultText="Calidad"
@@ -105,8 +131,8 @@ const RestaurantAbout = () => {
                                 </p>
                             </div>
                             <div className="text-center">
-                                <Heart className="w-6 h-6 mx-auto mb-2 text-red-300" />
-                                <p className="text-sm">
+                                <Heart className="w-6 h-6 mx-auto mb-2" style={{ color: sectionColors.buttonPrimaryBackground }} />
+                                <p className="text-sm" style={{ color: sectionColors.bodyTextColor }}>
                                     <EditableText
                                         elementId="r_value_2"
                                         defaultText="Pasión"
@@ -115,8 +141,8 @@ const RestaurantAbout = () => {
                                 </p>
                             </div>
                             <div className="text-center">
-                                <Users className="w-6 h-6 mx-auto mb-2 text-red-300" />
-                                <p className="text-sm">
+                                <Users className="w-6 h-6 mx-auto mb-2" style={{ color: sectionColors.buttonPrimaryBackground }} />
+                                <p className="text-sm" style={{ color: sectionColors.bodyTextColor }}>
                                     <EditableText
                                         elementId="r_value_3"
                                         defaultText="Familia"
@@ -158,18 +184,21 @@ const RestaurantAbout = () => {
                         </div>
 
                         {/* Badge flotante */}
-                        <div className="absolute -bottom-4 -left-4 bg-white text-red-900 rounded-xl p-4 shadow-2xl">
+                        <div
+                            className="absolute -bottom-4 -left-4 rounded-xl p-4 shadow-2xl"
+                            style={{ backgroundColor: sectionColors.featuresCardBackground, border: `1px solid ${sectionColors.buttonPrimaryBackground}` }}
+                        >
                             <div className="flex items-center space-x-3">
                                 <div className="text-4xl">🇮🇹</div>
                                 <div>
-                                    <p className="font-bold">
+                                    <p className="font-bold" style={{ color: sectionColors.featuresTitleColor }}>
                                         <EditableText
                                             elementId="r_badge_title"
                                             defaultText="Cocina Italo-Argentina"
                                             tag="span"
                                         />
                                     </p>
-                                    <p className="text-sm text-red-600">
+                                    <p className="text-sm" style={{ color: sectionColors.buttonPrimaryBackground }}>
                                         <EditableText
                                             elementId="r_badge_text"
                                             defaultText="4ta generación"

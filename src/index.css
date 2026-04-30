@@ -54,6 +54,7 @@
   --color-neutral-800: 38 38 38;
   --color-neutral-900: 23 23 23;
   --color-neutral-950: 10 10 10;
+  
 }
 
 /* Modo oscuro - Invertir colores */
@@ -301,4 +302,14 @@
 
 .animate-fadeIn {
   animation: fadeIn 0.3s ease-out;
+}
+
+/* Elimina las reglas que afectan a body y h1 globalmente */
+/* Añade estas reglas para limitar al template */
+#template-root {
+    font-family: var(--font-body);
+}
+#template-root h1, #template-root h2, #template-root h3,
+#template-root h4, #template-root h5, #template-root h6 {
+    font-family: var(--font-heading);
 }

@@ -1,8 +1,7 @@
+// src/templates/FoodTruck/FoodTruckLanding.tsx
 import React from 'react';
 import EditModeToggle from '../../components/Editor/EditModeToggle';
 import EditorDashboard from '../../components/Editor/EditorDashboard';
-import { TemplateProvider } from '../../contexts/TemplateContext';
-import { TemplateEditorProvider } from '../../contexts/TemplateEditorContext';
 import FoodTruckContact from './FoodTruckContact';
 import FoodTruckFooter from './FoodTruckFooter';
 import FoodTruckGallery from './FoodTruckGallery';
@@ -19,26 +18,26 @@ interface FoodTruckLandingProps {
 
 const FoodTruckLanding: React.FC<FoodTruckLandingProps> = ({ onHomeClick }) => {
     return (
-        <TemplateProvider>
-            <TemplateEditorProvider>
-                <div className="min-h-screen flex flex-col">
-                    <FoodTruckHeader />
-                    <main className="flex-grow">
-                        <FoodTruckHero />
-                        <FoodTruckMenu />
-                        <FoodTruckLocation />
-                        <FoodTruckSchedule />
-                        <FoodTruckGallery />
-                        <FoodTruckTestimonials />
-                        <FoodTruckContact />
-                    </main>
-                    <FoodTruckFooter />
-                    <EditorDashboard onHomeClick={onHomeClick} />
-                    <EditModeToggle />
-                </div>
-            </TemplateEditorProvider>
-        </TemplateProvider>
+        // <TemplateProvider>
+        //     <TemplateEditorProvider>
+        <div className="min-h-screen flex flex-col">
+            <FoodTruckHeader />
+            <main className="flex-grow">
+                <FoodTruckHero />
+                <FoodTruckMenu />
+                <FoodTruckLocation />
+                <FoodTruckSchedule />
+                <FoodTruckGallery />
+                <FoodTruckTestimonials />
+                <FoodTruckContact />
+            </main>
+            <FoodTruckFooter />
+            <EditorDashboard onHomeClick={onHomeClick} />
+            <EditModeToggle />
+        </div>
     );
+    {/* </TemplateEditorProvider>
+        </TemplateProvider> */}
 };
 
 export default FoodTruckLanding;

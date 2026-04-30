@@ -1,17 +1,18 @@
+// src/templates/Restaurant/RestaurantGallery.tsx
 import { ChevronLeft, ChevronRight, Heart, X } from 'lucide-react';
 import { useState } from 'react';
 import { defaultImages } from '../../assets/default-images';
 import EditableImage from '../../components/Editor/EditableImage';
 import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
+import { defaultSectionColors, defaultTypography } from '../../types/template.types';
 
 const RestaurantGallery = () => {
     const { template } = useTemplate();
-    const colors = template?.colors || {
-        primary: '#dc2626',
-        secondary: '#b91c1c',
-        accent: '#7f1d1d',
-    };
+
+    const sectionColors = template?.sectionColors || defaultSectionColors;
+    const typography = template?.typography || defaultTypography;
+
     const [selectedImage, setSelectedImage] = useState<number | null>(null);
 
     const images = [
@@ -25,7 +26,7 @@ const RestaurantGallery = () => {
             id: 'r_gallery_1'
         },
         {
-            url: defaultImages.restaurant.about|| defaultImages.restaurant.interior,
+            url: defaultImages.restaurant.about || defaultImages.restaurant.interior,
             titleId: 'r_gallery_2_title',
             titleDefault: 'Ambiente del salón',
             categoryId: 'r_gallery_2_category',
@@ -110,17 +111,29 @@ const RestaurantGallery = () => {
     };
 
     return (
-        <section id="gallery" className="section-padding bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-950 dark:to-orange-950">
+        <section
+            id="gallery"
+            className="section-padding"
+            style={{ backgroundColor: sectionColors.featuresBackground }}
+        >
             <div className="container-custom">
                 <div className="text-center max-w-3xl mx-auto mb-16">
-                    <h2 className="text-4xl md:text-5xl font-bold mb-6 text-red-900 dark:text-red-100">
+                    <h2
+                        className="font-bold mb-6"
+                        style={{
+                            fontSize: typography.sectionTitleSize,
+                            color: sectionColors.featuresTitleColor
+                        }}
+                    >
                         <EditableText
                             elementId="r_gallery_title_1"
                             defaultText="Galería de"
                             tag="span"
                         />{' '}
-                        <span className="text-transparent bg-clip-text"
-                            style={{ backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                        <span
+                            className="text-transparent bg-clip-text"
+                            style={{ backgroundImage: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                        >
                             <EditableText
                                 elementId="r_gallery_title_2"
                                 defaultText="Momentos"
@@ -128,7 +141,10 @@ const RestaurantGallery = () => {
                             />
                         </span>
                     </h2>
-                    <p className="text-xl text-red-700 dark:text-red-300">
+                    <p
+                        className="text-xl"
+                        style={{ color: sectionColors.bodyTextColor }}
+                    >
                         <EditableText
                             elementId="r_gallery_description"
                             defaultText="Capturamos la esencia de nuestra cocina y el amor de nuestros comensales."
@@ -163,7 +179,7 @@ const RestaurantGallery = () => {
                                             tag="span"
                                         />
                                     </h3>
-                                    <p className="text-sm mb-2" style={{ color: colors.primary }}>
+                                    <p className="text-sm mb-2" style={{ color: sectionColors.buttonPrimaryBackground }}>
                                         <EditableText
                                             elementId={image.categoryId}
                                             defaultText={image.categoryDefault}
@@ -171,7 +187,7 @@ const RestaurantGallery = () => {
                                         />
                                     </p>
                                     <div className="flex items-center">
-                                        <Heart className="w-4 h-4 mr-1" style={{ color: colors.primary }} />
+                                        <Heart className="w-4 h-4 mr-1" style={{ color: sectionColors.buttonPrimaryBackground }} />
                                         <span className="text-sm">{image.likes} likes</span>
                                     </div>
                                 </div>
@@ -231,7 +247,7 @@ const RestaurantGallery = () => {
                                     tag="span"
                                 />
                             </p>
-                            <p className="text-red-300">
+                            <p style={{ color: sectionColors.buttonPrimaryBackground }}>
                                 <EditableText
                                     elementId={images[selectedImage].categoryId}
                                     defaultText={images[selectedImage].categoryDefault}

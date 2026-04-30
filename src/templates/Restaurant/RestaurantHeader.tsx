@@ -1,3 +1,4 @@
+// src/templates/Restaurant/RestaurantHeader.tsx
 import { Menu, X } from 'lucide-react';
 import { useState } from 'react';
 import ThemeToggle from '../../Theme/ThemeToogle';
@@ -6,19 +7,14 @@ import EditableImage from '../../components/Editor/EditableImage';
 import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
 import { useTemplateEditor } from '../../contexts/TemplateEditorContext';
+import { defaultSectionColors } from '../../types/template.types';
 
 const RestaurantHeader = () => {
     const { template } = useTemplate();
     const { config } = useTemplateEditor();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-    const colors = template?.colors || {
-        primary: '#dc2626',
-        secondary: '#b91c1c',
-        accent: '#7f1d1d',
-        background: '#ffffff',
-        text: '#450a0a'
-    };
+    const sectionColors = template?.sectionColors || defaultSectionColors;
 
     const navItems = [
         { id: 'r_nav_home', label: 'Inicio', href: '#home', visible: true },
@@ -46,7 +42,13 @@ const RestaurantHeader = () => {
     };
 
     return (
-        <header className="sticky top-0 z-50 bg-white/95 dark:bg-red-950/95 backdrop-blur-md border-b border-red-200 dark:border-red-800">
+        <header
+            className="sticky top-0 z-50 backdrop-blur-md border-b"
+            style={{
+                backgroundColor: `${sectionColors.headerBackground}cc`,
+                borderColor: sectionColors.featuresCardBorder
+            }}
+        >
             <div className="container-custom px-6 py-4">
                 <div className="flex items-center justify-between">
                     {/* Logo editable */}
@@ -61,18 +63,26 @@ const RestaurantHeader = () => {
                             />
                         </div>
                         <div>
-                            <EditableText
-                                elementId="r_header_brand_1"
-                                defaultText="Kernelize"
-                                tag="span"
-                                className="text-2xl font-bold text-red-700 dark:text-red-400"
-                            />
-                            <EditableText
-                                elementId="r_header_brand_2"
-                                defaultText="Restó"
-                                tag="span"
-                                className="text-xl font-semibold text-red-600 dark:text-red-300 ml-1"
-                            />
+                            <span
+                                className="text-2xl font-bold"
+                                style={{ color: sectionColors.headerTextColor }}
+                            >
+                                <EditableText
+                                    elementId="r_header_brand_1"
+                                    defaultText="Kernelize"
+                                    tag="span"
+                                />
+                            </span>
+                            <span
+                                className="text-xl font-semibold ml-1"
+                                style={{ color: sectionColors.buttonPrimaryBackground }}
+                            >
+                                <EditableText
+                                    elementId="r_header_brand_2"
+                                    defaultText="Restó"
+                                    tag="span"
+                                />
+                            </span>
                         </div>
                     </a>
 
@@ -85,7 +95,10 @@ const RestaurantHeader = () => {
                                 data-element-id={item.id}
                                 href={item.href}
                                 onClick={(e) => handleNavClick(e, item.href)}
-                                className="text-red-800 dark:text-red-200 hover:text-red-600 dark:hover:text-red-400 font-medium transition-colors"
+                                className="font-medium transition-colors"
+                                style={{ color: sectionColors.headerLinkColor }}
+                                onMouseEnter={(e) => { e.currentTarget.style.color = sectionColors.headerLinkHoverColor; }}
+                                onMouseLeave={(e) => { e.currentTarget.style.color = sectionColors.headerLinkColor; }}
                             >
                                 <EditableText elementId={item.id} defaultText={item.label} tag="span" />
                             </a>
@@ -96,7 +109,7 @@ const RestaurantHeader = () => {
                             data-element-id="r_header_cta"
                             onClick={(e) => handleNavClick(e, '#reservations')}
                             className="px-5 py-2.5 text-white font-semibold rounded-full transition-all shadow-md hover:shadow-lg"
-                            style={{ background: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}
+                            style={{ background: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
                         >
                             <EditableText elementId="r_header_cta" defaultText="Reservar mesa" tag="span" />
                         </a>
@@ -108,7 +121,8 @@ const RestaurantHeader = () => {
                         <ThemeToggle />
                         <button
                             onClick={() => setIsMenuOpen(!isMenuOpen)}
-                            className="p-2 text-red-800 dark:text-red-200"
+                            className="p-2"
+                            style={{ color: sectionColors.headerTextColor }}
                         >
                             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
                         </button>
@@ -118,13 +132,20 @@ const RestaurantHeader = () => {
 
             {/* Mobile Menu */}
             {isMenuOpen && (
-                <div className="md:hidden bg-white dark:bg-red-950 border-t border-red-200 dark:border-red-800">
+                <div
+                    className="md:hidden border-t"
+                    style={{
+                        backgroundColor: sectionColors.headerBackground,
+                        borderColor: sectionColors.featuresCardBorder
+                    }}
+                >
                     <div className="px-2 pt-2 pb-3 space-y-1">
                         {navItems.filter(item => item.visible).map((item) => (
                             <a
                                 key={item.id}
                                 href={item.href}
-                                className="block px-3 py-2 text-red-800 dark:text-red-200 hover:text-red-600 dark:hover:text-red-400 transition-colors"
+                                className="block px-3 py-2 transition-colors"
+                                style={{ color: sectionColors.headerLinkColor }}
                                 onClick={(e) => {
                                     handleNavClick(e, item.href);
                                     setIsMenuOpen(false);
@@ -137,7 +158,7 @@ const RestaurantHeader = () => {
                             <a
                                 href="#reservations"
                                 className="block w-full text-center px-4 py-2 text-white font-semibold rounded-full"
-                                style={{ background: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}
+                                style={{ background: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
                                 onClick={(e) => {
                                     handleNavClick(e, '#reservations');
                                     setIsMenuOpen(false);

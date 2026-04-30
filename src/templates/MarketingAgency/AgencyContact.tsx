@@ -1,15 +1,15 @@
+// src/templates/MarketingAgency/AgencyContact.tsx
 import { CheckCircle, Mail, MapPin, Phone, Send } from 'lucide-react';
 import React, { useState } from 'react';
 import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
+import { defaultSectionColors, defaultTypography } from '../../types/template.types';
 
 const AgencyContact: React.FC = () => {
     const { template } = useTemplate();
-    const colors = template?.colors || {
-        primary: '#c026d3',
-        secondary: '#a21caf',
-        accent: '#86198f',
-    };
+
+    const sectionColors = template?.sectionColors || defaultSectionColors;
+    const typography = template?.typography || defaultTypography;
 
     const [formData, setFormData] = useState({
         name: '',
@@ -45,17 +45,29 @@ const AgencyContact: React.FC = () => {
     ];
 
     return (
-        <section id="contact" className="section-padding bg-purple-50 dark:bg-purple-950">
+        <section
+            id="contact"
+            className="section-padding"
+            style={{ backgroundColor: sectionColors.featuresBackground }}
+        >
             <div className="container-custom">
                 <div className="text-center max-w-3xl mx-auto mb-16">
-                    <h2 className="text-4xl md:text-5xl font-bold mb-6 text-purple-900 dark:text-purple-100">
+                    <h2
+                        className="font-bold mb-6"
+                        style={{
+                            fontSize: typography.sectionTitleSize,
+                            color: sectionColors.featuresTitleColor
+                        }}
+                    >
                         <EditableText
                             elementId="ag_contact_title_1"
                             defaultText="Empecemos a"
                             tag="span"
                         />{' '}
-                        <span className="text-transparent bg-clip-text"
-                            style={{ backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                        <span
+                            className="text-transparent bg-clip-text"
+                            style={{ backgroundImage: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                        >
                             <EditableText
                                 elementId="ag_contact_title_2"
                                 defaultText="trabajar"
@@ -63,7 +75,10 @@ const AgencyContact: React.FC = () => {
                             />
                         </span>
                     </h2>
-                    <p className="text-xl text-purple-700 dark:text-purple-300">
+                    <p
+                        className="text-xl"
+                        style={{ color: sectionColors.bodyTextColor }}
+                    >
                         <EditableText
                             elementId="ag_contact_description"
                             defaultText="Contanos tu proyecto y te enviaremos una propuesta personalizada sin cargo."
@@ -75,31 +90,37 @@ const AgencyContact: React.FC = () => {
                 <div className="grid lg:grid-cols-3 gap-8">
                     {/* Información de contacto */}
                     <div className="space-y-6">
-                        <div className="bg-white dark:bg-purple-800/30 rounded-2xl p-6">
-                            <h3 className="text-xl font-bold mb-4 text-purple-900 dark:text-purple-100">
+                        <div
+                            className="rounded-2xl p-6"
+                            style={{ backgroundColor: sectionColors.featuresCardBackground }}
+                        >
+                            <h3
+                                className="text-xl font-bold mb-4"
+                                style={{ color: sectionColors.featuresTitleColor }}
+                            >
                                 <EditableText elementId="ag_contact_info_title" defaultText="Información de contacto" tag="span" />
                             </h3>
                             <div className="space-y-4">
                                 <div className="flex items-start space-x-3">
-                                    <Phone className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: colors.primary }} />
+                                    <Phone className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: sectionColors.buttonPrimaryBackground }} />
                                     <div>
-                                        <p className="text-purple-700 dark:text-purple-300">
+                                        <p style={{ color: sectionColors.bodyTextColor }}>
                                             <EditableText elementId="ag_contact_phone" defaultText="+54 11 4567-8900" tag="span" />
                                         </p>
                                     </div>
                                 </div>
                                 <div className="flex items-start space-x-3">
-                                    <Mail className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: colors.primary }} />
+                                    <Mail className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: sectionColors.buttonPrimaryBackground }} />
                                     <div>
-                                        <p className="text-purple-700 dark:text-purple-300">
+                                        <p style={{ color: sectionColors.bodyTextColor }}>
                                             <EditableText elementId="ag_contact_email" defaultText="hola@kernelizemarketing.com" tag="span" />
                                         </p>
                                     </div>
                                 </div>
                                 <div className="flex items-start space-x-3">
-                                    <MapPin className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: colors.primary }} />
+                                    <MapPin className="w-5 h-5 flex-shrink-0 mt-0.5" style={{ color: sectionColors.buttonPrimaryBackground }} />
                                     <div>
-                                        <p className="text-purple-700 dark:text-purple-300">
+                                        <p style={{ color: sectionColors.bodyTextColor }}>
                                             <EditableText elementId="ag_contact_address" defaultText="Av. Santa Fe 1234, CABA" tag="span" />
                                         </p>
                                     </div>
@@ -110,36 +131,53 @@ const AgencyContact: React.FC = () => {
 
                     {/* Formulario */}
                     <div className="lg:col-span-2">
-                        <div className="bg-white dark:bg-purple-800/30 rounded-2xl p-8">
+                        <div
+                            className="rounded-2xl p-8"
+                            style={{ backgroundColor: sectionColors.featuresCardBackground }}
+                        >
                             {isSubmitted ? (
                                 <div className="text-center py-12">
-                                    <div className="w-20 h-20 mx-auto mb-6 rounded-full flex items-center justify-center"
-                                        style={{ background: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                                    <div
+                                        className="w-20 h-20 mx-auto mb-6 rounded-full flex items-center justify-center"
+                                        style={{ background: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                                    >
                                         <CheckCircle className="w-10 h-10 text-white" />
                                     </div>
-                                    <h3 className="text-2xl font-bold text-purple-900 dark:text-purple-100 mb-4">
+                                    <h3
+                                        className="text-2xl font-bold mb-4"
+                                        style={{ color: sectionColors.featuresTitleColor }}
+                                    >
                                         <EditableText elementId="ag_success_title" defaultText="¡Mensaje enviado!" tag="span" />
                                     </h3>
-                                    <p className="text-purple-700 dark:text-purple-300 mb-8">
+                                    <p
+                                        className="mb-8"
+                                        style={{ color: sectionColors.bodyTextColor }}
+                                    >
                                         <EditableText elementId="ag_success_message" defaultText="Te contactaremos en menos de 24 horas para coordinar una reunión." tag="span" />
                                     </p>
                                     <button
                                         onClick={() => setIsSubmitted(false)}
                                         className="text-white font-semibold px-8 py-3 rounded-lg transition-all"
-                                        style={{ background: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}
+                                        style={{ background: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
                                     >
                                         <EditableText elementId="ag_success_button" defaultText="Enviar otro mensaje" tag="span" />
                                     </button>
                                 </div>
                             ) : (
                                 <>
-                                    <h3 className="text-2xl font-bold mb-6 text-purple-900 dark:text-purple-100">
+                                    <h3
+                                        className="text-2xl font-bold mb-6"
+                                        style={{ color: sectionColors.featuresTitleColor }}
+                                    >
                                         <EditableText elementId="ag_form_title" defaultText="Contactanos" tag="span" />
                                     </h3>
                                     <form onSubmit={handleSubmit} className="space-y-4">
                                         <div className="grid md:grid-cols-2 gap-4">
                                             <div>
-                                                <label className="block text-sm font-medium mb-1">
+                                                <label
+                                                    className="block text-sm font-medium mb-1"
+                                                    style={{ color: sectionColors.bodyTextColor }}
+                                                >
                                                     <EditableText elementId="ag_form_name" defaultText="Nombre completo *" tag="span" />
                                                 </label>
                                                 <input
@@ -148,12 +186,19 @@ const AgencyContact: React.FC = () => {
                                                     value={formData.name}
                                                     onChange={handleChange}
                                                     required
-                                                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 bg-white dark:bg-purple-800"
-                                                    style={{ borderColor: `${colors.primary}30`, '--tw-ring-color': colors.primary } as any}
+                                                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2"
+                                                    style={{
+                                                        borderColor: `${sectionColors.buttonPrimaryBackground}30`,
+                                                        backgroundColor: `${sectionColors.buttonPrimaryBackground}05`,
+                                                        color: sectionColors.bodyTextColor
+                                                    }}
                                                 />
                                             </div>
                                             <div>
-                                                <label className="block text-sm font-medium mb-1">
+                                                <label
+                                                    className="block text-sm font-medium mb-1"
+                                                    style={{ color: sectionColors.bodyTextColor }}
+                                                >
                                                     <EditableText elementId="ag_form_email" defaultText="Email *" tag="span" />
                                                 </label>
                                                 <input
@@ -162,13 +207,20 @@ const AgencyContact: React.FC = () => {
                                                     value={formData.email}
                                                     onChange={handleChange}
                                                     required
-                                                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 bg-white dark:bg-purple-800"
-                                                    style={{ borderColor: `${colors.primary}30`, '--tw-ring-color': colors.primary } as any}
+                                                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2"
+                                                    style={{
+                                                        borderColor: `${sectionColors.buttonPrimaryBackground}30`,
+                                                        backgroundColor: `${sectionColors.buttonPrimaryBackground}05`,
+                                                        color: sectionColors.bodyTextColor
+                                                    }}
                                                 />
                                             </div>
                                         </div>
                                         <div>
-                                            <label className="block text-sm font-medium mb-1">
+                                            <label
+                                                className="block text-sm font-medium mb-1"
+                                                style={{ color: sectionColors.bodyTextColor }}
+                                            >
                                                 <EditableText elementId="ag_form_phone" defaultText="Teléfono" tag="span" />
                                             </label>
                                             <input
@@ -176,12 +228,19 @@ const AgencyContact: React.FC = () => {
                                                 name="phone"
                                                 value={formData.phone}
                                                 onChange={handleChange}
-                                                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 bg-white dark:bg-purple-800"
-                                                style={{ borderColor: `${colors.primary}30`, '--tw-ring-color': colors.primary } as any}
+                                                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2"
+                                                style={{
+                                                    borderColor: `${sectionColors.buttonPrimaryBackground}30`,
+                                                    backgroundColor: `${sectionColors.buttonPrimaryBackground}05`,
+                                                    color: sectionColors.bodyTextColor
+                                                }}
                                             />
                                         </div>
                                         <div>
-                                            <label className="block text-sm font-medium mb-1">
+                                            <label
+                                                className="block text-sm font-medium mb-1"
+                                                style={{ color: sectionColors.bodyTextColor }}
+                                            >
                                                 <EditableText elementId="ag_form_company" defaultText="Empresa" tag="span" />
                                             </label>
                                             <input
@@ -189,12 +248,19 @@ const AgencyContact: React.FC = () => {
                                                 name="company"
                                                 value={formData.company}
                                                 onChange={handleChange}
-                                                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 bg-white dark:bg-purple-800"
-                                                style={{ borderColor: `${colors.primary}30`, '--tw-ring-color': colors.primary } as any}
+                                                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2"
+                                                style={{
+                                                    borderColor: `${sectionColors.buttonPrimaryBackground}30`,
+                                                    backgroundColor: `${sectionColors.buttonPrimaryBackground}05`,
+                                                    color: sectionColors.bodyTextColor
+                                                }}
                                             />
                                         </div>
                                         <div>
-                                            <label className="block text-sm font-medium mb-1">
+                                            <label
+                                                className="block text-sm font-medium mb-1"
+                                                style={{ color: sectionColors.bodyTextColor }}
+                                            >
                                                 <EditableText elementId="ag_form_budget" defaultText="Presupuesto aproximado *" tag="span" />
                                             </label>
                                             <select
@@ -202,8 +268,12 @@ const AgencyContact: React.FC = () => {
                                                 value={formData.budget}
                                                 onChange={handleChange}
                                                 required
-                                                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 bg-white dark:bg-purple-800"
-                                                style={{ borderColor: `${colors.primary}30`, '--tw-ring-color': colors.primary } as any}
+                                                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2"
+                                                style={{
+                                                    borderColor: `${sectionColors.buttonPrimaryBackground}30`,
+                                                    backgroundColor: `${sectionColors.buttonPrimaryBackground}05`,
+                                                    color: sectionColors.bodyTextColor
+                                                }}
                                             >
                                                 <option value="">Seleccioná una opción</option>
                                                 {budgets.map(budget => (
@@ -212,7 +282,10 @@ const AgencyContact: React.FC = () => {
                                             </select>
                                         </div>
                                         <div>
-                                            <label className="block text-sm font-medium mb-1">
+                                            <label
+                                                className="block text-sm font-medium mb-1"
+                                                style={{ color: sectionColors.bodyTextColor }}
+                                            >
                                                 <EditableText elementId="ag_form_message" defaultText="Mensaje *" tag="span" />
                                             </label>
                                             <textarea
@@ -221,8 +294,12 @@ const AgencyContact: React.FC = () => {
                                                 onChange={handleChange}
                                                 required
                                                 rows={4}
-                                                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 bg-white dark:bg-purple-800 resize-none"
-                                                style={{ borderColor: `${colors.primary}30`, '--tw-ring-color': colors.primary } as any}
+                                                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 resize-none"
+                                                style={{
+                                                    borderColor: `${sectionColors.buttonPrimaryBackground}30`,
+                                                    backgroundColor: `${sectionColors.buttonPrimaryBackground}05`,
+                                                    color: sectionColors.bodyTextColor
+                                                }}
                                                 placeholder="Contanos sobre tu proyecto..."
                                             />
                                         </div>
@@ -231,7 +308,7 @@ const AgencyContact: React.FC = () => {
                                                 type="submit"
                                                 disabled={isSubmitting}
                                                 className="w-full text-white font-semibold py-3 rounded-lg transition-all disabled:opacity-50 flex items-center justify-center"
-                                                style={{ background: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}
+                                                style={{ background: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
                                             >
                                                 {isSubmitting ? (
                                                     <EditableText elementId="ag_form_sending" defaultText="Enviando..." tag="span" />

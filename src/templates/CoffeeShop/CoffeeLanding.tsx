@@ -2,8 +2,6 @@
 import React from 'react';
 import EditModeToggle from '../../components/Editor/EditModeToggle';
 import EditorDashboard from '../../components/Editor/EditorDashboard';
-import { TemplateProvider } from '../../contexts/TemplateContext';
-import { TemplateEditorProvider } from '../../contexts/TemplateEditorContext';
 import CoffeeAbout from './CoffeeAbout';
 import CoffeeContact from './CoffeeContact';
 import CoffeeEvents from './CoffeeEvents';
@@ -20,25 +18,25 @@ interface CoffeeLandingProps {
 
 const CoffeeLanding: React.FC<CoffeeLandingProps> = ({ onHomeClick }) => {
     return (
-        <TemplateProvider>
-            <TemplateEditorProvider>
-                <div className="min-h-screen flex flex-col">
-                    <CoffeeHeader />
-                    <main className="flex-grow">
-                        <CoffeeHero />
-                        <CoffeeMenu />
-                        <CoffeeAbout />
-                        <CoffeeGallery />
-                        <CoffeeEvents />
-                        <CoffeeTestimonials />
-                        <CoffeeContact />
-                    </main>
-                    <CoffeeFooter />
-                    <EditorDashboard onHomeClick={onHomeClick} />
-                    <EditModeToggle />
-                </div>
-            </TemplateEditorProvider>
-        </TemplateProvider>
+        // <TemplateProvider>
+        //     <TemplateEditorProvider>
+        <div className="min-h-screen flex flex-col">
+            <CoffeeHeader />
+            <main className="flex-grow">
+                <CoffeeHero />
+                <CoffeeMenu />
+                <CoffeeAbout />
+                <CoffeeGallery />
+                <CoffeeEvents />
+                <CoffeeTestimonials />
+                <CoffeeContact />
+            </main>
+            <CoffeeFooter />
+            <EditorDashboard onHomeClick={onHomeClick} />
+            <EditModeToggle />
+        </div>
+        //     </TemplateEditorProvider>
+        // </TemplateProvider>
     );
 };
 

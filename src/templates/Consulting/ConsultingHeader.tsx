@@ -5,6 +5,7 @@ import EditableImage from '../../components/Editor/EditableImage';
 import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
 import { useTemplateEditor } from '../../contexts/TemplateEditorContext';
+import { defaultSectionColors } from '../../types/template.types';
 
 interface ConsultingHeaderProps {
     className?: string;
@@ -15,116 +16,135 @@ const ConsultingHeader: React.FC<ConsultingHeaderProps> = ({ className = '' }) =
     const { config } = useTemplateEditor();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+    // Colores del header desde sectionColors (con fallback completo)
+    const s = { ...defaultSectionColors, ...(template?.sectionColors || {}) };
 
-    // ✅ Log para ver qué template está usando
-    // console.log('🎨 ConsultingHeader - useTemplate() llamado, resultado:', template);
-    // console.log('🎨 ConsultingHeader - colors:', template?.colors);
-
-
-    const colors = template?.colors || {
-        primary: '#a7b1c7',
-        secondary: '#475569',
-        accent: '#1e293b',
-        background: '#ffffff',
-        text: '#424652'
-    };
-
-    // Navegación editable
+    // Definir los ítems de navegación con sus textos y URLs desde template.texts
     const navItems = [
-        { id: 'nav_home', label: 'Inicio', href: '#home', visible: true },
-        { id: 'nav_services', label: 'Servicios', href: '#services', visible: true },
-        { id: 'nav_methodology', label: 'Metodología', href: '#methodology', visible: true },
-        { id: 'nav_testimonials', label: 'Casos de éxito', href: '#testimonials', visible: true },
-        { id: 'nav_contact', label: 'Contacto', href: '#contact', visible: true },
+        { id: 'nav_home', label: 'Inicio', defaultText: 'Inicio', defaultUrl: '#home' },
+        { id: 'nav_services', label: 'Servicios', defaultText: 'Servicios', defaultUrl: '#services' },
+        { id: 'nav_methodology', label: 'Metodología', defaultText: 'Metodología', defaultUrl: '#methodology' },
+        { id: 'nav_testimonials', label: 'Casos de éxito', defaultText: 'Casos de éxito', defaultUrl: '#testimonials' },
+        { id: 'nav_contact', label: 'Contacto', defaultText: 'Contacto', defaultUrl: '#contact' },
     ];
 
-    // Manejar click en enlaces durante modo edición
+    // Obtener textos y URLs desde template.texts (con fallbacks)
+    const getNavUrl = (item: typeof navItems[0]) =>
+        template?.texts?.[`${item.id}_url`] || item.defaultUrl;
+
+    // Texto y URL del botón CTA del header
+    const ctaText = template?.texts?.header_cta || 'Consultoría gratuita';
+    const ctaUrl = template?.texts?.header_cta_url || '#contact';
+
+    // Manejar clic en enlaces durante modo edición
     const handleNavClick = (e: React.MouseEvent, href: string) => {
         if (config.isEditing) {
             e.preventDefault();
-            // Si estamos en modo edición, no navegamos
             return;
         }
-        // Si no estamos en modo edición, navegamos normalmente
         window.location.href = href;
     };
 
-    // Manejar click en el logo
+    // Manejar clic en el logo (activa edición de imagen)
     const handleLogoClick = (e: React.MouseEvent) => {
         if (config.isEditing) {
             e.preventDefault();
-            // En modo edición, activamos la edición del logo
             const logoElement = document.getElementById('header_logo');
-            if (logoElement) {
-                logoElement.click();
-            }
+            if (logoElement) logoElement.click();
         }
     };
 
+    console.log('Logo colors:', s.logoTextColor1, s.logoTextColor2);
+
     return (
-        <header className={`sticky top-0 z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 ${className}`}>
+        <header
+            className={`sticky top-0 z-50 backdrop-blur-md border-b transition-colors ${className}`}
+            style={{
+                backgroundColor: s.headerBackground,
+                borderColor: `${s.headerLinkColor}40`,
+            }}
+        >
             <div className="container-custom px-6 py-4">
                 <div className="flex items-center justify-between">
                     {/* Logo editable */}
                     <a
-                        href="/"
+                        // href="/"
                         onClick={handleLogoClick}
                         className="flex items-center space-x-3 group"
                     >
-                        <div
-                            id="header_logo"
-                            data-element-id="header_logo"
-                            className="relative"
-                        >
+                        <div id="header_logo" data-element-id="header_logo" className="relative">
                             <EditableImage
                                 elementId="header_logo"
                                 defaultImage={logoDefault}
                                 alt="Kernelize Consulting"
                                 className="w-12 h-12 rounded-lg object-cover"
                                 category="consulting"
+                                containerClassName=""
+                                modalRelative={true}
+
                             />
                         </div>
-                        <div className="text-2xl font-bold">
-                            <EditableText
-                                elementId="header_brand_1"
-                                defaultText="KE"
-                                tag="span"
-                                className="text-blue-600 dark:text-blue-400"
-                            />
-                            <EditableText
-                                elementId="header_brand_2"
-                                defaultText="Consulting"
-                                tag="span"
-                                className="text-slate-600 dark:text-slate-400 ml-1"
-                            />
+                        <div className={`${s.logoTextSize} font-bold`}>
+                            <span style={{ color: s.logoTextColor1 }}>
+                                <EditableText
+                                    elementId="header_brand_1"
+                                    defaultText="KE"
+                                    tag="span"
+                                // className="text-blue-600 dark:text-blue-400"
+                                />
+                            </span>
+                            <span style={{ color: s.logoTextColor2 }}>
+                                <EditableText
+                                    elementId="header_brand_2"
+                                    defaultText="Consulting"
+                                    tag="span"
+                                // className="text-slate-600 dark:text-slate-400 ml-1"
+                                />
+                            </span>
                         </div>
                     </a>
 
-                    {/* Desktop Navigation */}
+                    {/* Desktop Navigation (sin cambios) */}
                     <nav className="hidden md:flex items-center space-x-8">
-                        {navItems.filter(item => item.visible).map((item) => (
+                        {navItems.map((item) => (
                             <a
                                 key={item.id}
                                 id={item.id}
                                 data-element-id={item.id}
-                                href={item.href}
-                                onClick={(e) => handleNavClick(e, item.href)}
-                                className="text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors"
+                                href={getNavUrl(item)}
+                                onClick={(e) => handleNavClick(e, getNavUrl(item))}
+                                className="font-medium transition-colors"
+                                style={{ color: s.headerLinkColor }}
+                                onMouseEnter={(e) => {
+                                    e.currentTarget.style.color = s.headerLinkHoverColor;
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.color = s.headerLinkColor;
+                                }}
                             >
                                 <EditableText
                                     elementId={item.id}
-                                    defaultText={item.label}
+                                    defaultText={item.defaultText}
                                     tag="span"
                                 />
                             </a>
                         ))}
                         <a
-                            href="#contact"
+                            href={ctaUrl}
                             id="header_cta"
                             data-element-id="header_cta"
-                            onClick={(e) => handleNavClick(e, '#contact')}
+                            onClick={(e) => handleNavClick(e, ctaUrl)}
                             className="px-5 py-2.5 text-white font-semibold rounded-lg transition-all shadow-md hover:shadow-lg"
-                            style={{ background: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}
+                            style={{
+                                backgroundColor: s.headerCtaBackground,
+                                color: s.headerCtaText,
+                            }}
+                            onMouseEnter={(e) => {
+                                e.currentTarget.style.backgroundColor = s.headerCtaHoverBackground;
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.style.backgroundColor = s.headerCtaBackground;
+                            }}
                         >
                             <EditableText
                                 elementId="header_cta"
@@ -132,15 +152,14 @@ const ConsultingHeader: React.FC<ConsultingHeaderProps> = ({ className = '' }) =
                                 tag="span"
                             />
                         </a>
-                        {/* <ThemeToggle /> */}
                     </nav>
 
                     {/* Mobile menu button */}
                     <div className="md:hidden flex items-center space-x-4">
-                        {/* <ThemeToggle /> */}
                         <button
                             onClick={() => setIsMenuOpen(!isMenuOpen)}
-                            className="p-2 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400"
+                            className="p-2 transition-colors"
+                            style={{ color: s.headerTextColor }}
                         >
                             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
                         </button>
@@ -150,38 +169,60 @@ const ConsultingHeader: React.FC<ConsultingHeaderProps> = ({ className = '' }) =
 
             {/* Mobile Menu */}
             {isMenuOpen && (
-                <div className="md:hidden bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
+                <div
+                    className="md:hidden border-t"
+                    style={{
+                        backgroundColor: s.headerBackground,
+                        borderColor: `${s.headerLinkColor}40`,
+                    }}
+                >
                     <div className="px-2 pt-2 pb-3 space-y-1">
-                        {navItems.filter(item => item.visible).map((item) => (
+                        {navItems.map((item) => (
                             <a
                                 key={item.id}
                                 id={item.id}
                                 data-element-id={item.id}
-                                href={item.href}
+                                href={getNavUrl(item)}
                                 onClick={(e) => {
-                                    handleNavClick(e, item.href);
+                                    handleNavClick(e, getNavUrl(item));
                                     setIsMenuOpen(false);
                                 }}
-                                className="block px-3 py-2 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                                className="block px-3 py-2 transition-colors"
+                                style={{ color: s.headerLinkColor }}
+                                onMouseEnter={(e) => {
+                                    e.currentTarget.style.color = s.headerLinkHoverColor;
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.color = s.headerLinkColor;
+                                }}
                             >
                                 <EditableText
                                     elementId={item.id}
-                                    defaultText={item.label}
+                                    defaultText={item.defaultText}
                                     tag="span"
                                 />
                             </a>
                         ))}
                         <div className="px-3 py-2">
                             <a
-                                href="#contact"
+                                href={ctaUrl}
                                 id="header_cta"
                                 data-element-id="header_cta"
                                 onClick={(e) => {
-                                    handleNavClick(e, '#contact');
+                                    handleNavClick(e, ctaUrl);
                                     setIsMenuOpen(false);
                                 }}
                                 className="block w-full text-center px-4 py-2 text-white font-semibold rounded-lg"
-                                style={{ background: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}
+                                style={{
+                                    backgroundColor: s.headerCtaBackground,
+                                    color: s.headerCtaText,
+                                }}
+                                onMouseEnter={(e) => {
+                                    e.currentTarget.style.backgroundColor = s.headerCtaHoverBackground;
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.backgroundColor = s.headerCtaBackground;
+                                }}
                             >
                                 <EditableText
                                     elementId="header_cta"

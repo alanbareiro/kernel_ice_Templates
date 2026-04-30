@@ -1,15 +1,15 @@
+// src/templates/Architecture/ArchitectureServices.tsx
 import { Building2, Home, Lightbulb, PenTool, Ruler, TreePine } from 'lucide-react';
 import React from 'react';
 import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
+import { defaultSectionColors, defaultTypography } from '../../types/template.types';
 
 const ArchitectureServices: React.FC = () => {
     const { template } = useTemplate();
-    const colors = template?.colors || {
-        primary: '#57534e',
-        secondary: '#44403c',
-        accent: '#292524',
-    };
+
+    const sectionColors = template?.sectionColors || defaultSectionColors;
+    const typography = template?.typography || defaultTypography;
 
     const services = [
         {
@@ -57,17 +57,29 @@ const ArchitectureServices: React.FC = () => {
     ];
 
     return (
-        <section id="services" className="section-padding bg-stone-50 dark:bg-stone-950">
+        <section
+            id="services"
+            className="section-padding"
+            style={{ backgroundColor: sectionColors.featuresBackground }}
+        >
             <div className="container-custom">
                 <div className="text-center max-w-3xl mx-auto mb-16">
-                    <h2 className="text-4xl md:text-5xl font-bold mb-6 text-stone-900 dark:text-stone-100">
+                    <h2
+                        className="font-bold mb-6"
+                        style={{
+                            fontSize: typography.sectionTitleSize,
+                            color: sectionColors.featuresTitleColor
+                        }}
+                    >
                         <EditableText
                             elementId="ar_services_title_1"
                             defaultText="Nuestros"
                             tag="span"
                         />{' '}
-                        <span className="text-transparent bg-clip-text"
-                            style={{ backgroundImage: `linear-gradient(to right, ${colors.primary}, ${colors.accent})` }}>
+                        <span
+                            className="text-transparent bg-clip-text"
+                            style={{ backgroundImage: `linear-gradient(to right, ${sectionColors.buttonPrimaryBackground}, ${sectionColors.buttonPrimaryBackground})` }}
+                        >
                             <EditableText
                                 elementId="ar_services_title_2"
                                 defaultText="Servicios"
@@ -75,7 +87,10 @@ const ArchitectureServices: React.FC = () => {
                             />
                         </span>
                     </h2>
-                    <p className="text-xl text-stone-600 dark:text-stone-400">
+                    <p
+                        className="text-xl"
+                        style={{ color: sectionColors.bodyTextColor }}
+                    >
                         <EditableText
                             elementId="ar_services_description"
                             defaultText="Ofrecemos soluciones integrales para cada etapa de tu proyecto."
@@ -86,13 +101,25 @@ const ArchitectureServices: React.FC = () => {
 
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {services.map((service, index) => (
-                        <div key={index} className="group p-8 rounded-2xl bg-white dark:bg-stone-800/50 border border-stone-200 dark:border-stone-700 hover:shadow-xl transition-all duration-300">
-                            <div className="w-16 h-16 rounded-xl mb-6 flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
-                                style={{ backgroundColor: `${colors.primary}15`, color: colors.primary }}>
+                        <div
+                            key={index}
+                            className="group p-8 rounded-2xl border hover:shadow-xl transition-all duration-300"
+                            style={{
+                                backgroundColor: sectionColors.featuresCardBackground,
+                                borderColor: sectionColors.featuresCardBorder
+                            }}
+                        >
+                            <div
+                                className="w-16 h-16 rounded-xl mb-6 flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
+                                style={{ backgroundColor: `${sectionColors.buttonPrimaryBackground}15`, color: sectionColors.buttonPrimaryBackground }}
+                            >
                                 {service.icon}
                             </div>
 
-                            <h3 className="text-2xl font-bold mb-3 text-stone-900 dark:text-stone-100 group-hover:text-stone-700 transition-colors">
+                            <h3
+                                className="text-2xl font-bold mb-3 transition-colors"
+                                style={{ color: sectionColors.featuresTitleColor }}
+                            >
                                 <EditableText
                                     elementId={service.titleId}
                                     defaultText={service.titleDefault}
@@ -100,7 +127,10 @@ const ArchitectureServices: React.FC = () => {
                                 />
                             </h3>
 
-                            <p className="text-stone-600 dark:text-stone-400 leading-relaxed">
+                            <p
+                                className="leading-relaxed"
+                                style={{ color: sectionColors.bodyTextColor }}
+                            >
                                 <EditableText
                                     elementId={service.descId}
                                     defaultText={service.descDefault}
