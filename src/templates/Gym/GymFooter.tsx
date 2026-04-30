@@ -1,7 +1,7 @@
 // src/templates/Gym/GymFooter.tsx
 import { Dumbbell, Facebook, Heart, Instagram, Mail, MapPin, Phone, Twitter } from 'lucide-react';
 import React from 'react';
-import ThemeToggle from '../../Theme/ThemeToogle';
+// import ThemeToggle from '../../Theme/ThemeToogle';
 import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
 import { defaultSectionColors } from '../../types/template.types';
@@ -66,7 +66,7 @@ const GymFooter: React.FC = () => {
                             <a href="#" className="transition-colors" style={{ color: sectionColors.footerLinkColor }}><Facebook className="w-5 h-5" /></a>
                             <a href="#" className="transition-colors" style={{ color: sectionColors.footerLinkColor }}><Twitter className="w-5 h-5" /></a>
                         </div>
-                        <div className="flex items-center justify-between"><span style={{ color: sectionColors.footerLinkColor }}>Tema:</span><ThemeToggle /></div>
+                        {/* <div className="flex items-center justify-between"><span style={{ color: sectionColors.footerLinkColor }}>Tema:</span><ThemeToggle /></div> */}
                     </div>
                 </div>
                 <div className="mt-12 pt-8 border-t" style={{ borderColor: `${sectionColors.buttonPrimaryBackground}40` }}>

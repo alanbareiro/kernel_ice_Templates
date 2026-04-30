@@ -10,7 +10,7 @@ import {
     Twitter,
     UtensilsCrossed
 } from 'lucide-react';
-import ThemeToggle from '../../Theme/ThemeToogle';
+// import ThemeToggle from '../../Theme/ThemeToogle';
 import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
 import { defaultSectionColors } from '../../types/template.types';
@@ -213,7 +213,7 @@ const RestaurantFooter = () => {
                         <div className="pt-6 mt-6 border-t" style={{ borderColor: `${sectionColors.buttonPrimaryBackground}40` }}>
                             <div className="flex items-center justify-between">
                                 <span style={{ color: sectionColors.footerHeadingColor }}>Tema:</span>
-                                <ThemeToggle />
+                                {/* <ThemeToggle /> */}
                             </div>
                         </div>
                     </div>

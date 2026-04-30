@@ -1,7 +1,7 @@
 // src/templates/Catering/CateringHeader.tsx - CORREGIDO
 import { Menu, X } from 'lucide-react';
 import { useState } from 'react';
-import ThemeToggle from '../../Theme/ThemeToogle';
+// import ThemeToggle from '../../Theme/ThemeToogle';
 import { defaultImages } from '../../assets/default-images';
 import EditableImage from '../../components/Editor/EditableImage';
 import EditableText from '../../components/Editor/EditableText';
@@ -112,12 +112,12 @@ const CateringHeader = () => {
                         >
                             <EditableText elementId="catering_cta" defaultText="Cotizar evento" tag="span" />
                         </a>
-                        <ThemeToggle />
+                        {/* <ThemeToggle /> */}
                     </nav>
 
                     {/* Mobile menu button */}
                     <div className="md:hidden flex items-center space-x-4">
-                        <ThemeToggle />
+                        {/* <ThemeToggle /> */}
                         <button
                             onClick={() => setIsMenuOpen(!isMenuOpen)}
                             className="p-2"

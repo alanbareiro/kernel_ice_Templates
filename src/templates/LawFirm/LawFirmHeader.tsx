@@ -1,7 +1,7 @@
 // src/templates/LawFirm/LawFirmHeader.tsx
 import { Menu, X } from 'lucide-react';
 import React, { useState } from 'react';
-import ThemeToggle from '../../Theme/ThemeToogle';
+// import ThemeToggle from '../../Theme/ThemeToogle';
 import EditableImage from '../../components/Editor/EditableImage';
 import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
@@ -110,12 +110,12 @@ const LawFirmHeader: React.FC = () => {
                         >
                             <EditableText elementId="lf_header_cta" defaultText="Consulta Gratuita" tag="span" />
                         </a>
-                        <ThemeToggle />
+                        {/* <ThemeToggle /> */}
                     </nav>
 
                     {/* Mobile menu button */}
                     <div className="md:hidden flex items-center space-x-4">
-                        <ThemeToggle />
+                        {/* <ThemeToggle /> */}
                         <button
                             onClick={() => setIsMenuOpen(!isMenuOpen)}
                             className="p-2"

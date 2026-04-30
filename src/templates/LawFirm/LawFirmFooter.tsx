@@ -1,7 +1,7 @@
 // src/templates/LawFirm/LawFirmFooter.tsx
 import { Facebook, Heart, Instagram, Linkedin, Mail, MapPin, Phone, Scale, Twitter } from 'lucide-react';
 import React from 'react';
-import ThemeToggle from '../../Theme/ThemeToogle';
+// import ThemeToggle from '../../Theme/ThemeToogle';
 import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
 import { defaultSectionColors } from '../../types/template.types';
@@ -110,7 +110,7 @@ const LawFirmFooter: React.FC = () => {
                         </div>
                         <div className="flex items-center justify-between">
                             <span style={{ color: sectionColors.footerLinkColor }}>Tema:</span>
-                            <ThemeToggle />
+                            {/* <ThemeToggle /> */}
                         </div>
                     </div>
                 </div>

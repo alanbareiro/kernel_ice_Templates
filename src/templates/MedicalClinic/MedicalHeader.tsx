@@ -5,7 +5,7 @@ import EditableImage from '../../components/Editor/EditableImage';
 import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
 import { useTemplateEditor } from '../../contexts/TemplateEditorContext';
-import ThemeToggle from '../../Theme/ThemeToogle';
+// import ThemeToggle from '../../Theme/ThemeToogle';
 import { defaultSectionColors } from '../../types/template.types';
 
 const MedicalHeader: React.FC = () => {
@@ -110,12 +110,12 @@ const MedicalHeader: React.FC = () => {
                         >
                             <EditableText elementId="md_header_cta" defaultText="Agendar Cita" tag="span" />
                         </a>
-                        <ThemeToggle />
+                        {/* <ThemeToggle /> */}
                     </nav>
 
                     {/* Mobile menu button */}
                     <div className="md:hidden flex items-center space-x-4">
-                        <ThemeToggle />
+                        {/* <ThemeToggle /> */}
                         <button
                             onClick={() => setIsMenuOpen(!isMenuOpen)}
                             className="p-2"

@@ -11,7 +11,7 @@ import {
     Phone,
     Twitter
 } from 'lucide-react';
-import ThemeToggle from '../../Theme/ThemeToogle';
+// import ThemeToggle from '../../Theme/ThemeToogle';
 import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
 import { defaultSectionColors } from '../../types/template.types';
@@ -233,7 +233,7 @@ const CateringFooter = () => {
                         {/* Toggle de tema */}
                         <div className="pt-4 flex items-center justify-between">
                             <span className="text-sm" style={{ color: sectionColors.footerHeadingColor }}>Tema:</span>
-                            <ThemeToggle />
+                            {/* <ThemeToggle /> */}
                         </div>
                     </div>
                 </div>

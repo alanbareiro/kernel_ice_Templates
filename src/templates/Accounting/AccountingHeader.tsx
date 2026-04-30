@@ -1,7 +1,7 @@
 // src/templates/Accounting/AccountingHeader.tsx
 import { Menu, X } from 'lucide-react';
 import { useState } from 'react';
-import ThemeToggle from '../../Theme/ThemeToogle';
+// import ThemeToggle from '../../Theme/ThemeToogle';
 import { defaultImages } from '../../assets/default-images';
 import EditableImage from '../../components/Editor/EditableImage';
 import EditableText from '../../components/Editor/EditableText';
@@ -111,12 +111,12 @@ const AccountingHeader = () => {
                         >
                             <EditableText elementId="a_header_cta" defaultText="Consulta gratuita" tag="span" />
                         </a>
-                        <ThemeToggle />
+                        {/* <ThemeToggle /> */}
                     </nav>
 
                     {/* Mobile menu button */}
                     <div className="md:hidden flex items-center space-x-4">
-                        <ThemeToggle />
+                        {/* <ThemeToggle /> */}
                         <button
                             onClick={() => setIsMenuOpen(!isMenuOpen)}
                             className="p-2"

@@ -33,7 +33,7 @@ const ConsultingHeader: React.FC<ConsultingHeaderProps> = ({ className = '' }) =
         template?.texts?.[`${item.id}_url`] || item.defaultUrl;
 
     // Texto y URL del botón CTA del header
-    const ctaText = template?.texts?.header_cta || 'Consultoría gratuita';
+    // const ctaText = template?.texts?.header_cta || 'Consultoría gratuita';
     const ctaUrl = template?.texts?.header_cta_url || '#contact';
 
     // Manejar clic en enlaces durante modo edición
