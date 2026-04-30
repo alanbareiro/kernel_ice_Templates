@@ -84,10 +84,10 @@ const ConsultingTestimonials = () => {
         },
     ];
 
-    const getIcon = (iconName: string) => {
-        const Icon = iconMap[iconName];
-        return Icon ? <Icon className="w-8 h-8 mx-auto mb-2" /> : null;
-    };
+    // const getIcon = (iconName: string) => {
+    //     const Icon = iconMap[iconName];
+    //     return Icon ? <Icon className="w-8 h-8 mx-auto mb-2" /> : null;
+    // };
 
     return (
         <section
