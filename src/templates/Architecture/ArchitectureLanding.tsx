@@ -3,8 +3,6 @@ import EditModeToggle from '../../components/Editor/EditModeToggle';
 import EditorDashboard from '../../components/Editor/EditorDashboard';
 import ArchitectureAbout from './ArchitectureAbout';
 import ArchitectureContact from './ArchitectureContact';
-import ArchitectureFooter from './ArchitectureFooter';
-import ArchitectureHeader from './ArchitectureHeader';
 import ArchitectureHero from './ArchitectureHero';
 import ArchitectureProjects from './ArchitectureProjects';
 import ArchitectureServices from './ArchitectureServices';
@@ -19,7 +17,7 @@ const ArchitectureLanding: React.FC<ArchitectureLandingProps> = ({ onHomeClick }
         // <TemplateProvider>
         //     <TemplateEditorProvider>
         <div className="min-h-screen flex flex-col">
-            <ArchitectureHeader />
+            {/* <ArchitectureHeader /> */}
             <main className="flex-grow">
                 <ArchitectureHero />
                 <ArchitectureProjects />
@@ -28,7 +26,7 @@ const ArchitectureLanding: React.FC<ArchitectureLandingProps> = ({ onHomeClick }
                 <ArchitectureTeam />
                 <ArchitectureContact />
             </main>
-            <ArchitectureFooter />
+            {/* <ArchitectureFooter /> */}
             <EditorDashboard onHomeClick={onHomeClick} />
             <EditModeToggle />
         </div>

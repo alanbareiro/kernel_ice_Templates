@@ -4,8 +4,6 @@ import EditorDashboard from '../../components/Editor/EditorDashboard';
 import MedicalAbout from './MedicalAbout';
 import MedicalContact from './MedicalContact';
 import MedicalDoctors from './MedicalDoctors';
-import MedicalFooter from './MedicalFooter';
-import MedicalHeader from './MedicalHeader';
 import MedicalHero from './MedicalHero';
 import MedicalServices from './MedicalServices';
 import MedicalTestimonials from './MedicalTestimonials';
@@ -19,7 +17,7 @@ const MedicalLanding: React.FC<MedicalLandingProps> = ({ onHomeClick }) => {
         // <TemplateProvider>
         //     <TemplateEditorProvider>
         <div className="min-h-screen flex flex-col">
-            <MedicalHeader />
+            {/* <MedicalHeader /> */}
             <main className="flex-grow">
                 <MedicalHero />
                 <MedicalServices />
@@ -28,7 +26,7 @@ const MedicalLanding: React.FC<MedicalLandingProps> = ({ onHomeClick }) => {
                 <MedicalTestimonials />
                 <MedicalContact />
             </main>
-            <MedicalFooter />
+            {/* <MedicalFooter /> */}
             <EditorDashboard onHomeClick={onHomeClick} />
             <EditModeToggle />
         </div>

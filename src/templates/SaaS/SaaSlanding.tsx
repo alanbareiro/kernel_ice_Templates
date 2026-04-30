@@ -4,8 +4,6 @@ import EditorDashboard from '../../components/Editor/EditorDashboard';
 import SAASContact from './SAASContact';
 import SaaSFAQ from './SaaSFAQ';
 import SaaSFeatures from './SaaSFeatures';
-import SaaSFooter from './SaaSFooter';
-import SaaSHeader from './SaaSHeader';
 import SaaSHero from './SaaSHero';
 import SaaSHowItWorks from './SaaSHowItWorks';
 import SAASPricing from './SAASPricing';
@@ -19,7 +17,7 @@ const SaaSlanding: React.FC<SaaSlandingProps> = ({ onHomeClick }) => {
         // <TemplateProvider>
         //     <TemplateEditorProvider>
         <div className="min-h-screen flex flex-col">
-            <SaaSHeader />
+            {/* <SaaSHeader /> */}
             <main className="flex-grow">
                 <SaaSHero />
                 <SaaSFeatures />
@@ -28,7 +26,7 @@ const SaaSlanding: React.FC<SaaSlandingProps> = ({ onHomeClick }) => {
                 <SaaSFAQ />
                 <SAASContact />
             </main>
-            <SaaSFooter />
+            {/* <SaaSFooter /> */}
             <EditorDashboard onHomeClick={onHomeClick} />
             <EditModeToggle />
         </div>

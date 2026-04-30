@@ -5,9 +5,7 @@ import EditorDashboard from '../../components/Editor/EditorDashboard';
 import CoffeeAbout from './CoffeeAbout';
 import CoffeeContact from './CoffeeContact';
 import CoffeeEvents from './CoffeeEvents';
-import CoffeeFooter from './CoffeeFooter';
 import CoffeeGallery from './CoffeeGallery';
-import CoffeeHeader from './CoffeeHeader';
 import CoffeeHero from './CoffeeHero';
 import CoffeeMenu from './CoffeeMenu';
 import CoffeeTestimonials from './CoffeeTestimonials';
@@ -21,7 +19,7 @@ const CoffeeLanding: React.FC<CoffeeLandingProps> = ({ onHomeClick }) => {
         // <TemplateProvider>
         //     <TemplateEditorProvider>
         <div className="min-h-screen flex flex-col">
-            <CoffeeHeader />
+            {/* <CoffeeHeader /> */}
             <main className="flex-grow">
                 <CoffeeHero />
                 <CoffeeMenu />
@@ -31,7 +29,7 @@ const CoffeeLanding: React.FC<CoffeeLandingProps> = ({ onHomeClick }) => {
                 <CoffeeTestimonials />
                 <CoffeeContact />
             </main>
-            <CoffeeFooter />
+            {/* <CoffeeFooter /> */}
             <EditorDashboard onHomeClick={onHomeClick} />
             <EditModeToggle />
         </div>

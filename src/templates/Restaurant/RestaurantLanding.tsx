@@ -4,9 +4,7 @@ import EditorDashboard from '../../components/Editor/EditorDashboard';
 import RestaurantAbout from './RestaurantAbout';
 import RestaurantChef from './RestaurantChef';
 import RestaurantContact from './RestaurantContact';
-import RestaurantFooter from './RestaurantFooter';
 import RestaurantGallery from './RestaurantGallery';
-import RestaurantHeader from './RestaurantHeader';
 import RestaurantHero from './RestaurantHero';
 import RestaurantMenu from './RestaurantMenu';
 import RestaurantReservations from './RestaurantReservations';
@@ -22,7 +20,7 @@ const RestaurantLanding: React.FC<RestaurantLandingProps> = ({ onHomeClick }) =>
         // <TemplateProvider>
         //     <TemplateEditorProvider>
         <div className="min-h-screen flex flex-col">
-            <RestaurantHeader />
+            {/* <RestaurantHeader /> */}
             <main className="flex-grow">
                 <RestaurantHero />
                 <RestaurantSpecialties />
@@ -34,7 +32,7 @@ const RestaurantLanding: React.FC<RestaurantLandingProps> = ({ onHomeClick }) =>
                 <RestaurantReservations />
                 <RestaurantContact />
             </main>
-            <RestaurantFooter />
+            {/* <RestaurantFooter /> */}
             <EditorDashboard onHomeClick={onHomeClick} />
             <EditModeToggle />
         </div>

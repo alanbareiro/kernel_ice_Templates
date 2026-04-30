@@ -4,8 +4,6 @@ import EditorDashboard from '../../components/Editor/EditorDashboard';
 import AgencyAbout from './AgencyAbout';
 import AgencyCaseStudies from './AgencyCaseStudies';
 import AgencyContact from './AgencyContact';
-import AgencyFooter from './AgencyFooter';
-import AgencyHeader from './AgencyHeader';
 import AgencyHero from './AgencyHero';
 import AgencyServices from './AgencyServices';
 import AgencyTeam from './AgencyTeam';
@@ -20,7 +18,7 @@ const AgencyLanding: React.FC<AgencyLandingProps> = ({ onHomeClick }) => {
         // <TemplateProvider>
         //     <TemplateEditorProvider>
         <div className="min-h-screen flex flex-col">
-            <AgencyHeader />
+            {/* <AgencyHeader /> */}
             <main className="flex-grow">
                 <AgencyHero />
                 <AgencyServices />
@@ -30,7 +28,7 @@ const AgencyLanding: React.FC<AgencyLandingProps> = ({ onHomeClick }) => {
                 <AgencyTestimonials />
                 <AgencyContact />
             </main>
-            <AgencyFooter />
+            {/* <AgencyFooter /> */}
             <EditorDashboard onHomeClick={onHomeClick} />
             <EditModeToggle />
         </div>

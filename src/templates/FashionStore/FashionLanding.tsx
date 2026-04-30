@@ -4,8 +4,6 @@ import EditorDashboard from '../../components/Editor/EditorDashboard';
 import FashionAbout from './FashionAbout';
 import FashionCollections from './FashionCollections';
 import FashionContact from './FashionContact';
-import FashionFooter from './FashionFooter';
-import FashionHeader from './FashionHeader';
 import FashionHero from './FashionHero';
 import FashionLookbook from './FashionLookbook';
 import FashionProducts from './FashionProducts';
@@ -20,7 +18,7 @@ const FashionLanding: React.FC<FashionLandingProps> = ({ onHomeClick }) => {
         // <TemplateProvider>
         //     <TemplateEditorProvider>
         <div className="min-h-screen flex flex-col">
-            <FashionHeader />
+            {/* <FashionHeader /> */}
             <main className="flex-grow">
                 <FashionHero />
                 <FashionCollections />
@@ -30,7 +28,7 @@ const FashionLanding: React.FC<FashionLandingProps> = ({ onHomeClick }) => {
                 <FashionTestimonials />
                 <FashionContact />
             </main>
-            <FashionFooter />
+            {/* <FashionFooter /> */}
             <EditorDashboard onHomeClick={onHomeClick} />
             <EditModeToggle />
         </div>

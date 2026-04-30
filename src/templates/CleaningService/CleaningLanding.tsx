@@ -3,8 +3,6 @@ import EditModeToggle from '../../components/Editor/EditModeToggle';
 import EditorDashboard from '../../components/Editor/EditorDashboard';
 import CleaningAbout from './CleaningAbout';
 import CleaningContact from './CleaningContact';
-import CleaningFooter from './CleaningFooter';
-import CleaningHeader from './CleaningHeader';
 import CleaningHero from './CleaningHero';
 import CleaningPricing from './CleaningPricing';
 import CleaningProcess from './CleaningProcess';
@@ -20,7 +18,7 @@ const CleaningLanding: React.FC<CleaningLandingProps> = ({ onHomeClick }) => {
         // <TemplateProvider>
         //     <TemplateEditorProvider>
         <div className="min-h-screen flex flex-col">
-            <CleaningHeader />
+            {/* <CleaningHeader /> */}
             <main className="flex-grow">
                 <CleaningHero />
                 <CleaningServices />
@@ -30,7 +28,7 @@ const CleaningLanding: React.FC<CleaningLandingProps> = ({ onHomeClick }) => {
                 <CleaningTestimonials />
                 <CleaningContact />
             </main>
-            <CleaningFooter />
+            {/* <CleaningFooter /> */}
             <EditorDashboard onHomeClick={onHomeClick} />
             <EditModeToggle />
         </div>

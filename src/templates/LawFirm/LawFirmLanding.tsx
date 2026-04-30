@@ -5,8 +5,6 @@ import LawFirmAbout from './LawFirmAbout';
 import LawFirmAttorneys from './LawFirmAttorneys';
 import LawFirmContact from './LawFirmContact';
 import LawFirmFeatures from './LawFirmFeatures';
-import LawFirmFooter from './LawFirmFooter';
-import LawFirmHeader from './LawFirmHeader';
 import LawFirmHero from './LawFirmHero';
 import LawFirmPracticeAreas from './LawFirmPracticeAreas';
 import LawFirmTestimonials from './LawFirmTestimonials';
@@ -20,7 +18,7 @@ const LawFirmLanding: React.FC<LawFirmLandingProps> = ({ onHomeClick }) => {
         // <TemplateProvider>
         //     <TemplateEditorProvider>
         <div className="min-h-screen flex flex-col">
-            <LawFirmHeader />
+            {/* <LawFirmHeader /> */}
             <main className="flex-grow">
                 <LawFirmHero />
                 <LawFirmFeatures />
@@ -30,7 +28,7 @@ const LawFirmLanding: React.FC<LawFirmLandingProps> = ({ onHomeClick }) => {
                 <LawFirmTestimonials />
                 <LawFirmContact />
             </main>
-            <LawFirmFooter />
+            {/* <LawFirmFooter /> */}
             <EditorDashboard onHomeClick={onHomeClick} />
             <EditModeToggle />
         </div>

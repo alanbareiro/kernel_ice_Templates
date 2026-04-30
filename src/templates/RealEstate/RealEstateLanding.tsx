@@ -4,8 +4,6 @@ import EditorDashboard from '../../components/Editor/EditorDashboard';
 import RealEstateAbout from './RealEstateAbout';
 import RealEstateAgents from './RealEstateAgents';
 import RealEstateContact from './RealEstateContact';
-import RealEstateFooter from './RealEstateFooter';
-import RealEstateHeader from './RealEstateHeader';
 import RealEstateHero from './RealEstateHero';
 import RealEstateProperties from './RealEstateProperties';
 import RealEstateServices from './RealEstateServices';
@@ -20,7 +18,7 @@ const RealEstateLanding: React.FC<RealEstateLandingProps> = ({ onHomeClick }) =>
         // <TemplateProvider>
         //     <TemplateEditorProvider>
         <div className="min-h-screen flex flex-col">
-            <RealEstateHeader />
+            {/* <RealEstateHeader /> */}
             <main className="flex-grow">
                 <RealEstateHero />
                 <RealEstateProperties />
@@ -30,7 +28,7 @@ const RealEstateLanding: React.FC<RealEstateLandingProps> = ({ onHomeClick }) =>
                 <RealEstateTestimonials />
                 <RealEstateContact />
             </main>
-            <RealEstateFooter />
+            {/* <RealEstateFooter /> */}
             <EditorDashboard onHomeClick={onHomeClick} />
             <EditModeToggle />
         </div>

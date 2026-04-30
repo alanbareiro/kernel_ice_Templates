@@ -3,9 +3,7 @@ import EditModeToggle from '../../components/Editor/EditModeToggle';
 import EditorDashboard from '../../components/Editor/EditorDashboard';
 import SalonAbout from './SalonAbout';
 import SalonContact from './SalonContact';
-import SalonFooter from './SalonFooter';
 import SalonGallery from './SalonGallery';
-import SalonHeader from './SalonHeader';
 import SalonHero from './SalonHero';
 import SalonPricing from './SalonPricing';
 import SalonServices from './SalonServices';
@@ -21,7 +19,7 @@ const SalonLanding: React.FC<SalonLandingProps> = ({ onHomeClick }) => {
         // <TemplateProvider>
         //     <TemplateEditorProvider>
         <div className="min-h-screen flex flex-col">
-            <SalonHeader />
+            {/* <SalonHeader /> */}
             <main className="flex-grow">
                 <SalonHero />
                 <SalonServices />
@@ -32,7 +30,7 @@ const SalonLanding: React.FC<SalonLandingProps> = ({ onHomeClick }) => {
                 <SalonTestimonials />
                 <SalonContact />
             </main>
-            <SalonFooter />
+            {/* <SalonFooter /> */}
             <EditorDashboard onHomeClick={onHomeClick} />
             <EditModeToggle />
         </div>

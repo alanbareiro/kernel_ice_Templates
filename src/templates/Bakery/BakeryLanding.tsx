@@ -3,9 +3,7 @@ import EditModeToggle from '../../components/Editor/EditModeToggle';
 import EditorDashboard from '../../components/Editor/EditorDashboard';
 import BakeryAbout from './BakeryAbout';
 import BakeryContact from './BakeryContact';
-import BakeryFooter from './BakeryFooter';
 import BakeryGallery from './BakeryGallery';
-import BakeryHeader from './BakeryHeader';
 import BakeryHero from './BakeryHero';
 import BakeryProducts from './BakeryProducts';
 import BakeryTestimonials from './BakeryTestimonials';
@@ -19,7 +17,7 @@ const BakeryLanding: React.FC<BakeryLandingProps> = ({ onHomeClick }) => {
         // <TemplateProvider>
         //     <TemplateEditorProvider>
         <div className="min-h-screen flex flex-col">
-            <BakeryHeader />
+            {/* <BakeryHeader /> */}
             <main className="flex-grow">
                 <BakeryHero />
                 <BakeryProducts />
@@ -28,7 +26,7 @@ const BakeryLanding: React.FC<BakeryLandingProps> = ({ onHomeClick }) => {
                 <BakeryTestimonials />
                 <BakeryContact />
             </main>
-            <BakeryFooter />
+            {/* <BakeryFooter /> */}
             <EditorDashboard onHomeClick={onHomeClick} />
             <EditModeToggle />
         </div>

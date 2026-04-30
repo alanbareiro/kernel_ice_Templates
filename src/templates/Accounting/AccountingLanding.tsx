@@ -5,8 +5,6 @@ import EditorDashboard from '../../components/Editor/EditorDashboard';
 import AccountingAbout from './AccountingAbout';
 import AccountingContact from './AccountingContact';
 import AccountingFeatures from './AccountingFeatures';
-import AccountingFooter from './AccountingFooter';
-import AccountingHeader from './AccountingHeader';
 import AccountingHero from './AccountingHero';
 import AccountingServices from './AccountingServices';
 import AccountingTestimonials from './AccountingTestimonials';
@@ -20,7 +18,7 @@ const AccountingLanding: React.FC<AccountingLandingProps> = ({ onHomeClick }) =>
         // <TemplateProvider>
         //     <TemplateEditorProvider>
         <div className="min-h-screen flex flex-col">
-            <AccountingHeader />
+            {/* <AccountingHeader /> */}
             <main className="flex-grow">
                 <AccountingHero />
                 <AccountingFeatures />
@@ -29,7 +27,7 @@ const AccountingLanding: React.FC<AccountingLandingProps> = ({ onHomeClick }) =>
                 <AccountingTestimonials />
                 <AccountingContact />
             </main>
-            <AccountingFooter />
+            {/* <AccountingFooter /> */}
             <EditorDashboard onHomeClick={onHomeClick} />
             <EditModeToggle />
         </div>

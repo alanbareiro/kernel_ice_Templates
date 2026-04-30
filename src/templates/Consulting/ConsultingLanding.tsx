@@ -5,8 +5,6 @@ import { defaultTypography } from '../../types/template.types';
 import ConsultingAbout from './ConsultingAbout';
 import ConsultingContact from './ConsultingContact';
 import ConsultingFeatures from './ConsultingFeatures';
-import ConsultingFooter from './ConsultingFooter';
-import ConsultingHeader from './ConsultingHeader';
 import ConsultingHero from './ConsultingHero';
 import ConsultingTestimonials from './ConsultingTestimonials';
 
@@ -38,7 +36,7 @@ const ConsultingLanding: React.FC<ConsultingLandingProps> = ({ onHomeClick }) =>
                     '--font-body': typography.bodyFont,
                 } as React.CSSProperties}
             >
-                <ConsultingHeader />
+                {/* <ConsultingHeader /> */}
                 <main className="flex-grow">
                     <ConsultingHero />
                     <ConsultingFeatures />
@@ -46,7 +44,7 @@ const ConsultingLanding: React.FC<ConsultingLandingProps> = ({ onHomeClick }) =>
                     <ConsultingTestimonials />
                     <ConsultingContact />
                 </main>
-                <ConsultingFooter />
+                {/* <ConsultingFooter /> */}
             </div>
         </div>
     );

@@ -4,8 +4,6 @@ import EditorDashboard from '../../components/Editor/EditorDashboard';
 import GymClasses from './GymClasses';
 import GymContact from './GymContact';
 import GymFacilities from './GymFacilities';
-import GymFooter from './GymFooter';
-import GymHeader from './GymHeader';
 import GymHero from './GymHero';
 import GymPricing from './GymPricing';
 import GymSchedule from './GymSchedule';
@@ -21,7 +19,7 @@ const GymLanding: React.FC<GymLandingProps> = ({ onHomeClick }) => {
         // <TemplateProvider>
         //     <TemplateEditorProvider>
         <div className="min-h-screen flex flex-col">
-            <GymHeader />
+            {/* <GymHeader /> */}
             <main className="flex-grow">
                 <GymHero />
                 <GymClasses />
@@ -32,7 +30,7 @@ const GymLanding: React.FC<GymLandingProps> = ({ onHomeClick }) => {
                 <GymTestimonials />
                 <GymContact />
             </main>
-            <GymFooter />
+            {/* <GymFooter /> */}
             <EditorDashboard onHomeClick={onHomeClick} />
             <EditModeToggle />
         </div>

@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 // Configuración
-const LEADING_PAGE = import.meta.env.LEADING_PAGE || 'http://localhost:5173';
+const LEADING_PAGE = import.meta.env.LEADING_PAGE || 'https://kerneliceapi-production.up.railway.app/api' || 'http://localhost:5173';
 
 const NotificationBell = () => {
     const [isOpen, setIsOpen] = useState(false);

@@ -8,7 +8,7 @@ import NotificationBell from '../notifications/NotificationBell';
 // import './HeaderAnimations.css';
 
 // Configuración
-const API_BASE_URL = import.meta.env.LEADING_PAGE || 'http://localhost:5173';
+const API_BASE_URL = import.meta.env.LEADING_PAGE || 'https://kerneliceapi-production.up.railway.app/api'|| 'http://localhost:5173';
 
 const Header = () => {
 

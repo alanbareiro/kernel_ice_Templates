@@ -3,9 +3,7 @@ import React from 'react';
 import EditModeToggle from '../../components/Editor/EditModeToggle';
 import EditorDashboard from '../../components/Editor/EditorDashboard';
 import FoodTruckContact from './FoodTruckContact';
-import FoodTruckFooter from './FoodTruckFooter';
 import FoodTruckGallery from './FoodTruckGallery';
-import FoodTruckHeader from './FoodTruckHeader';
 import FoodTruckHero from './FoodTruckHero';
 import FoodTruckLocation from './FoodTruckLocation';
 import FoodTruckMenu from './FoodTruckMenu';
@@ -21,7 +19,7 @@ const FoodTruckLanding: React.FC<FoodTruckLandingProps> = ({ onHomeClick }) => {
         // <TemplateProvider>
         //     <TemplateEditorProvider>
         <div className="min-h-screen flex flex-col">
-            <FoodTruckHeader />
+            {/* <FoodTruckHeader /> */}
             <main className="flex-grow">
                 <FoodTruckHero />
                 <FoodTruckMenu />
@@ -31,7 +29,7 @@ const FoodTruckLanding: React.FC<FoodTruckLandingProps> = ({ onHomeClick }) => {
                 <FoodTruckTestimonials />
                 <FoodTruckContact />
             </main>
-            <FoodTruckFooter />
+            {/* <FoodTruckFooter /> */}
             <EditorDashboard onHomeClick={onHomeClick} />
             <EditModeToggle />
         </div>
