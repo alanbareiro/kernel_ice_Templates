@@ -38,6 +38,9 @@ export const EditorLayout = ({ templateData, onClose, children, isPreview = fals
         return <div className="min-h-screen flex items-center justify-center">Cargando editor...</div>;
     }
 
+    console.log(onClose);
+    console.log(isPreview);
+
     return (
         <TemplateProvider>
             <TemplateEditorProvider>
