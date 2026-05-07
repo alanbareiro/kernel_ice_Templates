@@ -2,7 +2,7 @@ import { ArrowRight, Award, BarChart, Briefcase, Globe, LineChart, Target, Trend
 import EditableImage from '../../components/Editor/EditableImage';
 import EditableText from '../../components/Editor/EditableText';
 import { useTemplate } from '../../contexts/TemplateContext';
-import { defaultSectionColors } from '../../types/template.types';
+import { defaultSectionColors, defaultUI } from '../../types/template.types';
 
 // Mapeo de nombres de iconos a componentes de Lucide
 const iconMap: Record<string, LucideIcon> = {
@@ -154,7 +154,7 @@ const ConsultingHero = () => {
                                 style={{
                                     backgroundColor: s.buttonPrimaryBackground,
                                     color: s.buttonPrimaryText,
-                                    borderRadius: ui.borderRadius.medium,
+                                    borderRadius: ui?.borderRadius?.medium || defaultUI.borderRadius.medium,
                                 }}
                                 onMouseEnter={(e) => {
                                     e.currentTarget.style.backgroundColor = s.buttonPrimaryHoverBackground;
@@ -176,7 +176,7 @@ const ConsultingHero = () => {
                                     backgroundColor: s.buttonSecondaryBackground,
                                     color: s.buttonSecondaryText,
                                     borderColor: s.buttonPrimaryBackground,
-                                    borderRadius: ui.borderRadius.medium,
+                                    // borderRadius: ui.borderRadius.medium || defaultUI.borderRadius.medium,
                                 }}
                                 onMouseEnter={(e) => {
                                     e.currentTarget.style.backgroundColor = s.buttonSecondaryHoverBackground;

@@ -1,4 +1,7 @@
-/* Tailwind v3 usa estas directivas, NO @import */
+/* Importar fuentes de Google */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600&family=Poppins:wght@400;600;700&family=Playfair+Display:wght@400;700&family=Lato:wght@400;700&family=Roboto:wght@400;500;700&display=swap');
+
+/* Tailwind directives */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -54,7 +57,7 @@
   --color-neutral-800: 38 38 38;
   --color-neutral-900: 23 23 23;
   --color-neutral-950: 10 10 10;
-  
+
 }
 
 /* Modo oscuro - Invertir colores */
@@ -227,6 +230,7 @@
     opacity: 0.5;
   }
 
+
   .editable-highlight.editing::after {
     opacity: 1;
     border-style: solid;
@@ -304,12 +308,37 @@
   animation: fadeIn 0.3s ease-out;
 }
 
-/* Elimina las reglas que afectan a body y h1 globalmente */
-/* Añade estas reglas para limitar al template */
-#template-root {
-    font-family: var(--font-body);
+/* Forzar tipografía personalizada en la vista de "Mi plantilla" */
+#template-root,
+#template-root * {
+  font-family: var(--font-body) !important;
 }
-#template-root h1, #template-root h2, #template-root h3,
-#template-root h4, #template-root h5, #template-root h6 {
-    font-family: var(--font-heading);
+
+#template-root h1,
+#template-root h2,
+#template-root h3,
+#template-root h4,
+#template-root h5,
+#template-root h6 {
+  font-family: var(--font-heading) !important;
+}
+
+/* Forzar aplicación de tipografía personalizada en el template */
+#template-root,
+#template-root * {
+  font-family: var(--font-body) !important;
+}
+
+#template-root h1,
+#template-root h2,
+#template-root h3,
+#template-root h4,
+#template-root h5,
+#template-root h6 {
+  font-family: var(--font-heading) !important;
+}
+
+/* Opcional: permitir que elementos con clase 'no-force-font' puedan tener su propia fuente */
+#template-root .no-force-font {
+  font-family: inherit !important;
 }

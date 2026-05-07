@@ -116,26 +116,8 @@ export const TemplateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         setHasUnsavedChanges(true);
     };
 
-    // ✅ CORREGIDA: usa setTemplateState con función para evitar cierres obsoletos
-    // const updateSectionColors2 = (colors: Partial<SectionColors>) => {
-    //     setTemplateState(prev => {
-    //         if (!prev) return prev;
-    //         const newSectionColors = {
-    //             ...prev.sectionColors,
-    //             ...colors,
-    //         };
-    //         const updated = {
-    //             ...prev,
-    //             sectionColors: ensureCompleteSectionColors(newSectionColors),
-    //             updatedAt: new Date()
-    //         };
-    //         addToHistory(updated);
-    //         setHasUnsavedChanges(true);
-    //         return updated;
-    //     });
-    // };
-
     const updateTypography = (typography: Partial<TypographyConfig>) => {
+        console.log('updateTypography called with:', typography);
         setTemplateState(prev => {
             if (!prev) return prev;
             const updated = {
@@ -272,22 +254,6 @@ export const TemplateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         }
     };
 
-    // const applyPreset2 = (presetName: string) => {
-    //     if (!template) return;
-    //     const categoryPresets = colorPresets[template.type as keyof typeof colorPresets];
-    //     const preset = categoryPresets?.find(p => p.name === presetName);
-    //     if (preset) {
-    //         updateColors(preset.colors);
-    //         updateSectionColors({
-    //             buttonPrimaryBackground: preset.colors.primary,
-    //             heroTitleColor: preset.colors.text,
-    //             headerTextColor: preset.colors.text,
-    //             bodyTextColor: preset.colors.text,
-    //             heroBadgeBackground: preset.colors.primary,
-    //         });
-    //     }
-    // };
-
     const saveDraft = () => {
         if (template) {
             storageService.saveDraft(template);
@@ -319,6 +285,10 @@ export const TemplateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         linkElement.click();
     };
 
+    // Dentro de TemplateContext.tsx, reemplazar la función saveToBackend
+
+    // Dentro de TemplateContext.tsx, reemplazar la función saveToBackend
+
     const saveToBackend = async () => {
         if (!template || !isAuthenticated) return;
         try {
@@ -330,28 +300,50 @@ export const TemplateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
                 background: template.colors.background,
                 text: template.colors.text,
             };
-            const result = await templateApi.saveTemplate({
+
+            const payload = {
                 name: template.name,
                 type: typeUpper,
                 colors: colorsToSend,
+                texts: template.texts || {},
+                images: template.images || {},
                 sectionColors: template.sectionColors,
                 typography: template.typography,
                 ui: template.ui,
-                buttons: template.buttons,
-                texts: template.texts || {},
-                images: template.images || {}
-            } as any);
+                buttons: template.buttons
+            };
+
+            console.log('📤 Guardando template completo:', payload);
+            const result = await templateApi.saveTemplate(payload);
+
             if (result.template?.id) {
-                setTemplateState(prev => prev ? { ...prev, id: result.template.id, updatedAt: new Date() } : prev);
+                const updatedTemplate = {
+                    ...template,
+                    id: result.template.id,
+                    updatedAt: new Date()
+                };
+                setTemplateState(updatedTemplate);
+                addToHistory(updatedTemplate);
+
                 window.dispatchEvent(new CustomEvent('template-saved', {
-                    detail: { templateId: result.template.id, success: true, template: result.template }
+                    detail: {
+                        templateId: result.template.id,
+                        success: true,
+                        template: updatedTemplate
+                    }
                 }));
             }
             return result;
         } catch (error) {
             console.error('Error guardando template:', error);
+            window.dispatchEvent(new CustomEvent('template-saved', {
+                detail: { success: false, error }
+            }));
+            throw error;
         }
     };
+
+    // Dentro de TemplateContext.tsx
 
     const loadFromBackend = async (templateId: string) => {
         if (!isAuthenticated) return;
@@ -364,9 +356,9 @@ export const TemplateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
                     type: result.template.type.toLowerCase(),
                     colors: result.template.colors || getDefaultTemplateColors(result.template.type.toLowerCase()),
                     sectionColors: ensureCompleteSectionColors(result.template.sectionColors),
-                    typography: result.template.typography || defaultTypography,
-                    ui: result.template.ui || defaultUI,
-                    buttons: result.template.buttons || defaultButtons,
+                    typography: { ...defaultTypography, ...(result.template.typography || {}) },
+                    ui: { ...defaultUI, ...(result.template.ui || {}) },
+                    buttons: { ...defaultButtons, ...(result.template.buttons || {}) },
                     texts: result.template.texts || {},
                     images: result.template.images || {},
                     createdAt: new Date(result.template.createdAt),

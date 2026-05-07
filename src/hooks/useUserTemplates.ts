@@ -7,7 +7,6 @@ export const useUserTemplates = (isAuthenticated: boolean, user: any) => {
     const [userTemplatesList, setUserTemplatesList] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
 
-
     const saveNewTemplate = async (templateData: any) => {
         setLoading(true);
         try {
@@ -18,9 +17,8 @@ export const useUserTemplates = (isAuthenticated: boolean, user: any) => {
                 texts: templateData.texts || {},
                 images: templateData.images || {}
             });
-
             if (result.template) {
-                await loadUserTemplates(); // Recargar la lista
+                await loadUserTemplates();
                 return result.template;
             }
         } catch (error) {
@@ -37,15 +35,12 @@ export const useUserTemplates = (isAuthenticated: boolean, user: any) => {
             setUserTemplatesList([]);
             return;
         }
-
         setLoading(true);
         try {
             const response = await templateApi.getUserTemplates();
             console.log('📦 Templates cargados desde backend:', response.templates);
-
             if (response.templates && response.templates.length > 0) {
                 setUserTemplatesList(response.templates);
-                // Tomar el template más reciente (por fecha de edición)
                 const latestTemplate = response.templates.sort((a: any, b: any) =>
                     new Date(b.lastEdited || b.updatedAt).getTime() - new Date(a.lastEdited || a.updatedAt).getTime()
                 )[0];
@@ -76,9 +71,7 @@ export const useUserTemplates = (isAuthenticated: boolean, user: any) => {
             console.log('📥 Cargando template para editar, ID:', templateId);
             const response = await templateApi.getTemplate(templateId);
             console.log('📦 Template recibido del backend:', response.template);
-
             if (response.template) {
-                // ✅ IMPORTANTE: Mantener los colores y textos exactamente como vienen del backend
                 const templateData = {
                     id: response.template.id,
                     name: response.template.name,
@@ -86,12 +79,15 @@ export const useUserTemplates = (isAuthenticated: boolean, user: any) => {
                     colors: response.template.colors,
                     texts: response.template.texts || {},
                     images: response.template.images || {},
+                    sectionColors: response.template.sectionColors || {},
+                    typography: response.template.typography || {},
+                    ui: response.template.ui || {},
+                    buttons: response.template.buttons || {},
                     createdAt: new Date(response.template.createdAt),
                     updatedAt: new Date(response.template.updatedAt),
                     version: response.template.version || 1
                 };
                 console.log('✅ Template preparado para editar:', templateData);
-                console.log('🎨 Colores del template para editar:', templateData.colors);
                 return templateData;
             }
         } catch (error) {
@@ -102,22 +98,39 @@ export const useUserTemplates = (isAuthenticated: boolean, user: any) => {
         return null;
     };
 
+    // Listener para actualizar localmente sin recargar todo el backend
     useEffect(() => {
-        loadUserTemplates();
-    }, [isAuthenticated, user]);
-
-    // Escuchar evento de template guardado para recargar inmediatamente
-    useEffect(() => {
-        const handleTemplateSaved = async (event: Event) => {
+        const handleTemplateSaved = (event: Event) => {
             const customEvent = event as CustomEvent;
-            console.log('📢 Evento template-saved recibido:', customEvent.detail);
-            // ✅ Recargar templates después de guardar
-            await loadUserTemplates();
+            const { template, success } = customEvent.detail;
+            if (success && template) {
+                console.log('📢 Actualizando lista local con template guardado:', template.id);
+                setUserTemplatesList(prevList => {
+                    const existingIndex = prevList.findIndex(t => t.id === template.id);
+                    if (existingIndex >= 0) {
+                        const newList = [...prevList];
+                        newList[existingIndex] = { ...newList[existingIndex], ...template };
+                        return newList;
+                    } else {
+                        return [template, ...prevList];
+                    }
+                });
+                setUserTemplate((prev: any) => {  // ✅ Tipado explícito
+                    if (prev?.id === template.id || !prev) {
+                        console.log('📌 Actualizando template principal con datos locales');
+                        return { ...template };
+                    }
+                    return prev;
+                });
+            }
         };
-
         window.addEventListener('template-saved', handleTemplateSaved);
         return () => window.removeEventListener('template-saved', handleTemplateSaved);
     }, []);
+
+    useEffect(() => {
+        loadUserTemplates();
+    }, [isAuthenticated, user]);
 
     return {
         userTemplate,

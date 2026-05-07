@@ -26,7 +26,7 @@ const StartupLanding: React.FC<StartupLandingProps> = ({ onHomeClick }) => {
                 <StartupTeam />
                 <StartupContact />
             </main>
-            {/* <StartupFooter />git n */}
+            {/* <StartupFooter />git */}
             <EditorDashboard onHomeClick={onHomeClick} />
             <EditModeToggle />
         </div>

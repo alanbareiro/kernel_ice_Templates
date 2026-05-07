@@ -59,13 +59,13 @@ export const GalleryLayout = ({
                         Modo vista previa
                     </span>
                 </div>
-                <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6">
+                <h1 className="text-4xl md:text-4xl lg:text-5xl font-bold mb-6">
                     Explora nuestras
                     <span className="bg-gradient-to-r from-primary-500 to-accent-500 bg-clip-text text-transparent ml-3">
                         plantillas
                     </span>
                 </h1>
-                <p className="text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto text-lg mb-4">
+                <p className="text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto text-sm mb-4">
                     Visualiza nuestras plantillas profesionales. Para editar, regresa a tu plantilla principal.
                 </p>
 

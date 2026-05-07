@@ -3,10 +3,14 @@ import { del, get, post } from './index';
 
 export interface TemplateData {
     name: string;
-    type: string;  // Esto debe venir en mayúsculas
+    type: string;
     colors: Record<string, string> | string;
     texts: Record<string, string>;
     images?: Record<string, string>;
+    sectionColors?: any;      // ← Cambiado a any
+    typography?: any;         // ← Cambiado a any
+    ui?: any;                 // ← Cambiado a any
+    buttons?: any;            // ← Cambiado a any
     orderId?: string;
 }
 
@@ -18,19 +22,15 @@ export interface TemplateResponse {
 }
 
 export const templateApi = {
-    // Guardar template (requiere autenticación)
     saveTemplate: async (data: TemplateData): Promise<TemplateResponse> => {
         try {
-            // ✅ CORRECCIÓN: Convertir el tipo a mayúsculas si es necesario
             let typeUpper = data.type;
             if (typeof data.type === 'string' && data.type !== data.type.toUpperCase()) {
                 typeUpper = data.type.toUpperCase();
             }
 
-            // ✅ CORRECCIÓN: Asegurar que colors sea un objeto, no un string vacío
             let colors = data.colors;
             if (typeof colors === 'string') {
-                // Si es un string vacío, usar objeto por defecto
                 if (colors === '') {
                     colors = {
                         primary: '#2563eb',
@@ -50,14 +50,17 @@ export const templateApi = {
 
             const payload = {
                 name: data.name,
-                type: typeUpper,  // Ahora en mayúsculas
+                type: typeUpper,
                 colors: colors,
                 texts: data.texts || {},
-                images: data.images || {}
+                images: data.images || {},
+                sectionColors: data.sectionColors || {},
+                typography: data.typography || {},
+                ui: data.ui || {},
+                buttons: data.buttons || {}
             };
 
-            console.log('📤 Enviando template al backend:', payload);
-
+            console.log('📤 Guardando template completo:', payload);
             const response: TemplateResponse = await post('/templates', payload);
             return response;
         } catch (error) {
@@ -66,7 +69,6 @@ export const templateApi = {
         }
     },
 
-    // Obtener templates del usuario autenticado
     getUserTemplates: async (): Promise<TemplateResponse> => {
         try {
             const response: TemplateResponse = await get('/templates');
@@ -77,7 +79,6 @@ export const templateApi = {
         }
     },
 
-    // Obtener template por ID
     getTemplate: async (id: string): Promise<TemplateResponse> => {
         try {
             const response: TemplateResponse = await get(`/templates/${id}`);
@@ -88,7 +89,6 @@ export const templateApi = {
         }
     },
 
-    // Eliminar template
     deleteTemplate: async (id: string): Promise<TemplateResponse> => {
         try {
             const response: TemplateResponse = await del(`/templates/${id}`);
@@ -99,7 +99,6 @@ export const templateApi = {
         }
     },
 
-    // Guardar versión
     saveVersion: async (id: string, data: any): Promise<TemplateResponse> => {
         try {
             const response: TemplateResponse = await post(`/templates/${id}/versions`, data);
@@ -110,7 +109,6 @@ export const templateApi = {
         }
     },
 
-    // Obtener versiones
     getVersions: async (id: string): Promise<TemplateResponse> => {
         try {
             const response: TemplateResponse = await get(`/templates/${id}/versions`);
@@ -121,7 +119,6 @@ export const templateApi = {
         }
     },
 
-    // Restaurar versión
     restoreVersion: async (id: string, version: number): Promise<TemplateResponse> => {
         try {
             const response: TemplateResponse = await post(`/templates/${id}/versions/${version}/restore`, {});
@@ -132,7 +129,6 @@ export const templateApi = {
         }
     },
 
-    // Crear link compartido
     createShareLink: async (id: string, options?: { expiresIn?: number; maxViews?: number }): Promise<TemplateResponse> => {
         try {
             const response: TemplateResponse = await post(`/templates/${id}/share`, options || {});
@@ -143,7 +139,6 @@ export const templateApi = {
         }
     },
 
-    // Obtener template compartido
     getSharedTemplate: async (token: string): Promise<TemplateResponse> => {
         try {
             const response: TemplateResponse = await get(`/templates/shared/${token}`);
@@ -154,13 +149,11 @@ export const templateApi = {
         }
     },
 
-    // Templates públicos
     getPublicTemplates: async (type?: string, category?: string): Promise<TemplateResponse> => {
         try {
             const params = new URLSearchParams();
             if (type) params.append('type', type);
             if (category) params.append('category', category);
-
             const response: TemplateResponse = await get(`/templates/public?${params.toString()}`);
             return response;
         } catch (error) {
@@ -169,7 +162,6 @@ export const templateApi = {
         }
     },
 
-    // Descargar template público
     downloadPublicTemplate: async (id: string): Promise<TemplateResponse> => {
         try {
             const response: TemplateResponse = await get(`/templates/public/${id}`);

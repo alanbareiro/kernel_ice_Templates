@@ -14,7 +14,6 @@ import { GalleryLayout } from './layouts/GalleryLayout';
 import { MyTemplatesLayout } from './layouts/MyTemplatesLayout';
 import { OwnTemplateLayout } from './layouts/OwnTemplateLayout';
 import LoginPage from './pages/LoginPage';
-// import Header from './components/Header/Header';
 
 // Lazy loading de templates
 const AccountingLanding = lazy(() => import('./templates/Accounting/AccountingLanding'));
@@ -60,7 +59,7 @@ const templatesInfo = [
   { id: 'saas', title: 'SaaS', description: 'Diseño para software como servicio.', icon: '☁️', gradient: 'from-violet-500 to-violet-600', color: 'violet', category: ['landing'], tags: ['software', 'tecnología'], featured: true, popular: true, images: templateImages.saas },
   { id: 'digitalAgency', title: 'Agencia Digital', description: 'Diseño innovador para agencias digitales.', icon: '💻', gradient: 'from-cyan-500 to-cyan-600', color: 'cyan', category: ['landing'], tags: ['digital', 'tecnología'], featured: false, popular: false, images: templateImages.digitalAgency },
   { id: 'startup', title: 'Startup', description: 'Diseño disruptivo para startups.', icon: '🚀', gradient: 'from-emerald-500 to-emerald-600', color: 'emerald', category: ['landing'], tags: ['startup', 'innovación'], featured: true, popular: true, images: templateImages.startup },
-  { id: 'coffeeShop', title: 'Coffee Shop', description: 'Diseño acogedor para cafeterías.', icon: '☕', gradient: 'from-amber-600 to-amber-700', color: 'amber', category: ['landing', 'ecommerce'], tags: ['café', 'desayunos'], featured: true, popular: true, images: templateImages.coffeeShop }, // ← AGREGAR
+  { id: 'coffeeShop', title: 'Coffee Shop', description: 'Diseño acogedor para cafeterías.', icon: '☕', gradient: 'from-amber-600 to-amber-700', color: 'amber', category: ['landing', 'ecommerce'], tags: ['café', 'desayunos'], featured: true, popular: true, images: templateImages.coffeeShop },
 ];
 
 // Categorías
@@ -75,14 +74,11 @@ const categories = [
 function AppContent() {
   const { user, isAuthenticated, logout } = useAuth();
   const { isLoading, getLoadingMessage, tokenFromUrl } = useAuthHandler();
-  const { userTemplate, userTemplatesList, loading: loadingTemplates, loadTemplateForEdit, reloadUserTemplates } = useUserTemplates(isAuthenticated, user);
+  const { userTemplate, userTemplatesList, loading: loadingTemplates, loadTemplateForEdit,/* reloadUserTemplates*/ } = useUserTemplates(isAuthenticated, user);
   const [searchParams] = useSearchParams();
-  // const navigate = useNavigate();
 
-  // ✅ useRef para evitar múltiples ejecuciones
   const hasProcessedUrlParams = useRef(false);
 
-  // Leer parámetros de URL
   const templateIdFromUrl = searchParams.get('templateId');
   const previewMode = searchParams.get('preview') === 'true';
   const viewFromUrl = searchParams.get('view');
@@ -99,48 +95,51 @@ function AppContent() {
   // ✅ Efecto para manejar parámetros de URL - SOLO UNA VEZ
   useEffect(() => {
     const handleUrlParams = async () => {
-      // Evitar múltiples ejecuciones
-      if (hasProcessedUrlParams.current) {
-        return;
-      }
+      if (hasProcessedUrlParams.current) return;
 
-      // Si hay un templateId en la URL y estamos autenticados
       if (templateIdFromUrl && isAuthenticated) {
         hasProcessedUrlParams.current = true;
         setIsLoadingTemplate(true);
-
         console.log('📝 Cargando template desde URL:', templateIdFromUrl);
-
-        if (previewMode) {
-          setIsPreviewMode(true);
-        }
-
+        if (previewMode) setIsPreviewMode(true);
         const templateData = await loadTemplateForEdit(templateIdFromUrl);
         if (templateData) {
           setSelectedTemplateForEdit(templateData);
           setViewMode('editor');
         }
         setIsLoadingTemplate(false);
-
-        // Limpiar URL después de procesar
         window.history.replaceState({}, document.title, window.location.pathname);
-      }
-      // Si hay vista "my-templates" en la URL
-      else if (viewFromUrl === 'my-templates') {
+      } else if (viewFromUrl === 'my-templates') {
         hasProcessedUrlParams.current = true;
-        console.log('📁 Mostrando vista de mis plantillas');
         setViewMode('myTemplates');
-        // Limpiar URL después de procesar
         window.history.replaceState({}, document.title, window.location.pathname);
-      }
-      // Si no hay template guardado, mostrar galería
-      else if (!loadingTemplates && !userTemplate && viewMode === 'ownTemplate') {
+      } else if (!loadingTemplates && !userTemplate && viewMode === 'ownTemplate') {
         setViewMode('gallery');
       }
     };
-
     handleUrlParams();
   }, [templateIdFromUrl, previewMode, viewFromUrl, isAuthenticated, loadingTemplates, userTemplate, viewMode, loadTemplateForEdit]);
+
+  // ✅ Escuchar evento de template guardado para actualizar el template en edición
+  useEffect(() => {
+    const handleTemplateSaved = (event: Event) => {
+      const customEvent = event as CustomEvent;
+      const { template, success } = customEvent.detail;
+
+      if (success && template && viewMode === 'editor' && selectedTemplateForEdit) {
+        console.log('🔄 Actualizando template en edición con ID real:', template.id);
+        // Tipamos prev como any para evitar error de TypeScript
+        setSelectedTemplateForEdit((prev: any) => ({
+          ...prev,
+          id: template.id,
+          updatedAt: new Date()
+        }));
+      }
+    };
+
+    window.addEventListener('template-saved', handleTemplateSaved);
+    return () => window.removeEventListener('template-saved', handleTemplateSaved);
+  }, [viewMode, selectedTemplateForEdit]);
 
   const handleLogout = async () => {
     await logout();
@@ -160,9 +159,7 @@ function AppContent() {
 
   const handleSelectTemplateFromGallery = (templateId: string) => {
     console.log('📝 Seleccionando plantilla de galería:', templateId);
-
     const defaultColors = templateDefaultColors[templateId as keyof typeof templateDefaultColors] || templateDefaultColors.consulting;
-
     const newTemplate = {
       id: `temp-${Date.now()}`,
       name: `Mi template de ${templateId}`,
@@ -174,13 +171,18 @@ function AppContent() {
       updatedAt: new Date(),
       version: 1
     };
-
     setSelectedTemplateForEdit(newTemplate);
     setViewMode('editor');
   };
 
+  // const handleBackToOwn = () => {
+  //   reloadUserTemplates();
+  //   setViewMode('ownTemplate');
+  //   setIsPreviewMode(false);
+  // };
+
   const handleBackToOwn = () => {
-    reloadUserTemplates();
+    // No recargamos automáticamente; el listener de template-saved ya actualizó el estado
     setViewMode('ownTemplate');
     setIsPreviewMode(false);
   };
@@ -197,7 +199,6 @@ function AppContent() {
   const handleBackToMyTemplates = () => setViewMode('myTemplates');
   const handleExploreGallery = () => setViewMode('gallery');
 
-  // Mostrar loading
   if (isLoading || loadingTemplates || isLoadingTemplate || (tokenFromUrl && !isAuthenticated)) {
     return <LoadingScreen message={isLoadingTemplate ? "Cargando template..." : getLoadingMessage()} />;
   }
@@ -335,7 +336,6 @@ function AppContent() {
 export default function App() {
   return (
     <BrowserRouter>
-      {/* <Header /> */}
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/*" element={<AppContent />} />

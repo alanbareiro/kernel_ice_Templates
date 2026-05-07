@@ -519,7 +519,18 @@ const EditorDashboard: React.FC<EditorDashboardProps> = ({
           </button>
           <button
             onClick={() => {
-              const previewUrl = window.location.href.split('?')[0] + '?preview=true';
+              const currentTemplate = template;
+              let previewUrl = `${window.location.origin}${window.location.pathname}?preview=true`;
+
+              // Si el template tiene un ID real (no temporal), incluirlo en la URL
+              if (currentTemplate?.id && !currentTemplate.id.startsWith('temp-')) {
+                previewUrl += `&templateId=${currentTemplate.id}`;
+              } else {
+                // Si no tiene ID real, sugerir guardar primero
+                alert('⚠️ Debes guardar el template antes de ver la vista previa.\nHaz clic en "Guardar cambios" primero.');
+                return;
+              }
+
               window.open(previewUrl, '_blank');
             }}
             className="px-2 py-1.5 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-lg text-xs font-medium transition-all hover:bg-purple-200 dark:hover:bg-purple-800/30 flex items-center gap-1"
@@ -621,12 +632,6 @@ const EditorDashboard: React.FC<EditorDashboardProps> = ({
                       value={sectionColors.headerBackground}
                       onChange={(c) => updateSectionColors({ headerBackground: c })}
                       defaultValue={defaultSectionColors.headerBackground}
-                    />
-                    <CompactColorInput
-                      label="Color del texto"
-                      value={sectionColors.headerTextColor}
-                      onChange={(c) => updateSectionColors({ headerTextColor: c })}
-                      defaultValue={defaultSectionColors.headerTextColor}
                     />
                     <CompactColorInput
                       label="Color de los enlaces"
@@ -1652,7 +1657,7 @@ const EditorDashboard: React.FC<EditorDashboardProps> = ({
                 tooltipText="Cambia las fuentes y tamaños globales"
               >
                 <div className="space-y-3">
-                  <FontSelect label="Fuente de títulos" value={typography.headingFont} onChange={(f) => updateTypography({ headingFont: f })} />
+                  {/* <FontSelect label="Fuente de títulos" value={typography.headingFont} onChange={(f) => updateTypography({ headingFont: f })} /> */}
                   <FontSelect label="Fuente de textos" value={typography.bodyFont} onChange={(f) => updateTypography({ bodyFont: f })} />
                   <SizeInput label="Tamaño de títulos de sección" value={typography.sectionTitleSize} onChange={(s) => updateTypography({ sectionTitleSize: s })} options={['1.5rem', '1.875rem', '2rem', '2.25rem', '2.5rem']} />
                   <SizeInput label="Tamaño de texto general" value={typography.bodyTextSize} onChange={(s) => updateTypography({ bodyTextSize: s })} options={['0.875rem', '1rem', '1.125rem']} />
