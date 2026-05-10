@@ -1,9 +1,10 @@
-// src/App.tsx - Versión optimizada con useRef para evitar bucles
+// src/App.tsx - Versión corregida para vista previa
 import { Grid3X3, Heart, LayoutGrid, Sparkles, Star } from 'lucide-react';
 import React, { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { BrowserRouter, Route, Routes, useSearchParams } from 'react-router-dom';
 import { LoadingScreen } from './components/LoadingScreen/LoadingScreen';
 import { useAuth } from './contexts/AuthContext';
+import { TemplateProvider, useTemplate } from './contexts/TemplateContext';
 import { templateImages } from './data/templateImages';
 import { templateDefaultColors } from './data/types/templateDefaultColors';
 import { useAuthHandler } from './hooks/useAuthHandler';
@@ -14,32 +15,31 @@ import { GalleryLayout } from './layouts/GalleryLayout';
 import { MyTemplatesLayout } from './layouts/MyTemplatesLayout';
 import { OwnTemplateLayout } from './layouts/OwnTemplateLayout';
 import LoginPage from './pages/LoginPage';
+import { TemplateEditorProvider } from './contexts/TemplateEditorContext';
 
 // Lazy loading de templates
-const AccountingLanding = lazy(() => import('./templates/Accounting/AccountingLanding'));
-const ArchitectureLanding = lazy(() => import('./templates/Architecture/ArchitectureLanding'));
-const BakeryLanding = lazy(() => import('./templates/Bakery/BakeryLanding'));
-const BeautySalonLanding = lazy(() => import('./templates/BeautySalon/SalonLanding'));
-const CateringLanding = lazy(() => import('./templates/Catering/CateringLanding'));
-const CleaningServiceLanding = lazy(() => import('./templates/CleaningService/CleaningLanding'));
-const CoffeeShopLanding = lazy(() => import('./templates/CoffeeShop/CoffeeLanding'));
-const ConsultingLanding = lazy(() => import('./templates/Consulting/ConsultingLanding'));
-const DigitalAgencyLanding = lazy(() => import('./templates/DigitalAgency/DigitalLanding'));
-const FashionStoreLanding = lazy(() => import('./templates/FashionStore/FashionLanding'));
-const FoodTruckLanding = lazy(() => import('./templates/FoodTruck/FoodTruckLanding'));
-const GymLanding = lazy(() => import('./templates/Gym/GymLanding'));
-const LawFirmLanding = lazy(() => import('./templates/LawFirm/LawFirmLanding'));
-const MarketingAgencyLanding = lazy(() => import('./templates/MarketingAgency/AgencyLanding'));
-const MedicalClinicLanding = lazy(() => import('./templates/MedicalClinic/MedicalLanding'));
-const RealEstateLanding = lazy(() => import('./templates/RealEstate/RealEstateLanding'));
-const RestaurantLanding = lazy(() => import('./templates/Restaurant/RestaurantLanding'));
-const SaaSlanding = lazy(() => import('./templates/SaaS/SaaSlanding'));
-const StartupLanding = lazy(() => import('./templates/Startup/StartupLanding'));
+const AccountingLanding = lazy(() => import('./templates/landing/Accounting/AccountingLanding'));
+const ArchitectureLanding = lazy(() => import('./templates/landing/Architecture/ArchitectureLanding'));
+const BakeryLanding = lazy(() => import('./templates/landing/Bakery/BakeryLanding'));
+const BeautySalonLanding = lazy(() => import('./templates/landing/BeautySalon/SalonLanding'));
+const CateringLanding = lazy(() => import('./templates/landing/Catering/CateringLanding'));
+const CleaningServiceLanding = lazy(() => import('./templates/landing/CleaningService/CleaningLanding'));
+const CoffeeShopLanding = lazy(() => import('./templates/landing/CoffeeShop/CoffeeLanding'));
+const ConsultingLanding = lazy(() => import('./templates/landing/Consulting/ConsultingLanding'));
+const DigitalAgencyLanding = lazy(() => import('./templates/landing/DigitalAgency/DigitalLanding'));
+const FashionStoreLanding = lazy(() => import('./templates/landing/FashionStore/FashionLanding'));
+const FoodTruckLanding = lazy(() => import('./templates/landing/FoodTruck/FoodTruckLanding'));
+const GymLanding = lazy(() => import('./templates/landing/Gym/GymLanding'));
+const LawFirmLanding = lazy(() => import('./templates/landing/LawFirm/LawFirmLanding'));
+const MarketingAgencyLanding = lazy(() => import('./templates/landing/MarketingAgency/AgencyLanding'));
+const MedicalClinicLanding = lazy(() => import('./templates/landing/MedicalClinic/MedicalLanding'));
+const RealEstateLanding = lazy(() => import('./templates/landing/RealEstate/RealEstateLanding'));
+const RestaurantLanding = lazy(() => import('./templates/landing/Restaurant/RestaurantLanding'));
+const SaaSlanding = lazy(() => import('./templates/landing/SaaS/SaaSlanding'));
+const StartupLanding = lazy(() => import('./templates/landing/Startup/StartupLanding'));
 
-// Tipos
 type ViewMode = 'ownTemplate' | 'myTemplates' | 'gallery' | 'editor';
 
-// Plantillas públicas para la galería
 const templatesInfo = [
   { id: 'consulting', title: 'Consultoría', description: 'Diseño profesional para servicios de consultoría.', icon: '📊', gradient: 'from-blue-500 to-blue-600', color: 'blue', category: ['landing'], tags: ['negocios', 'profesional'], featured: true, popular: true, images: templateImages.consulting },
   { id: 'catering', title: 'Catering', description: 'Estilo vibrante para servicios gastronómicos.', icon: '🍽️', gradient: 'from-amber-500 to-orange-500', color: 'amber', category: ['landing'], tags: ['gastronomía', 'eventos'], featured: true, popular: true, images: templateImages.catering },
@@ -62,7 +62,6 @@ const templatesInfo = [
   { id: 'coffeeShop', title: 'Coffee Shop', description: 'Diseño acogedor para cafeterías.', icon: '☕', gradient: 'from-amber-600 to-amber-700', color: 'amber', category: ['landing', 'ecommerce'], tags: ['café', 'desayunos'], featured: true, popular: true, images: templateImages.coffeeShop },
 ];
 
-// Categorías
 const categories = [
   { id: 'todos', label: 'Todos', icon: (props: any) => <Grid3X3 {...props} /> },
   { id: 'landing', label: 'Landing Pages', icon: (props: any) => <LayoutGrid {...props} /> },
@@ -71,16 +70,30 @@ const categories = [
   { id: 'custom', label: 'Custom', icon: (props: any) => <Heart {...props} /> }
 ];
 
+// Componente auxiliar para inicializar el contexto en modo preview
+const PreviewWrapper = ({ templateData, children }: { templateData: any; children: React.ReactNode }) => {
+  const { setTemplate } = useTemplate();
+  const initialized = useRef(false);
+
+  useEffect(() => {
+    if (templateData && !initialized.current) {
+      setTemplate(templateData);
+      initialized.current = true;
+    }
+  }, [templateData, setTemplate]);
+
+  return <>{children}</>;
+};
+
 function AppContent() {
   const { user, isAuthenticated, logout } = useAuth();
   const { isLoading, getLoadingMessage, tokenFromUrl } = useAuthHandler();
-  const { userTemplate, userTemplatesList, loading: loadingTemplates, loadTemplateForEdit,/* reloadUserTemplates*/ } = useUserTemplates(isAuthenticated, user);
+  const { userTemplate, userTemplatesList, loading: loadingTemplates, loadTemplateForEdit } = useUserTemplates(isAuthenticated, user);
   const [searchParams] = useSearchParams();
 
   const hasProcessedUrlParams = useRef(false);
-
-  const templateIdFromUrl = searchParams.get('templateId');
-  const previewMode = searchParams.get('preview') === 'true';
+  const previewModeFromUrl = useRef(searchParams.get('preview') === 'true');
+  const templateIdFromUrl = useRef(searchParams.get('templateId'));
   const viewFromUrl = searchParams.get('view');
 
   const [viewMode, setViewMode] = useState<ViewMode>('ownTemplate');
@@ -92,43 +105,51 @@ function AppContent() {
   const [isPreviewMode, setIsPreviewMode] = useState(false);
   const [isLoadingTemplate, setIsLoadingTemplate] = useState(false);
 
-  // ✅ Efecto para manejar parámetros de URL - SOLO UNA VEZ
+  // ✅ Procesar parámetros de URL solo una vez, usando useRef para persistir valores
   useEffect(() => {
-    const handleUrlParams = async () => {
+    const processUrlParams = async () => {
       if (hasProcessedUrlParams.current) return;
 
-      if (templateIdFromUrl && isAuthenticated) {
+      const templateId = templateIdFromUrl.current;
+      const isPreview = previewModeFromUrl.current;
+
+      if (templateId && isAuthenticated) {
         hasProcessedUrlParams.current = true;
         setIsLoadingTemplate(true);
-        console.log('📝 Cargando template desde URL:', templateIdFromUrl);
-        if (previewMode) setIsPreviewMode(true);
-        const templateData = await loadTemplateForEdit(templateIdFromUrl);
+        console.log('📝 Cargando template desde URL:', templateId);
+        if (isPreview) setIsPreviewMode(true);
+        const templateData = await loadTemplateForEdit(templateId);
         if (templateData) {
           setSelectedTemplateForEdit(templateData);
           setViewMode('editor');
         }
         setIsLoadingTemplate(false);
-        window.history.replaceState({}, document.title, window.location.pathname);
+        // IMPORTANTE: No limpiar la URL aquí porque la vista previa necesita los parámetros.
+        // window.history.replaceState({}, document.title, window.location.pathname);
       } else if (viewFromUrl === 'my-templates') {
         hasProcessedUrlParams.current = true;
         setViewMode('myTemplates');
-        window.history.replaceState({}, document.title, window.location.pathname);
       } else if (!loadingTemplates && !userTemplate && viewMode === 'ownTemplate') {
         setViewMode('gallery');
       }
     };
-    handleUrlParams();
-  }, [templateIdFromUrl, previewMode, viewFromUrl, isAuthenticated, loadingTemplates, userTemplate, viewMode, loadTemplateForEdit]);
 
-  // ✅ Escuchar evento de template guardado para actualizar el template en edición
+    processUrlParams();
+  }, [isAuthenticated, loadingTemplates, userTemplate, viewMode, loadTemplateForEdit, viewFromUrl]);
+
+  // ✅ Mantener isPreviewMode true si estamos en modo preview (evita que cambie por re-renders)
+  useEffect(() => {
+    if (previewModeFromUrl.current && !isPreviewMode) {
+      setIsPreviewMode(true);
+    }
+  }, [isPreviewMode]);
+
+  // ✅ Escuchar evento de template guardado
   useEffect(() => {
     const handleTemplateSaved = (event: Event) => {
       const customEvent = event as CustomEvent;
       const { template, success } = customEvent.detail;
-
       if (success && template && viewMode === 'editor' && selectedTemplateForEdit) {
-        console.log('🔄 Actualizando template en edición con ID real:', template.id);
-        // Tipamos prev como any para evitar error de TypeScript
         setSelectedTemplateForEdit((prev: any) => ({
           ...prev,
           id: template.id,
@@ -136,7 +157,6 @@ function AppContent() {
         }));
       }
     };
-
     window.addEventListener('template-saved', handleTemplateSaved);
     return () => window.removeEventListener('template-saved', handleTemplateSaved);
   }, [viewMode, selectedTemplateForEdit]);
@@ -158,7 +178,6 @@ function AppContent() {
   };
 
   const handleSelectTemplateFromGallery = (templateId: string) => {
-    console.log('📝 Seleccionando plantilla de galería:', templateId);
     const defaultColors = templateDefaultColors[templateId as keyof typeof templateDefaultColors] || templateDefaultColors.consulting;
     const newTemplate = {
       id: `temp-${Date.now()}`,
@@ -175,20 +194,12 @@ function AppContent() {
     setViewMode('editor');
   };
 
-  // const handleBackToOwn = () => {
-  //   reloadUserTemplates();
-  //   setViewMode('ownTemplate');
-  //   setIsPreviewMode(false);
-  // };
-
   const handleBackToOwn = () => {
-    // No recargamos automáticamente; el listener de template-saved ya actualizó el estado
     setViewMode('ownTemplate');
     setIsPreviewMode(false);
   };
 
   const handleEditTemplate = async (templateId: string) => {
-    console.log('📝 Editando template con ID:', templateId);
     const templateData = await loadTemplateForEdit(templateId);
     if (templateData) {
       setSelectedTemplateForEdit(templateData);
@@ -205,7 +216,6 @@ function AppContent() {
 
   if (!isAuthenticated) return null;
 
-  // Si no hay template guardado y estamos en ownTemplate, mostrar galería
   if (!userTemplate && viewMode === 'ownTemplate') {
     return (
       <GalleryLayout
@@ -224,7 +234,6 @@ function AppContent() {
     );
   }
 
-  // Modo editor
   if (viewMode === 'editor' && selectedTemplateForEdit) {
     const TemplateComponent = (() => {
       switch (selectedTemplateForEdit.type) {
@@ -251,20 +260,34 @@ function AppContent() {
       }
     })();
 
+    // ✅ Modo preview: inicializar el contexto con los datos cargados
+    if (isPreviewMode) {
+      return (
+        <TemplateProvider>
+          <TemplateEditorProvider>
+            <PreviewWrapper templateData={selectedTemplateForEdit}>
+              <Suspense fallback={<LoadingScreen message="Cargando previsualización..." />}>
+                <TemplateComponent onHomeClick={() => { }} isPreview={true} />
+              </Suspense>
+            </PreviewWrapper>
+          </TemplateEditorProvider>
+        </TemplateProvider>
+      );
+    }
+
     return (
       <EditorLayout
         templateData={selectedTemplateForEdit}
         onClose={handleBackToOwn}
-        isPreview={isPreviewMode}
+        isPreview={false}
       >
-        <Suspense fallback={<LoadingScreen message={isPreviewMode ? "Cargando previsualización..." : "Cargando template..."} />}>
+        <Suspense fallback={<LoadingScreen message="Cargando template..." />}>
           <TemplateComponent onHomeClick={handleBackToOwn} />
         </Suspense>
       </EditorLayout>
     );
   }
 
-  // Modo mis plantillas
   if (viewMode === 'myTemplates') {
     return (
       <MyTemplatesLayout
@@ -280,7 +303,6 @@ function AppContent() {
     );
   }
 
-  // Modo galería
   if (viewMode === 'gallery') {
     return (
       <GalleryLayout
@@ -299,7 +321,6 @@ function AppContent() {
     );
   }
 
-  // Modo plantilla principal
   if (userTemplate) {
     return (
       <OwnTemplateLayout
@@ -315,7 +336,6 @@ function AppContent() {
     );
   }
 
-  // Fallback: mostrar galería
   return (
     <GalleryLayout
       templates={templatesInfo}

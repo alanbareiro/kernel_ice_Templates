@@ -107,14 +107,49 @@ export interface SectionColors {
 }
 
 export interface TypographyConfig {
-    heroTitleSize: string;
-    heroDescriptionSize: string;
-    sectionTitleSize: string;
-    bodyTextSize: string;
+    // Fuentes globales
     headingFont: string;
     bodyFont: string;
     headingWeight: string;
     bodyWeight: string;
+
+    // Hero
+    heroTitleSize: string;
+    heroDescriptionSize: string;
+
+    // Características / Servicios
+    featuresTitleSize: string;
+    featuresCardTitleSize: string;
+    featuresDescriptionSize: string;
+
+    // Sobre Nosotros
+    aboutTitleSize: string;
+    aboutTextSize: string;
+    aboutStatsValueSize: string;
+    aboutStatsLabelSize: string;
+    aboutDifferentiatorSize: string;
+
+    // Testimonios
+    testimonialsTitleSize: string;
+    testimonialsNameSize: string;
+    testimonialsRoleSize: string;
+    testimonialsTextSize: string;
+
+    // Contacto
+    contactTitleSize: string;
+    contactTextSize: string;
+    contactLabelSize: string;
+    contactButtonSize: string;
+    contactCardTitleSize: string;  // 👈 NUEVO
+
+    // Footer
+    footerHeadingSize: string;
+    footerTextSize: string;
+    footerLinkSize: string;
+
+    // 👇 NUEVOS (para header y navegación)
+    navTextSize?: string;      // Tamaño de los enlaces del menú
+    buttonTextSize?: string;   // Tamaño del texto de los botones (CTA, etc.)
 }
 
 export interface UIConfig {
@@ -191,6 +226,7 @@ export interface FullPreset {
 }
 
 export const fullPresets: FullPreset[] = [
+    // ========== 1. Minimalista Claro ==========
     {
         name: "Minimalista Claro",
         colors: {
@@ -244,8 +280,13 @@ export const fullPresets: FullPreset[] = [
         typography: {
             headingFont: "Inter, system-ui, sans-serif",
             bodyFont: "Inter, system-ui, sans-serif",
+            headingWeight: "700",
+            bodyWeight: "400",
+            navTextSize: "0.875rem",
+            buttonTextSize: "0.875rem",
         },
     },
+    // ========== 2. Élite Oscuro ==========
     {
         name: "Élite Oscuro",
         colors: {
@@ -299,8 +340,13 @@ export const fullPresets: FullPreset[] = [
         typography: {
             headingFont: "Montserrat, system-ui, sans-serif",
             bodyFont: "Open Sans, system-ui, sans-serif",
+            headingWeight: "700",
+            bodyWeight: "400",
+            navTextSize: "0.875rem",
+            buttonTextSize: "0.875rem",
         },
     },
+    // ========== 3. Futurista Neon ==========
     {
         name: "Futurista Neon",
         colors: {
@@ -354,8 +400,13 @@ export const fullPresets: FullPreset[] = [
         typography: {
             headingFont: "Poppins, system-ui, sans-serif",
             bodyFont: "Inter, system-ui, sans-serif",
+            headingWeight: "600",
+            bodyWeight: "400",
+            navTextSize: "0.875rem",
+            buttonTextSize: "0.875rem",
         },
     },
+    // ========== 4. Bosque Natural ==========
     {
         name: "Bosque Natural",
         colors: {
@@ -409,8 +460,13 @@ export const fullPresets: FullPreset[] = [
         typography: {
             headingFont: "Poppins, system-ui, sans-serif",
             bodyFont: "Inter, system-ui, sans-serif",
+            headingWeight: "600",
+            bodyWeight: "400",
+            navTextSize: "0.9rem",
+            buttonTextSize: "0.875rem",
         },
     },
+    // ========== 5. Lujo Dorado ==========
     {
         name: "Lujo Dorado",
         colors: {
@@ -464,8 +520,13 @@ export const fullPresets: FullPreset[] = [
         typography: {
             headingFont: "Playfair Display, Georgia, serif",
             bodyFont: "Lato, system-ui, sans-serif",
+            headingWeight: "700",
+            bodyWeight: "400",
+            navTextSize: "0.875rem",
+            buttonTextSize: "0.875rem",
         },
     },
+    // ========== 6. Tecnología Azul ==========
     {
         name: "Tecnología Azul",
         colors: {
@@ -519,8 +580,13 @@ export const fullPresets: FullPreset[] = [
         typography: {
             headingFont: "Poppins, system-ui, sans-serif",
             bodyFont: "Roboto, system-ui, sans-serif",
+            headingWeight: "600",
+            bodyWeight: "400",
+            navTextSize: "0.875rem",
+            buttonTextSize: "0.875rem",
         },
     },
+    // ========== 7. Romance Rosa ==========
     {
         name: "Romance Rosa",
         colors: {
@@ -574,8 +640,13 @@ export const fullPresets: FullPreset[] = [
         typography: {
             headingFont: "Playfair Display, Georgia, serif",
             bodyFont: "Lato, system-ui, sans-serif",
+            headingWeight: "700",
+            bodyWeight: "400",
+            navTextSize: "0.875rem",
+            buttonTextSize: "0.875rem",
         },
     },
+    // ========== 8. Energía Naranja ==========
     {
         name: "Energía Naranja",
         colors: {
@@ -629,8 +700,13 @@ export const fullPresets: FullPreset[] = [
         typography: {
             headingFont: "Montserrat, system-ui, sans-serif",
             bodyFont: "Open Sans, system-ui, sans-serif",
+            headingWeight: "700",
+            bodyWeight: "400",
+            navTextSize: "0.875rem",
+            buttonTextSize: "0.875rem",
         },
     },
+    // ========== 9. Nieve Fresca ==========
     {
         name: "Nieve Fresca",
         colors: {
@@ -684,8 +760,13 @@ export const fullPresets: FullPreset[] = [
         typography: {
             headingFont: "Inter, system-ui, sans-serif",
             bodyFont: "Inter, system-ui, sans-serif",
+            headingWeight: "600",
+            bodyWeight: "400",
+            navTextSize: "0.875rem",
+            buttonTextSize: "0.875rem",
         },
     },
+    // ========== 10. Tropical Vibrante ==========
     {
         name: "Tropical Vibrante",
         colors: {
@@ -739,6 +820,612 @@ export const fullPresets: FullPreset[] = [
         typography: {
             headingFont: "Poppins, system-ui, sans-serif",
             bodyFont: "Inter, system-ui, sans-serif",
+            headingWeight: "600",
+            bodyWeight: "400",
+            navTextSize: "0.9rem",
+            buttonTextSize: "0.875rem",
+        },
+    },
+
+    // ========== NUEVOS 10 PRESETS (del 11 al 20) ==========
+    // 11. Mar Profundo
+    {
+        name: "Mar Profundo",
+        colors: {
+            primary: "#0284c7",
+            secondary: "#0369a1",
+            accent: "#082f49",
+            background: "#f0f9ff",
+            text: "#082f49"
+        },
+        sectionColors: {
+            heroBackground: "#e0f2fe",
+            heroTitleColor: "#082f49",
+            heroDescriptionColor: "#0284c7",
+            heroBadgeBackground: "#0284c7",
+            heroBadgeTextColor: "#ffffff",
+            buttonPrimaryBackground: "#0284c7",
+            buttonPrimaryText: "#ffffff",
+            buttonPrimaryHoverBackground: "#0369a1",
+            buttonSecondaryBackground: "transparent",
+            buttonSecondaryText: "#0284c7",
+            buttonSecondaryHoverBackground: "rgba(2,132,199,0.1)",
+            headerBackground: "#ffffff",
+            headerTextColor: "#082f49",
+            headerLinkColor: "#0369a1",
+            headerLinkHoverColor: "#0284c7",
+            featuresBackground: "#f0f9ff",
+            featuresTitleColor: "#082f49",
+            featuresCardBackground: "#ffffff",
+            featuresCardBorder: "#bae6fd",
+            footerBackground: "#082f49",
+            footerTextColor: "#bae6fd",
+            footerLinkColor: "#e0f2fe",
+            footerHeadingColor: "#ffffff",
+            aboutBackground: "#e0f2fe",
+            aboutTitleColor: "#082f49",
+            aboutTextColor: "#0369a1",
+            testimonialsBackground: "#082f49",
+            testimonialsTitleColor: "#ffffff",
+            testimonialsTextColor: "#bae6fd",
+            testimonialsCardBackground: "#0369a1",
+            testimonialsCardBorder: "#0284c7",
+            contactBackground: "#ffffff",
+            contactTitleColor: "#082f49",
+            contactTextColor: "#0369a1",
+            contactFormBackground: "#f0f9ff",
+            contactFormBorder: "#bae6fd",
+            contactButtonBackground: "#0284c7",
+            contactButtonText: "#ffffff",
+            contactButtonHoverBackground: "#0369a1",
+        },
+        typography: {
+            headingFont: "Poppins, system-ui, sans-serif",
+            bodyFont: "Inter, system-ui, sans-serif",
+            headingWeight: "600",
+            bodyWeight: "400",
+            navTextSize: "0.875rem",
+            buttonTextSize: "0.875rem",
+        },
+    },
+    // 12. Terracota Cálido
+    {
+        name: "Terracota Cálido",
+        colors: {
+            primary: "#e07a5f",
+            secondary: "#b95f4a",
+            accent: "#6b3e2e",
+            background: "#fdf4f0",
+            text: "#3d2b1f"
+        },
+        sectionColors: {
+            heroBackground: "#fcf0e8",
+            heroTitleColor: "#6b3e2e",
+            heroDescriptionColor: "#b95f4a",
+            heroBadgeBackground: "#e07a5f",
+            heroBadgeTextColor: "#ffffff",
+            buttonPrimaryBackground: "#e07a5f",
+            buttonPrimaryText: "#ffffff",
+            buttonPrimaryHoverBackground: "#c7684f",
+            buttonSecondaryBackground: "transparent",
+            buttonSecondaryText: "#e07a5f",
+            buttonSecondaryHoverBackground: "rgba(224,122,95,0.1)",
+            headerBackground: "#ffffff",
+            headerTextColor: "#6b3e2e",
+            headerLinkColor: "#b95f4a",
+            headerLinkHoverColor: "#e07a5f",
+            featuresBackground: "#fdf4f0",
+            featuresTitleColor: "#6b3e2e",
+            featuresCardBackground: "#ffffff",
+            featuresCardBorder: "#f5e0d4",
+            footerBackground: "#6b3e2e",
+            footerTextColor: "#f5e0d4",
+            footerLinkColor: "#fcf0e8",
+            footerHeadingColor: "#ffffff",
+            aboutBackground: "#fcf0e8",
+            aboutTitleColor: "#6b3e2e",
+            aboutTextColor: "#b95f4a",
+            testimonialsBackground: "#6b3e2e",
+            testimonialsTitleColor: "#e07a5f",
+            testimonialsTextColor: "#f5e0d4",
+            testimonialsCardBackground: "#b95f4a",
+            testimonialsCardBorder: "#e07a5f",
+            contactBackground: "#ffffff",
+            contactTitleColor: "#6b3e2e",
+            contactTextColor: "#b95f4a",
+            contactFormBackground: "#fdf4f0",
+            contactFormBorder: "#f5e0d4",
+            contactButtonBackground: "#e07a5f",
+            contactButtonText: "#ffffff",
+            contactButtonHoverBackground: "#c7684f",
+        },
+        typography: {
+            headingFont: "Lora, serif",
+            bodyFont: "Poppins, system-ui, sans-serif",
+            headingWeight: "600",
+            bodyWeight: "400",
+            navTextSize: "0.875rem",
+            buttonTextSize: "0.875rem",
+        },
+    },
+    // 13. Lavanda Sereno
+    {
+        name: "Lavanda Sereno",
+        colors: {
+            primary: "#8b5cf6",
+            secondary: "#7c3aed",
+            accent: "#4c1d95",
+            background: "#faf5ff",
+            text: "#2e1065"
+        },
+        sectionColors: {
+            heroBackground: "#f3e8ff",
+            heroTitleColor: "#4c1d95",
+            heroDescriptionColor: "#7c3aed",
+            heroBadgeBackground: "#8b5cf6",
+            heroBadgeTextColor: "#ffffff",
+            buttonPrimaryBackground: "#8b5cf6",
+            buttonPrimaryText: "#ffffff",
+            buttonPrimaryHoverBackground: "#7c3aed",
+            buttonSecondaryBackground: "transparent",
+            buttonSecondaryText: "#8b5cf6",
+            buttonSecondaryHoverBackground: "rgba(139,92,246,0.1)",
+            headerBackground: "#ffffff",
+            headerTextColor: "#4c1d95",
+            headerLinkColor: "#7c3aed",
+            headerLinkHoverColor: "#8b5cf6",
+            featuresBackground: "#faf5ff",
+            featuresTitleColor: "#4c1d95",
+            featuresCardBackground: "#ffffff",
+            featuresCardBorder: "#e9d5ff",
+            footerBackground: "#4c1d95",
+            footerTextColor: "#e9d5ff",
+            footerLinkColor: "#f3e8ff",
+            footerHeadingColor: "#ffffff",
+            aboutBackground: "#f3e8ff",
+            aboutTitleColor: "#4c1d95",
+            aboutTextColor: "#7c3aed",
+            testimonialsBackground: "#4c1d95",
+            testimonialsTitleColor: "#8b5cf6",
+            testimonialsTextColor: "#e9d5ff",
+            testimonialsCardBackground: "#7c3aed",
+            testimonialsCardBorder: "#8b5cf6",
+            contactBackground: "#ffffff",
+            contactTitleColor: "#4c1d95",
+            contactTextColor: "#7c3aed",
+            contactFormBackground: "#faf5ff",
+            contactFormBorder: "#e9d5ff",
+            contactButtonBackground: "#8b5cf6",
+            contactButtonText: "#ffffff",
+            contactButtonHoverBackground: "#7c3aed",
+        },
+        typography: {
+            headingFont: "Playfair Display, Georgia, serif",
+            bodyFont: "Inter, system-ui, sans-serif",
+            headingWeight: "700",
+            bodyWeight: "400",
+            navTextSize: "0.875rem",
+            buttonTextSize: "0.875rem",
+        },
+    },
+    // 14. Carbón Corporativo
+    {
+        name: "Carbón Corporativo",
+        colors: {
+            primary: "#1f2937",
+            secondary: "#374151",
+            accent: "#111827",
+            background: "#f9fafb",
+            text: "#1f2937"
+        },
+        sectionColors: {
+            heroBackground: "#f3f4f6",
+            heroTitleColor: "#111827",
+            heroDescriptionColor: "#374151",
+            heroBadgeBackground: "#1f2937",
+            heroBadgeTextColor: "#ffffff",
+            buttonPrimaryBackground: "#1f2937",
+            buttonPrimaryText: "#ffffff",
+            buttonPrimaryHoverBackground: "#111827",
+            buttonSecondaryBackground: "transparent",
+            buttonSecondaryText: "#1f2937",
+            buttonSecondaryHoverBackground: "rgba(31,41,55,0.1)",
+            headerBackground: "#ffffff",
+            headerTextColor: "#111827",
+            headerLinkColor: "#374151",
+            headerLinkHoverColor: "#1f2937",
+            featuresBackground: "#f9fafb",
+            featuresTitleColor: "#111827",
+            featuresCardBackground: "#ffffff",
+            featuresCardBorder: "#e5e7eb",
+            footerBackground: "#111827",
+            footerTextColor: "#9ca3af",
+            footerLinkColor: "#d1d5db",
+            footerHeadingColor: "#ffffff",
+            aboutBackground: "#f3f4f6",
+            aboutTitleColor: "#111827",
+            aboutTextColor: "#374151",
+            testimonialsBackground: "#111827",
+            testimonialsTitleColor: "#ffffff",
+            testimonialsTextColor: "#9ca3af",
+            testimonialsCardBackground: "#1f2937",
+            testimonialsCardBorder: "#374151",
+            contactBackground: "#ffffff",
+            contactTitleColor: "#111827",
+            contactTextColor: "#374151",
+            contactFormBackground: "#f9fafb",
+            contactFormBorder: "#e5e7eb",
+            contactButtonBackground: "#1f2937",
+            contactButtonText: "#ffffff",
+            contactButtonHoverBackground: "#111827",
+        },
+        typography: {
+            headingFont: "Roboto, system-ui, sans-serif",
+            bodyFont: "Roboto, system-ui, sans-serif",
+            headingWeight: "500",
+            bodyWeight: "400",
+            navTextSize: "0.875rem",
+            buttonTextSize: "0.875rem",
+        },
+    },
+    // 15. Cereza Dulce
+    {
+        name: "Cereza Dulce",
+        colors: {
+            primary: "#e11d48",
+            secondary: "#be123c",
+            accent: "#881337",
+            background: "#fff1f2",
+            text: "#4c0519"
+        },
+        sectionColors: {
+            heroBackground: "#ffe4e6",
+            heroTitleColor: "#881337",
+            heroDescriptionColor: "#be123c",
+            heroBadgeBackground: "#e11d48",
+            heroBadgeTextColor: "#ffffff",
+            buttonPrimaryBackground: "#e11d48",
+            buttonPrimaryText: "#ffffff",
+            buttonPrimaryHoverBackground: "#be123c",
+            buttonSecondaryBackground: "transparent",
+            buttonSecondaryText: "#e11d48",
+            buttonSecondaryHoverBackground: "rgba(225,29,72,0.1)",
+            headerBackground: "#ffffff",
+            headerTextColor: "#881337",
+            headerLinkColor: "#be123c",
+            headerLinkHoverColor: "#e11d48",
+            featuresBackground: "#fff1f2",
+            featuresTitleColor: "#881337",
+            featuresCardBackground: "#ffffff",
+            featuresCardBorder: "#fecdd3",
+            footerBackground: "#881337",
+            footerTextColor: "#fecdd3",
+            footerLinkColor: "#ffe4e6",
+            footerHeadingColor: "#ffffff",
+            aboutBackground: "#ffe4e6",
+            aboutTitleColor: "#881337",
+            aboutTextColor: "#be123c",
+            testimonialsBackground: "#881337",
+            testimonialsTitleColor: "#e11d48",
+            testimonialsTextColor: "#fecdd3",
+            testimonialsCardBackground: "#be123c",
+            testimonialsCardBorder: "#e11d48",
+            contactBackground: "#ffffff",
+            contactTitleColor: "#881337",
+            contactTextColor: "#be123c",
+            contactFormBackground: "#fff1f2",
+            contactFormBorder: "#fecdd3",
+            contactButtonBackground: "#e11d48",
+            contactButtonText: "#ffffff",
+            contactButtonHoverBackground: "#be123c",
+        },
+        typography: {
+            headingFont: "Poppins, system-ui, sans-serif",
+            bodyFont: "Open Sans, system-ui, sans-serif",
+            headingWeight: "600",
+            bodyWeight: "400",
+            navTextSize: "0.875rem",
+            buttonTextSize: "0.875rem",
+        },
+    },
+    // 16. Atardecer
+    {
+        name: "Atardecer",
+        colors: {
+            primary: "#f97316",
+            secondary: "#ea580c",
+            accent: "#7c2d12",
+            background: "#fff7ed",
+            text: "#431407"
+        },
+        sectionColors: {
+            heroBackground: "#ffedd5",
+            heroTitleColor: "#9a3412",
+            heroDescriptionColor: "#c2410c",
+            heroBadgeBackground: "#f97316",
+            heroBadgeTextColor: "#ffffff",
+            buttonPrimaryBackground: "#f97316",
+            buttonPrimaryText: "#ffffff",
+            buttonPrimaryHoverBackground: "#ea580c",
+            buttonSecondaryBackground: "transparent",
+            buttonSecondaryText: "#f97316",
+            buttonSecondaryHoverBackground: "rgba(249,115,22,0.1)",
+            headerBackground: "#ffffff",
+            headerTextColor: "#7c2d12",
+            headerLinkColor: "#c2410c",
+            headerLinkHoverColor: "#f97316",
+            featuresBackground: "#fff7ed",
+            featuresTitleColor: "#9a3412",
+            featuresCardBackground: "#ffffff",
+            featuresCardBorder: "#fed7aa",
+            footerBackground: "#7c2d12",
+            footerTextColor: "#fed7aa",
+            footerLinkColor: "#ffedd5",
+            footerHeadingColor: "#ffffff",
+            aboutBackground: "#ffedd5",
+            aboutTitleColor: "#9a3412",
+            aboutTextColor: "#c2410c",
+            testimonialsBackground: "#7c2d12",
+            testimonialsTitleColor: "#f97316",
+            testimonialsTextColor: "#fed7aa",
+            testimonialsCardBackground: "#c2410c",
+            testimonialsCardBorder: "#f97316",
+            contactBackground: "#ffffff",
+            contactTitleColor: "#9a3412",
+            contactTextColor: "#c2410c",
+            contactFormBackground: "#fff7ed",
+            contactFormBorder: "#fed7aa",
+            contactButtonBackground: "#f97316",
+            contactButtonText: "#ffffff",
+            contactButtonHoverBackground: "#ea580c",
+        },
+        typography: {
+            headingFont: "Playfair Display, Georgia, serif",
+            bodyFont: "Inter, system-ui, sans-serif",
+            headingWeight: "700",
+            bodyWeight: "400",
+            navTextSize: "0.9rem",
+            buttonTextSize: "0.875rem",
+        },
+    },
+    // 17. Bosque Místico
+    {
+        name: "Bosque Místico",
+        colors: {
+            primary: "#059669",
+            secondary: "#047857",
+            accent: "#064e3b",
+            background: "#ecfdf5",
+            text: "#022c22"
+        },
+        sectionColors: {
+            heroBackground: "#d1fae5",
+            heroTitleColor: "#064e3b",
+            heroDescriptionColor: "#047857",
+            heroBadgeBackground: "#059669",
+            heroBadgeTextColor: "#ffffff",
+            buttonPrimaryBackground: "#059669",
+            buttonPrimaryText: "#ffffff",
+            buttonPrimaryHoverBackground: "#047857",
+            buttonSecondaryBackground: "transparent",
+            buttonSecondaryText: "#059669",
+            buttonSecondaryHoverBackground: "rgba(5,150,105,0.1)",
+            headerBackground: "#ffffff",
+            headerTextColor: "#064e3b",
+            headerLinkColor: "#047857",
+            headerLinkHoverColor: "#059669",
+            featuresBackground: "#ecfdf5",
+            featuresTitleColor: "#064e3b",
+            featuresCardBackground: "#ffffff",
+            featuresCardBorder: "#a7f3d0",
+            footerBackground: "#064e3b",
+            footerTextColor: "#a7f3d0",
+            footerLinkColor: "#d1fae5",
+            footerHeadingColor: "#ffffff",
+            aboutBackground: "#d1fae5",
+            aboutTitleColor: "#064e3b",
+            aboutTextColor: "#047857",
+            testimonialsBackground: "#064e3b",
+            testimonialsTitleColor: "#059669",
+            testimonialsTextColor: "#a7f3d0",
+            testimonialsCardBackground: "#047857",
+            testimonialsCardBorder: "#059669",
+            contactBackground: "#ffffff",
+            contactTitleColor: "#064e3b",
+            contactTextColor: "#047857",
+            contactFormBackground: "#ecfdf5",
+            contactFormBorder: "#a7f3d0",
+            contactButtonBackground: "#059669",
+            contactButtonText: "#ffffff",
+            contactButtonHoverBackground: "#047857",
+        },
+        typography: {
+            headingFont: "Poppins, system-ui, sans-serif",
+            bodyFont: "Inter, system-ui, sans-serif",
+            headingWeight: "600",
+            bodyWeight: "400",
+            navTextSize: "0.875rem",
+            buttonTextSize: "0.875rem",
+        },
+    },
+    // 18. Noche Estrellada
+    {
+        name: "Noche Estrellada",
+        colors: {
+            primary: "#4338ca",
+            secondary: "#3730a3",
+            accent: "#1e1b4b",
+            background: "#eef2ff",
+            text: "#1e1b4b"
+        },
+        sectionColors: {
+            heroBackground: "#e0e7ff",
+            heroTitleColor: "#1e1b4b",
+            heroDescriptionColor: "#3730a3",
+            heroBadgeBackground: "#4338ca",
+            heroBadgeTextColor: "#ffffff",
+            buttonPrimaryBackground: "#4338ca",
+            buttonPrimaryText: "#ffffff",
+            buttonPrimaryHoverBackground: "#3730a3",
+            buttonSecondaryBackground: "transparent",
+            buttonSecondaryText: "#4338ca",
+            buttonSecondaryHoverBackground: "rgba(67,56,202,0.1)",
+            headerBackground: "#ffffff",
+            headerTextColor: "#1e1b4b",
+            headerLinkColor: "#3730a3",
+            headerLinkHoverColor: "#4338ca",
+            featuresBackground: "#eef2ff",
+            featuresTitleColor: "#1e1b4b",
+            featuresCardBackground: "#ffffff",
+            featuresCardBorder: "#c7d2fe",
+            footerBackground: "#1e1b4b",
+            footerTextColor: "#c7d2fe",
+            footerLinkColor: "#e0e7ff",
+            footerHeadingColor: "#ffffff",
+            aboutBackground: "#e0e7ff",
+            aboutTitleColor: "#1e1b4b",
+            aboutTextColor: "#3730a3",
+            testimonialsBackground: "#1e1b4b",
+            testimonialsTitleColor: "#4338ca",
+            testimonialsTextColor: "#c7d2fe",
+            testimonialsCardBackground: "#3730a3",
+            testimonialsCardBorder: "#4338ca",
+            contactBackground: "#ffffff",
+            contactTitleColor: "#1e1b4b",
+            contactTextColor: "#3730a3",
+            contactFormBackground: "#eef2ff",
+            contactFormBorder: "#c7d2fe",
+            contactButtonBackground: "#4338ca",
+            contactButtonText: "#ffffff",
+            contactButtonHoverBackground: "#3730a3",
+        },
+        typography: {
+            headingFont: "Poppins, system-ui, sans-serif",
+            bodyFont: "Inter, system-ui, sans-serif",
+            headingWeight: "600",
+            bodyWeight: "400",
+            navTextSize: "0.875rem",
+            buttonTextSize: "0.875rem",
+        },
+    },
+    // 19. Rosa Pastel
+    {
+        name: "Rosa Pastel",
+        colors: {
+            primary: "#f43f5e",
+            secondary: "#e11d48",
+            accent: "#9f1239",
+            background: "#fff1f2",
+            text: "#4c0519"
+        },
+        sectionColors: {
+            heroBackground: "#ffe4e6",
+            heroTitleColor: "#9f1239",
+            heroDescriptionColor: "#e11d48",
+            heroBadgeBackground: "#f43f5e",
+            heroBadgeTextColor: "#ffffff",
+            buttonPrimaryBackground: "#f43f5e",
+            buttonPrimaryText: "#ffffff",
+            buttonPrimaryHoverBackground: "#e11d48",
+            buttonSecondaryBackground: "transparent",
+            buttonSecondaryText: "#f43f5e",
+            buttonSecondaryHoverBackground: "rgba(244,63,94,0.1)",
+            headerBackground: "#ffffff",
+            headerTextColor: "#9f1239",
+            headerLinkColor: "#e11d48",
+            headerLinkHoverColor: "#f43f5e",
+            featuresBackground: "#fff1f2",
+            featuresTitleColor: "#9f1239",
+            featuresCardBackground: "#ffffff",
+            featuresCardBorder: "#fecdd3",
+            footerBackground: "#9f1239",
+            footerTextColor: "#fecdd3",
+            footerLinkColor: "#ffe4e6",
+            footerHeadingColor: "#ffffff",
+            aboutBackground: "#ffe4e6",
+            aboutTitleColor: "#9f1239",
+            aboutTextColor: "#e11d48",
+            testimonialsBackground: "#9f1239",
+            testimonialsTitleColor: "#f43f5e",
+            testimonialsTextColor: "#fecdd3",
+            testimonialsCardBackground: "#e11d48",
+            testimonialsCardBorder: "#f43f5e",
+            contactBackground: "#ffffff",
+            contactTitleColor: "#9f1239",
+            contactTextColor: "#e11d48",
+            contactFormBackground: "#fff1f2",
+            contactFormBorder: "#fecdd3",
+            contactButtonBackground: "#f43f5e",
+            contactButtonText: "#ffffff",
+            contactButtonHoverBackground: "#e11d48",
+        },
+        typography: {
+            headingFont: "Playfair Display, Georgia, serif",
+            bodyFont: "Open Sans, system-ui, sans-serif",
+            headingWeight: "700",
+            bodyWeight: "400",
+            navTextSize: "0.875rem",
+            buttonTextSize: "0.875rem",
+        },
+    },
+    // 20. Arena Dorada
+    {
+        name: "Arena Dorada",
+        colors: {
+            primary: "#d97706",
+            secondary: "#b45309",
+            accent: "#78350f",
+            background: "#fffbeb",
+            text: "#451a03"
+        },
+        sectionColors: {
+            heroBackground: "#fef3c7",
+            heroTitleColor: "#78350f",
+            heroDescriptionColor: "#b45309",
+            heroBadgeBackground: "#d97706",
+            heroBadgeTextColor: "#ffffff",
+            buttonPrimaryBackground: "#d97706",
+            buttonPrimaryText: "#ffffff",
+            buttonPrimaryHoverBackground: "#b45309",
+            buttonSecondaryBackground: "transparent",
+            buttonSecondaryText: "#d97706",
+            buttonSecondaryHoverBackground: "rgba(217,119,6,0.1)",
+            headerBackground: "#ffffff",
+            headerTextColor: "#78350f",
+            headerLinkColor: "#b45309",
+            headerLinkHoverColor: "#d97706",
+            featuresBackground: "#fffbeb",
+            featuresTitleColor: "#78350f",
+            featuresCardBackground: "#ffffff",
+            featuresCardBorder: "#fde68a",
+            footerBackground: "#78350f",
+            footerTextColor: "#fde68a",
+            footerLinkColor: "#fef3c7",
+            footerHeadingColor: "#ffffff",
+            aboutBackground: "#fef3c7",
+            aboutTitleColor: "#78350f",
+            aboutTextColor: "#b45309",
+            testimonialsBackground: "#78350f",
+            testimonialsTitleColor: "#d97706",
+            testimonialsTextColor: "#fde68a",
+            testimonialsCardBackground: "#b45309",
+            testimonialsCardBorder: "#d97706",
+            contactBackground: "#ffffff",
+            contactTitleColor: "#78350f",
+            contactTextColor: "#b45309",
+            contactFormBackground: "#fffbeb",
+            contactFormBorder: "#fde68a",
+            contactButtonBackground: "#d97706",
+            contactButtonText: "#ffffff",
+            contactButtonHoverBackground: "#b45309",
+        },
+        typography: {
+            headingFont: "Lora, Georgia, serif",
+            bodyFont: "Inter, system-ui, sans-serif",
+            headingWeight: "600",
+            bodyWeight: "400",
+            navTextSize: "0.875rem",
+            buttonTextSize: "0.875rem",
         },
     },
 ];
@@ -747,106 +1434,7 @@ export const colorPresets = {
     consulting: fullPresets.map(p => ({ name: p.name, colors: p.colors })),
 };
 
-export const colorPresets2 = {
-    consulting: [
-        {
-            name: 'Profesional Azul',
-            colors: {
-                primary: '#2563eb',
-                secondary: '#4b5563',
-                accent: '#1e293b',
-                background: '#ffffff',
-                text: '#111827'
-            }
-        },
-        {
-            name: 'Ejecutivo Oscuro',
-            colors: {
-                primary: '#1e40af',
-                secondary: '#374151',
-                accent: '#0f172a',
-                background: '#f3f4f6',
-                text: '#030712'
-            }
-        },
-        {
-            name: 'Minimalista Gris',
-            colors: {
-                primary: '#4b5563',
-                secondary: '#6b7280',
-                accent: '#374151',
-                background: '#f9fafb',
-                text: '#1f2937'
-            }
-        },
-        {
-            name: 'Corporativo Verde',
-            colors: {
-                primary: '#047857',
-                secondary: '#065f46',
-                accent: '#064e3b',
-                background: '#ecfdf5',
-                text: '#022c22'
-            }
-        },
-        {
-            name: 'Moderno Púrpura',
-            colors: {
-                primary: '#7c3aed',
-                secondary: '#6d28d9',
-                accent: '#5b21b6',
-                background: '#f5f3ff',
-                text: '#2e1065'
-            }
-        },
-    ],
-    catering: [
-        {
-            name: 'Cálido Ámbar',
-            colors: {
-                primary: '#f59e0b',
-                secondary: '#d97706',
-                accent: '#b45309',
-                background: '#fffbeb',
-                text: '#78350f'
-            }
-        },
-        {
-            name: 'Elegante Naranja',
-            colors: {
-                primary: '#ea580c',
-                secondary: '#c2410c',
-                accent: '#9a3412',
-                background: '#fff7ed',
-                text: '#431407'
-            }
-        },
-    ],
-    accounting: [
-        {
-            name: 'Formal Esmeralda',
-            colors: {
-                primary: '#059669',
-                secondary: '#047857',
-                accent: '#064e3b',
-                background: '#f0fdf4',
-                text: '#022c22'
-            }
-        },
-    ],
-    restaurant: [
-        {
-            name: 'Apetitoso Rojo',
-            colors: {
-                primary: '#dc2626',
-                secondary: '#b91c1c',
-                accent: '#991b1b',
-                background: '#fef2f2',
-                text: '#450a0a'
-            }
-        },
-    ]
-};
+
 
 export const defaultSectionColors: SectionColors = {
     heroBackground: '#f8fafc',
@@ -933,14 +1521,45 @@ export const defaultSectionColors: SectionColors = {
 };
 
 export const defaultTypography: TypographyConfig = {
-    heroTitleSize: '3rem',
-    heroDescriptionSize: '1.125rem',
-    sectionTitleSize: '2rem',
-    bodyTextSize: '1rem',
+    // Fuentes globales
     headingFont: 'Inter, system-ui, sans-serif',
     bodyFont: 'Inter, system-ui, sans-serif',
     headingWeight: '700',
     bodyWeight: '400',
+
+    // Hero
+    heroTitleSize: '3rem',
+    heroDescriptionSize: '1.125rem',
+
+    // Características / Servicios
+    featuresTitleSize: '2rem',
+    featuresCardTitleSize: '1.5rem',
+    featuresDescriptionSize: '1rem',
+
+    // Sobre Nosotros
+    aboutTitleSize: '2rem',
+    aboutTextSize: '1rem',
+    aboutStatsValueSize: '1.5rem',
+    aboutStatsLabelSize: '0.875rem',
+    aboutDifferentiatorSize: '1rem',
+
+    // Testimonios
+    testimonialsTitleSize: '2rem',
+    testimonialsNameSize: '1.125rem',
+    testimonialsRoleSize: '0.875rem',
+    testimonialsTextSize: '1rem',
+
+    // Contacto
+    contactTitleSize: '2rem',
+    contactTextSize: '1rem',
+    contactLabelSize: '0.875rem',
+    contactButtonSize: '1rem',
+    contactCardTitleSize: '1.25rem',   // 👈 NUEVO
+
+    // Footer
+    footerHeadingSize: '1.125rem',
+    footerTextSize: '0.875rem',
+    footerLinkSize: '0.875rem',
 };
 
 export const defaultUI: UIConfig = {

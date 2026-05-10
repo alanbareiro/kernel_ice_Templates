@@ -1,0 +1,8 @@
+#template-root .text-lg,
+#template-root .text-xl,
+#template-root .text-2xl,
+#template-root .text-3xl,
+#template-root .text-4xl,
+#template-root .text-5xl {
+  font-size: inherit;
+}
