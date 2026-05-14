@@ -153,7 +153,7 @@ const EditorDashboard: React.FC<EditorDashboardProps> = ({
     setEditorConfig,
     updateSectionColors,
     updateTypography,
-    updateButtons,
+    // updateButtons,
     updateText,
   } = useTemplate();
 
@@ -250,22 +250,22 @@ const EditorDashboard: React.FC<EditorDashboardProps> = ({
   const sectionColors = { ...defaultSectionColors, ...(template?.sectionColors || {}) };
   const typography = { ...defaultTypography, ...(template?.typography || {}) };
 
-  const defaultButtonsStructure = {
-    primary: { text: 'Solicitar consultoría', url: '/contacto', openInNewTab: false },
-    secondary: { text: 'Conocer metodología', url: '#metodologia', openInNewTab: false },
-  };
-  const buttons = {
-    primary: template?.buttons?.primary || defaultButtonsStructure.primary,
-    secondary: template?.buttons?.secondary || defaultButtonsStructure.secondary,
-  };
+  // const defaultButtonsStructure = {
+  //   primary: { text: 'Solicitar consultoría', url: '/contacto', openInNewTab: false },
+  //   secondary: { text: 'Conocer metodología', url: '#metodologia', openInNewTab: false },
+  // };
+  // const buttons = {
+  //   primary: template?.buttons?.primary || defaultButtonsStructure.primary,
+  //   secondary: template?.buttons?.secondary || defaultButtonsStructure.secondary,
+  // };
 
-  const linkOptions = [
-    { value: '#home', label: 'Inicio (#home)' },
-    { value: '#services', label: 'Servicios (#services)' },
-    { value: '#methodology', label: 'Metodología (#methodology)' },
-    { value: '#testimonials', label: 'Testimonios (#testimonials)' },
-    { value: '#contact', label: 'Contacto (#contact)' },
-  ];
+  // const linkOptions = [
+  //   { value: '#home', label: 'Inicio (#home)' },
+  //   { value: '#services', label: 'Servicios (#services)' },
+  //   { value: '#methodology', label: 'Metodología (#methodology)' },
+  //   { value: '#testimonials', label: 'Testimonios (#testimonials)' },
+  //   { value: '#contact', label: 'Contacto (#contact)' },
+  // ];
 
   const iconOptions = [
     { value: 'TrendingUp', label: 'Tendencia al alza', icon: TrendingUp },
@@ -571,9 +571,9 @@ const EditorDashboard: React.FC<EditorDashboardProps> = ({
     );
   };
 
-  const handleHeroImageClick = () => {
-    window.dispatchEvent(new CustomEvent('openImageSelector', { detail: { elementId: 'hero_image' } }));
-  };
+  // const handleHeroImageClick = () => {
+  //   window.dispatchEvent(new CustomEvent('openImageSelector', { detail: { elementId: 'hero_image' } }));
+  // };
 
   // Si no hay configuración para este template, mostrar mensaje
   if (!templateConfig) {
