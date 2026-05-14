@@ -1,4 +1,5 @@
 import { Award, BarChart, Briefcase, Globe, LineChart, MapPin, Target, TrendingUp, Users } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import consultingImage from '../../../assets/corpo.jpg';
 import EditableImage from '../../../components/Editor/EditableImage';
 import EditableText from '../../../components/Editor/EditableText';
@@ -7,8 +8,26 @@ import { defaultSectionColors, defaultTypography } from '../../../types/template
 
 const iconMap: Record<string, any> = { Briefcase, Users, Award, MapPin, TrendingUp, Target, BarChart, LineChart, Globe };
 
+// Valores por defecto si no hay datos guardados
+const DEFAULT_STATS = [
+    { id: 'default_stat_1', icon: 'Briefcase', value: '15+', label: 'Años de experiencia', visible: true },
+    { id: 'default_stat_2', icon: 'Users', value: '50+', label: 'Consultores expertos', visible: true },
+    { id: 'default_stat_3', icon: 'Award', value: '200+', label: 'Proyectos exitosos', visible: true },
+    { id: 'default_stat_4', icon: 'MapPin', value: '10+', label: 'Países con presencia', visible: true },
+];
+
+const DEFAULT_DIFFERENTIATORS = [
+    { id: 'default_diff_1', text: 'Metodologías ágiles y adaptativas', visible: true },
+    { id: 'default_diff_2', text: 'Análisis de datos para toma de decisiones', visible: true },
+    { id: 'default_diff_3', text: 'Acompañamiento post-implementación', visible: true },
+    { id: 'default_diff_4', text: 'Confidencialidad y ética profesional', visible: true },
+];
+
 const ConsultingAbout = () => {
     const { template } = useTemplate();
+    const [stats, setStats] = useState(DEFAULT_STATS);
+    const [differentiators, setDifferentiators] = useState(DEFAULT_DIFFERENTIATORS);
+
     const s = { ...defaultSectionColors, ...(template?.sectionColors || {}) };
     const typography = template?.typography || defaultTypography;
 
@@ -18,53 +37,43 @@ const ConsultingAbout = () => {
     const statsLabelClamp = `clamp(0.75rem, 2vw, ${typography.aboutStatsLabelSize})`;
     const diffClamp = `clamp(0.875rem, 3vw, ${typography.aboutDifferentiatorSize})`;
 
-    // Definir hasta 8 estadísticas (índices 1..8)
-    const statsIndices = [1, 2, 3, 4, 5, 6, 7, 8];
-    const getStatData = (idx: number) => {
-        const defaults: Record<number, { icon: string; value: string; label: string }> = {
-            1: { icon: 'Briefcase', value: '15+', label: 'Años de experiencia' },
-            2: { icon: 'Users', value: '50+', label: 'Consultores expertos' },
-            3: { icon: 'Award', value: '200+', label: 'Proyectos exitosos' },
-            4: { icon: 'MapPin', value: '10+', label: 'Países con presencia' },
-        };
-        const def = defaults[idx] || { icon: 'Briefcase', value: '0', label: `Estadística ${idx}` };
-        return {
-            iconName: template?.texts?.[`stat_icon_${idx}`] || def.icon,
-            value: template?.texts?.[`stat_value_${idx}`] || def.value,
-            label: template?.texts?.[`stat_label_${idx}`] || def.label,
-        };
-    };
+    // Cargar estadísticas desde template.texts['stat_']
+    useEffect(() => {
+        const stored = template?.texts?.['stat_'];
+        if (stored) {
+            try {
+                const parsed = JSON.parse(stored);
+                if (Array.isArray(parsed) && parsed.length > 0) {
+                    setStats(parsed);
+                    return;
+                }
+            } catch (e) {
+                console.error('Error parsing stats:', e);
+            }
+        }
+        setStats(DEFAULT_STATS);
+    }, [template?.texts]);
 
-    // Definir hasta 8 diferenciadores (índices 0..7)
-    const diffIndices = [0, 1, 2, 3, 4, 5, 6, 7];
-    const getDiffText = (idx: number) => {
-        const defaults: Record<number, string> = {
-            0: 'Metodologías ágiles y adaptativas',
-            1: 'Análisis de datos para toma de decisiones',
-            2: 'Acompañamiento post-implementación',
-            3: 'Confidencialidad y ética profesional',
-        };
-        return template?.texts?.[`differentiator_${idx}`] || defaults[idx] || `Diferenciador ${idx + 1}`;
-    };
+    // Cargar diferenciadores desde template.texts['differentiator_']
+    useEffect(() => {
+        const stored = template?.texts?.['differentiator_'];
+        if (stored) {
+            try {
+                const parsed = JSON.parse(stored);
+                if (Array.isArray(parsed) && parsed.length > 0) {
+                    setDifferentiators(parsed);
+                    return;
+                }
+            } catch (e) {
+                console.error('Error parsing differentiators:', e);
+            }
+        }
+        setDifferentiators(DEFAULT_DIFFERENTIATORS);
+    }, [template?.texts]);
 
     const getIcon = (iconName: string) => {
         const Icon = iconMap[iconName];
         return Icon ? <Icon className="w-6 h-6" /> : <Briefcase className="w-6 h-6" />;
-    };
-
-    // Determinar visibilidad: por defecto true para los 4 primeros stats y primeros 4 diffs, false para los adicionales
-    const shouldShowStat = (idx: number) => {
-        const showKey = `show_stat_${idx}`;
-        const defaultValue = idx <= 4; // estadísticas 1..4 visibles por defecto
-        const stored = template?.texts?.[showKey];
-        return stored === undefined ? defaultValue : stored !== 'false';
-    };
-
-    const shouldShowDiff = (idx: number) => {
-        const showKey = `show_diff_${idx}`;
-        const defaultValue = idx <= 3; // diferenciadores 0..3 visibles por defecto
-        const stored = template?.texts?.[showKey];
-        return stored === undefined ? defaultValue : stored !== 'false';
     };
 
     return (
@@ -113,46 +122,43 @@ const ConsultingAbout = () => {
                             </p>
                         </div>
 
-                        {/* Estadísticas dinámicas */}
+                        {/* Estadísticas dinámicas desde la lista */}
                         <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-8 border-t" style={{ borderColor: s.aboutTextColor }}>
-                            {statsIndices.map(idx => {
-                                if (!shouldShowStat(idx)) return null;
-                                const { iconName, value, label } = getStatData(idx);
-                                const IconComponent = getIcon(iconName);
+                            {stats.map((stat, idx) => {
+                                if (stat.visible === false) return null;
                                 return (
-                                    <div key={idx} className="text-center group">
+                                    <div key={stat.id || idx} className="text-center group">
                                         <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl mb-3 group-hover:scale-110 transition-all duration-300" style={{ backgroundColor: `${s.aboutBadgeBackground}20`, color: s.aboutBadgeBackground }}>
-                                            {IconComponent}
+                                            {getIcon(stat.icon)}
                                         </div>
                                         <div className="font-bold group-hover:text-blue-600 transition-colors" style={{ color: s.statValueColor, fontSize: statsValueClamp }}>
-                                            <EditableText elementId={`stat_value_${idx}`} defaultText={value} tag="span" />
+                                            {stat.value}
                                         </div>
                                         <div style={{ color: s.statLabelColor, fontSize: statsLabelClamp }}>
-                                            <EditableText elementId={`stat_label_${idx}`} defaultText={label} tag="span" />
+                                            {stat.label}
                                         </div>
                                     </div>
                                 );
                             })}
                         </div>
 
-                        {/* Lista de diferenciadores (Nuestro compromiso) */}
+                        {/* Lista de diferenciadores (Nuestro compromiso) desde la lista */}
                         <div className="space-y-3">
                             <h3 className="text-xl font-semibold" style={{ color: s.aboutTitleColor }}>
                                 <EditableText elementId="about_commitment_title" defaultText="Nuestro compromiso:" tag="span" />
                             </h3>
                             <ul className="space-y-3">
-                                {diffIndices.map(idx => {
-                                    if (!shouldShowDiff(idx)) return null;
-                                    const text = getDiffText(idx);
+                                {differentiators.map((item, idx) => {
+                                    if (item.visible === false) return null;
                                     return (
-                                        <li key={idx} className="flex items-center">
+                                        <li key={item.id || idx} className="flex items-center">
                                             <div className="w-5 h-5 rounded-full flex items-center justify-center mr-3 flex-shrink-0" style={{ backgroundColor: s.aboutBadgeBackground }}>
                                                 <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
                                                 </svg>
                                             </div>
                                             <span style={{ color: s.aboutTextColor, fontSize: diffClamp }}>
-                                                <EditableText elementId={`differentiator_${idx}`} defaultText={text} tag="span" />
+                                                {item.text}
                                             </span>
                                         </li>
                                     );

@@ -1,17 +1,38 @@
-import { Briefcase, Calendar, CheckCircle, Clock, Globe, Mail, MapPin, MessageCircle, Phone, Send, Users, TrendingUp, Target, Award, BarChart, LineChart, Heart, ThumbsUp, Zap, Eye, Star } from 'lucide-react';
-import React, { useState } from 'react';
+import { Award, BarChart, Briefcase, Calendar, CheckCircle, Clock, Eye, Globe, Heart, LineChart, Mail, MapPin, MessageCircle, Phone, Send, Star, Target, ThumbsUp, TrendingUp, Users, Zap } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 import EditableText from '../../../components/Editor/EditableText';
 import { useTemplate } from '../../../contexts/TemplateContext';
 import { defaultSectionColors, defaultTypography } from '../../../types/template.types';
 
-// Mapeo ampliado de iconos (incluye todos los que se pueden seleccionar)
 const iconMap: Record<string, any> = {
     Mail, MapPin, Phone, Briefcase, CheckCircle, MessageCircle, Globe, Clock, Calendar,
     TrendingUp, Users, Target, Award, BarChart, LineChart, Heart, ThumbsUp, Zap, Eye, Star
 };
 
+// Valores por defecto (coinciden con los defaultItems de la configuración)
+const DEFAULT_CONTACT_CARDS = [
+    { id: 'default_card_1', icon: 'Mail', title: 'Email', content: 'consultoria@kernelize.com', href: 'mailto:consultoria@kernelize.com', visible: true },
+    { id: 'default_card_2', icon: 'Phone', title: 'Teléfono', content: '+54 9 11 6745-7413', href: 'tel:+5491167457413', visible: true },
+    { id: 'default_card_3', icon: 'MapPin', title: 'Ubicación', content: 'Buenos Aires, Argentina', href: '#', visible: true }
+];
+
+const DEFAULT_HOUR_BLOCKS = [
+    {
+        id: 'default_hour_1',
+        icon: 'Clock',
+        title: 'Horario de atención',
+        line1: 'Lunes a Viernes: 9:00 - 19:00 hs',
+        line2: 'Sábados: Reuniones programadas',
+        note: 'Respuesta garantizada en 12 horas hábiles',
+        visible: true
+    }
+];
+
 const ConsultingContact = () => {
     const { template } = useTemplate();
+    const [contactCards, setContactCards] = useState(DEFAULT_CONTACT_CARDS);
+    const [hourBlocks, setHourBlocks] = useState(DEFAULT_HOUR_BLOCKS);
+
     const s = { ...defaultSectionColors, ...(template?.sectionColors || {}) };
     const typography = template?.typography || defaultTypography;
 
@@ -24,6 +45,40 @@ const ConsultingContact = () => {
     const [formData, setFormData] = useState({ name: '', email: '', phone: '', company: '', position: '', message: '' });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
+
+    // Cargar tarjetas de contacto desde template.texts['contact_card_']
+    useEffect(() => {
+        const stored = template?.texts?.['contact_card_'];
+        if (stored) {
+            try {
+                const parsed = JSON.parse(stored);
+                if (Array.isArray(parsed) && parsed.length > 0) {
+                    setContactCards(parsed);
+                    return;
+                }
+            } catch (e) {
+                console.error('Error parsing contact cards:', e);
+            }
+        }
+        setContactCards(DEFAULT_CONTACT_CARDS);
+    }, [template?.texts]);
+
+    // Cargar bloques de horario desde template.texts['contact_hour_']
+    useEffect(() => {
+        const stored = template?.texts?.['contact_hour_'];
+        if (stored) {
+            try {
+                const parsed = JSON.parse(stored);
+                if (Array.isArray(parsed) && parsed.length > 0) {
+                    setHourBlocks(parsed);
+                    return;
+                }
+            } catch (e) {
+                console.error('Error parsing hour blocks:', e);
+            }
+        }
+        setHourBlocks(DEFAULT_HOUR_BLOCKS);
+    }, [template?.texts]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -38,39 +93,6 @@ const ConsultingContact = () => {
             setFormData({ name: '', email: '', phone: '', company: '', position: '', message: '' });
             setTimeout(() => setIsSubmitted(false), 5000);
         }, 1500);
-    };
-
-    // ----- CARDS DE CONTACTO (Email, Teléfono, Ubicación + 3 extras) -----
-    const contactCards = [
-        { id: 'email', defaultIcon: 'Mail', defaultTitle: 'Email', defaultContent: 'consultoria@kernelize.com', defaultHref: 'mailto:consultoria@kernelize.com' },
-        { id: 'phone', defaultIcon: 'Phone', defaultTitle: 'Teléfono', defaultContent: '+54 9 11 6745-7413', defaultHref: 'tel:+5491167457413' },
-        { id: 'location', defaultIcon: 'MapPin', defaultTitle: 'Ubicación', defaultContent: 'Buenos Aires, Argentina', defaultHref: '#' },
-        { id: 'extra_1', defaultIcon: 'Globe', defaultTitle: 'Card Extra 1', defaultContent: 'Contenido extra 1', defaultHref: '#' },
-        { id: 'extra_2', defaultIcon: 'MessageCircle', defaultTitle: 'Card Extra 2', defaultContent: 'Contenido extra 2', defaultHref: '#' },
-        { id: 'extra_3', defaultIcon: 'Clock', defaultTitle: 'Card Extra 3', defaultContent: 'Contenido extra 3', defaultHref: '#' },
-    ];
-
-    const shouldShowContactCard = (idx: number) => {
-        const showKey = `show_contact_card_${idx}`;
-        const defaultValue = idx < 3; // email, phone, location visibles por defecto
-        const stored = template?.texts?.[showKey];
-        return stored === undefined ? defaultValue : stored !== 'false';
-    };
-
-    // ----- BLOQUES DE HORARIO (principal + 4 extras) -----
-    const hourBlocks = [
-        { id: 'main', defaultTitle: 'Horario de atención', defaultLine1: 'Lunes a Viernes: 9:00 - 19:00 hs', defaultLine2: 'Sábados: Reuniones programadas', defaultNote: 'Respuesta garantizada en 12 horas hábiles' },
-        { id: 'extra_1', defaultTitle: 'Horario Extra 1', defaultLine1: 'Línea extra 1', defaultLine2: 'Línea extra 2', defaultNote: 'Nota extra 1' },
-        { id: 'extra_2', defaultTitle: 'Horario Extra 2', defaultLine1: 'Línea extra 1', defaultLine2: 'Línea extra 2', defaultNote: 'Nota extra 2' },
-        { id: 'extra_3', defaultTitle: 'Horario Extra 3', defaultLine1: 'Línea extra 1', defaultLine2: 'Línea extra 2', defaultNote: 'Nota extra 3' },
-        { id: 'extra_4', defaultTitle: 'Horario Extra 4', defaultLine1: 'Línea extra 1', defaultLine2: 'Línea extra 2', defaultNote: 'Nota extra 4' },
-    ];
-
-    const shouldShowHourBlock = (idx: number) => {
-        const showKey = `show_hour_block_${idx}`;
-        const defaultValue = idx === 0; // solo el bloque principal visible por defecto
-        const stored = template?.texts?.[showKey];
-        return stored === undefined ? defaultValue : stored !== 'false';
     };
 
     const getIcon = (iconName: string) => {
@@ -106,25 +128,25 @@ const ConsultingContact = () => {
                             </p>
                         </div>
 
-                        {/* Cards de contacto dinámicas */}
+                        {/* Tarjetas de contacto dinámicas */}
                         <div className="space-y-6">
                             {contactCards.map((card, idx) => {
-                                if (!shouldShowContactCard(idx)) return null;
-                                const iconName = template?.texts?.[`contact_card_${card.id}_icon`] || card.defaultIcon;
-                                const title = template?.texts?.[`contact_card_${card.id}_title`] || card.defaultTitle;
-                                const content = template?.texts?.[`contact_card_${card.id}_content`] || card.defaultContent;
-                                const href = template?.texts?.[`contact_card_${card.id}_href`] || card.defaultHref;
+                                if (card.visible === false) return null;
                                 return (
-                                    <a key={card.id} href={href} className="flex items-start space-x-4 p-4 rounded-xl transition-colors group" style={{ backgroundColor: s.contactFormBackground, border: `1px solid ${s.contactFormBorder}` }}>
-                                        <div className="w-12 h-12 rounded-lg flex items-center justify-center transition-colors" style={{ backgroundColor: `${s.contactButtonBackground}20`, color: s.contactButtonBackground }}>
-                                            {getIcon(iconName)}
+                                    <a key={card.id || idx} href={card.href} target="_blank" rel="noopener noreferrer"
+                                        className="flex items-start space-x-4 p-4 rounded-xl transition-colors group"
+                                        style={{ backgroundColor: s.contactFormBackground, border: `1px solid ${s.contactFormBorder}` }}>
+                                        <div className="w-12 h-12 rounded-lg flex items-center justify-center transition-colors"
+                                            style={{ backgroundColor: `${s.contactButtonBackground}20`, color: s.contactButtonBackground }}>
+                                            {getIcon(card.icon)}
                                         </div>
                                         <div>
-                                            <h4 className="font-semibold group-hover:text-blue-600 transition-colors" style={{ color: s.contactTitleColor, fontSize: contactCardTitleClamp }}>
-                                                <EditableText elementId={`contact_card_${card.id}_title`} defaultText={title} tag="span" />
+                                            <h4 className="font-semibold group-hover:text-blue-600 transition-colors"
+                                                style={{ color: s.contactTitleColor, fontSize: contactCardTitleClamp }}>
+                                                {card.title}
                                             </h4>
                                             <p className="mt-1" style={{ color: s.contactTextColor, fontSize: contactTextClamp }}>
-                                                <EditableText elementId={`contact_card_${card.id}_content`} defaultText={content} tag="span" />
+                                                {card.content}
                                             </p>
                                         </div>
                                     </a>
@@ -133,37 +155,37 @@ const ConsultingContact = () => {
                         </div>
 
                         {/* Bloques de horario dinámicos */}
-                        {hourBlocks.map((block, idx) => {
-                            if (!shouldShowHourBlock(idx)) return null;
-                            const title = template?.texts?.[`contact_hours_title_${block.id}`] || block.defaultTitle;
-                            const line1 = template?.texts?.[`contact_hours_line1_${block.id}`] || block.defaultLine1;
-                            const line2 = template?.texts?.[`contact_hours_line2_${block.id}`] || block.defaultLine2;
-                            const note = template?.texts?.[`contact_hours_note_${block.id}`] || block.defaultNote;
-                            const iconName = template?.texts?.[`contact_hours_icon_${block.id}`] || 'Briefcase';
-                            const Icon = iconMap[iconName] || Briefcase;
-                            return (
-                                <div key={block.id} className="p-6 rounded-2xl text-white" style={{ background: `linear-gradient(135deg, ${s.contactButtonBackground}, ${s.contactButtonHoverBackground})` }}>
-                                    <h4 className="font-semibold text-lg mb-2 flex items-center" style={{ fontSize: contactTitleClamp }}>
-                                        <Icon className="w-5 h-5 mr-2" />
-                                        <EditableText elementId={`contact_hours_title_${block.id}`} defaultText={title} tag="span" />
-                                    </h4>
-                                    <p className="text-sm opacity-90" style={{ fontSize: contactTextClamp }}>
-                                        <EditableText elementId={`contact_hours_line1_${block.id}`} defaultText={line1} tag="span" />
-                                    </p>
-                                    <p className="text-sm opacity-90" style={{ fontSize: contactTextClamp }}>
-                                        <EditableText elementId={`contact_hours_line2_${block.id}`} defaultText={line2} tag="span" />
-                                    </p>
-                                    <div className="mt-4 pt-4 border-t border-white/20">
-                                        <p className="text-sm" style={{ fontSize: contactTextClamp }}>
-                                            <EditableText elementId={`contact_hours_note_${block.id}`} defaultText={note} tag="span" />
+                        <div className="space-y-4">
+                            {hourBlocks.map((block, idx) => {
+                                if (block.visible === false) return null;
+                                const Icon = iconMap[block.icon] || Clock;
+                                return (
+                                    <div key={block.id || idx} className="p-6 rounded-2xl text-white"
+                                        style={{ background: `linear-gradient(135deg, ${s.contactButtonBackground}, ${s.contactButtonHoverBackground})` }}>
+                                        <h4 className="font-semibold text-lg mb-2 flex items-center" style={{ fontSize: contactTitleClamp }}>
+                                            <Icon className="w-5 h-5 mr-2" />
+                                            {block.title}
+                                        </h4>
+                                        <p className="text-sm opacity-90" style={{ fontSize: contactTextClamp }}>
+                                            {block.line1}
                                         </p>
+                                        <p className="text-sm opacity-90" style={{ fontSize: contactTextClamp }}>
+                                            {block.line2}
+                                        </p>
+                                        {block.note && (
+                                            <div className="mt-4 pt-4 border-t border-white/20">
+                                                <p className="text-sm" style={{ fontSize: contactTextClamp }}>
+                                                    {block.note}
+                                                </p>
+                                            </div>
+                                        )}
                                     </div>
-                                </div>
-                            );
-                        })}
+                                );
+                            })}
+                        </div>
                     </div>
 
-                    {/* Formulario (sin cambios estructurales) */}
+                    {/* Formulario (sin cambios) */}
                     <div className="lg:col-span-2">
                         <div className="rounded-2xl p-8 border" style={{ backgroundColor: s.contactFormBackground, borderColor: s.contactFormBorder }}>
                             {isSubmitted ? (

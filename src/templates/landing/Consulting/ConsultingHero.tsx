@@ -2,7 +2,7 @@ import { ArrowRight, Award, BarChart, Briefcase, Globe, LineChart, Target, Trend
 import EditableImage from '../../../components/Editor/EditableImage';
 import EditableText from '../../../components/Editor/EditableText';
 import { useTemplate } from '../../../contexts/TemplateContext';
-import { defaultSectionColors, defaultUI } from '../../../types/template.types';
+import { defaultSectionColors, defaultTypography, defaultUI } from '../../../types/template.types';
 
 const iconMap: Record<string, LucideIcon> = {
     TrendingUp, Users, Target, Award, Briefcase, BarChart, LineChart, Globe,
@@ -11,14 +11,14 @@ const iconMap: Record<string, LucideIcon> = {
 const ConsultingHero = () => {
     const { template } = useTemplate();
     const s = template?.sectionColors || defaultSectionColors;
-    const typography = template?.typography || {
-        heroTitleSize: '3rem', heroDescriptionSize: '1.125rem',
-        headingFont: 'Inter, system-ui, sans-serif',
-    };
-    const ui = template?.ui || { borderRadius: { medium: '0.5rem' } };
+    const typography = { ...defaultTypography, ...(template?.typography || {}) };
+    const ui = { ...defaultUI, ...(template?.ui || {}) };
 
     const heroTitleClamp = `clamp(2rem, 5vw, ${typography.heroTitleSize})`;
     const heroDescClamp = `clamp(0.875rem, 3vw, ${typography.heroDescriptionSize})`;
+
+    const statValueSize = template?.texts?.statValueSize || '1.25rem';
+    const statLabelSize = template?.texts?.statLabelSize || '0.875rem';
 
     const defaultButtons = {
         primary: { text: 'Solicitar consultoría', url: '/contacto', openInNewTab: false },
@@ -29,12 +29,28 @@ const ConsultingHero = () => {
         secondary: template?.buttons?.secondary || defaultButtons.secondary,
     };
 
-    const icon1Name = template?.texts?.hero_icon_1 || 'TrendingUp';
-    const icon2Name = template?.texts?.hero_icon_2 || 'Users';
-    const icon3Name = template?.texts?.hero_icon_3 || 'Target';
-    const Icon1 = iconMap[icon1Name] || TrendingUp;
-    const Icon2 = iconMap[icon2Name] || Users;
-    const Icon3 = iconMap[icon3Name] || Target;
+    let heroStats: any[] = [];
+    const storedStats = template?.texts?.['hero_stat_item_'];
+    if (storedStats) {
+        try {
+            heroStats = JSON.parse(storedStats);
+        } catch (e) { heroStats = []; }
+    }
+    if (heroStats.length === 0) {
+        heroStats = [
+            { id: 'default_1', icon: 'TrendingUp', value: '+45%', label: 'crecimiento', visible: true },
+            { id: 'default_2', icon: 'Users', value: '+15', label: 'equipos', visible: true },
+            { id: 'default_3', icon: 'Target', value: '100%', label: 'objetivos', visible: true },
+            { id: 'default_4', icon: 'TrendingUp', value: '80%', label: 'parcial', visible: true },
+        ];
+    }
+
+    // Devuelve el elemento JSX ya construido, con su className y style
+    const getIcon = (iconName: string, className: string, color?: string) => {
+        const Icon = iconMap[iconName];
+        if (!Icon) return <TrendingUp className={className} style={{ color, fill: color }} />;
+        return <Icon className={className} style={{ color, fill: color }} />;
+    };
 
     return (
         <section id="home" className="relative section-padding overflow-hidden" style={{ backgroundColor: s.heroBackground }}>
@@ -42,17 +58,16 @@ const ConsultingHero = () => {
                 <div className="absolute top-20 left-10 w-72 h-72 rounded-full mix-blend-multiply filter blur-3xl animate-blob" style={{ backgroundColor: s.buttonPrimaryBackground }} />
                 <div className="absolute top-40 right-10 w-72 h-72 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000" style={{ backgroundColor: s.buttonPrimaryBackground }} />
             </div>
+
             <div className="container-custom relative z-10">
                 <div className="grid lg:grid-cols-2 gap-12 items-start">
                     <div className="space-y-8">
-                        {/* Badge */}
                         <div>
                             <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium border" style={{ backgroundColor: s.heroBadgeBackground, borderColor: s.heroBadgeBackground, color: s.heroBadgeTextColor }}>
                                 <Target className="w-4 h-4 mr-2" />
                                 <EditableText elementId="hero_badge" defaultText="Consultoría Estratégica de Negocios" tag="span" />
                             </span>
                         </div>
-                        {/* Título */}
                         <h1 className="font-bold leading-tight" style={{ fontSize: heroTitleClamp, color: s.heroTitleColor }}>
                             <EditableText elementId="hero_title_1" defaultText="Impulsamos el" tag="span" />{' '}
                             <span className="text-transparent bg-clip-text" style={{ backgroundImage: `linear-gradient(to right, ${s.heroTitleColor}, ${s.heroTitleColor})` }}>
@@ -60,12 +75,9 @@ const ConsultingHero = () => {
                             </span>{' '}
                             <EditableText elementId="hero_title_3" defaultText="de tu Empresa" tag="span" />
                         </h1>
-                        {/* Descripción */}
                         <p className="max-w-2xl" style={{ fontSize: heroDescClamp, color: s.heroDescriptionColor }}>
                             <EditableText elementId="hero_description" defaultText="Análisis profundo, estrategias personalizadas y acompañamiento continuo para llevar tu negocio al siguiente nivel." tag="span" />
                         </p>
-
-                        {/* Botones */}
                         <div className="flex flex-col sm:flex-row gap-4">
                             {template?.texts?.show_hero_primary_button !== 'false' && (
                                 <a href={buttons.primary.url} target={buttons.primary.openInNewTab ? '_blank' : '_self'} rel="noopener noreferrer"
@@ -90,41 +102,29 @@ const ConsultingHero = () => {
                     </div>
 
                     <div className="space-y-6">
-                        {/* Imagen principal */}
                         <div className="relative z-10 rounded-2xl border shadow-2xl overflow-hidden">
                             <EditableImage elementId="hero_image" defaultImage="https://images.unsplash.com/photo-1552664730-d307ca884978?w=800" alt="Consultoría estratégica" className="w-full h-auto" category="consulting" />
                         </div>
 
-                        {/* Estadísticas */}
                         <div className="grid grid-cols-4 gap-4 p-4 rounded-xl shadow-xl backdrop-blur-sm" style={{ backgroundColor: `${s.heroBackground}cc`, border: `1px solid ${s.buttonPrimaryBackground}40` }}>
-                            {template?.texts?.show_stat_1 !== 'false' && (
-                                <div className="text-center">
-                                    <div className="flex justify-center mb-2"><Icon1 className={s.iconSize} style={{ color: s.iconColor }} /></div>
-                                    <div className="text-xl font-bold" style={{ color: s.statValueColor }}><EditableText elementId="stat_value_1" defaultText="+45%" tag="span" /></div>
-                                    <div className="text-xs" style={{ color: s.statLabelColor }}><EditableText elementId="stat_label_1" defaultText="crecimiento" tag="span" /></div>
-                                </div>
-                            )}
-                            {template?.texts?.show_stat_2 !== 'false' && (
-                                <div className="text-center">
-                                    <div className="flex justify-center mb-2"><Icon2 className={s.iconSize} style={{ color: s.iconColor }} /></div>
-                                    <div className="text-xl font-bold" style={{ color: s.statValueColor }}><EditableText elementId="stat_value_2" defaultText="+15" tag="span" /></div>
-                                    <div className="text-xs" style={{ color: s.statLabelColor }}><EditableText elementId="stat_label_2" defaultText="equipos" tag="span" /></div>
-                                </div>
-                            )}
-                            {template?.texts?.show_stat_3 !== 'false' && (
-                                <div className="text-center">
-                                    <div className="flex justify-center mb-2"><Icon3 className={s.iconSize} style={{ color: s.iconColor }} /></div>
-                                    <div className="text-xl font-bold" style={{ color: s.statValueColor }}><EditableText elementId="stat_value_3" defaultText="100%" tag="span" /></div>
-                                    <div className="text-xs" style={{ color: s.statLabelColor }}><EditableText elementId="stat_label_3" defaultText="objetivos" tag="span" /></div>
-                                </div>
-                            )}
-                              {template?.texts?.show_stat_4 !== 'false' && (
-                                <div className="text-center">
-                                    <div className="flex justify-center mb-2"><Icon1 className={s.iconSize} style={{ color: s.iconColor }} /></div>
-                                    <div className="text-xl font-bold" style={{ color: s.statValueColor }}><EditableText elementId="stat_value_1" defaultText="80%" tag="span" /></div>
-                                    <div className="text-xs" style={{ color: s.statLabelColor }}><EditableText elementId="stat_label_1" defaultText="parcial" tag="span" /></div>
-                                </div>
-                            )}
+                            {heroStats.map((stat, idx) => {
+                                if (stat.visible === false) return null;
+                                const valueKey = `hero_stat_value_${idx}`;
+                                const labelKey = `hero_stat_label_${idx}`;
+                                return (
+                                    <div key={stat.id || idx} className="text-center">
+                                        <div className="flex justify-center mb-2">
+                                            {getIcon(stat.icon, s.iconSize, s.iconColor)}
+                                        </div>
+                                        <div className="font-bold" style={{ color: s.statValueColor, fontSize: statValueSize }}>
+                                            <EditableText elementId={valueKey} defaultText={stat.value} tag="span" />
+                                        </div>
+                                        <div style={{ color: s.statLabelColor, fontSize: statLabelSize }}>
+                                            <EditableText elementId={labelKey} defaultText={stat.label} tag="span" />
+                                        </div>
+                                    </div>
+                                );
+                            })}
                         </div>
                     </div>
                 </div>

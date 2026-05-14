@@ -1,4 +1,5 @@
 import { Award, Briefcase, Facebook, Heart, Instagram, Linkedin, Mail, MapPin, Phone, Twitter } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import EditableImage from '../../../components/Editor/EditableImage';
 import EditableText from '../../../components/Editor/EditableText';
 import { useTemplate } from '../../../contexts/TemplateContext';
@@ -6,8 +7,36 @@ import { defaultSectionColors, defaultTypography } from '../../../types/template
 
 const iconMap: Record<string, any> = { Award, Briefcase, Heart, Mail, MapPin, Phone, Facebook, Instagram, Linkedin, Twitter };
 
+// Valores por defecto (coinciden con los defaultItems de la configuración)
+const DEFAULT_QUICK_LINKS = [
+    { id: 'default_ql_1', label: 'Inicio', url: '#home', visible: true },
+    { id: 'default_ql_2', label: 'Servicios', url: '#services', visible: true },
+    { id: 'default_ql_3', label: 'Metodología', url: '#methodology', visible: true },
+    { id: 'default_ql_4', label: 'Casos de éxito', url: '#testimonials', visible: true },
+    { id: 'default_ql_5', label: 'Contacto', url: '#contact', visible: true }
+];
+
+const DEFAULT_EXPERTISE = [
+    { id: 'default_exp_1', label: 'Estrategia Corporativa', visible: true },
+    { id: 'default_exp_2', label: 'Transformación Digital', visible: true },
+    { id: 'default_exp_3', label: 'Gestión del Talento', visible: true },
+    { id: 'default_exp_4', label: 'Finanzas Corporativas', visible: true },
+    { id: 'default_exp_5', label: 'Expansión Internacional', visible: true }
+];
+
+const DEFAULT_CERTIFICATIONS = [
+    { id: 'default_cert_1', label: 'ISO 9001:2024', visible: true },
+    { id: 'default_cert_2', label: 'Miembro de AACCP', visible: true },
+    { id: 'default_cert_3', label: 'Certified Partners', visible: true },
+    { id: 'default_cert_4', label: '+15 años de experiencia', visible: true }
+];
+
 const ConsultingFooter = () => {
     const { template } = useTemplate();
+    const [quickLinks, setQuickLinks] = useState(DEFAULT_QUICK_LINKS);
+    const [expertise, setExpertise] = useState(DEFAULT_EXPERTISE);
+    const [certifications, setCertifications] = useState(DEFAULT_CERTIFICATIONS);
+
     const s = { ...defaultSectionColors, ...(template?.sectionColors || {}) };
     const typography = template?.typography || defaultTypography;
 
@@ -17,7 +46,58 @@ const ConsultingFooter = () => {
 
     const currentYear = new Date().getFullYear();
 
-    // URLs redes sociales (desde template.texts)
+    // Cargar enlaces rápidos desde template.texts['quicklink_']
+    useEffect(() => {
+        const stored = template?.texts?.['quicklink_'];
+        if (stored) {
+            try {
+                const parsed = JSON.parse(stored);
+                if (Array.isArray(parsed) && parsed.length > 0) {
+                    setQuickLinks(parsed);
+                    return;
+                }
+            } catch (e) {
+                console.error('Error parsing quick links:', e);
+            }
+        }
+        setQuickLinks(DEFAULT_QUICK_LINKS);
+    }, [template?.texts]);
+
+    // Cargar áreas de expertise desde template.texts['expertise_']
+    useEffect(() => {
+        const stored = template?.texts?.['expertise_'];
+        if (stored) {
+            try {
+                const parsed = JSON.parse(stored);
+                if (Array.isArray(parsed) && parsed.length > 0) {
+                    setExpertise(parsed);
+                    return;
+                }
+            } catch (e) {
+                console.error('Error parsing expertise:', e);
+            }
+        }
+        setExpertise(DEFAULT_EXPERTISE);
+    }, [template?.texts]);
+
+    // Cargar certificaciones desde template.texts['cert_']
+    useEffect(() => {
+        const stored = template?.texts?.['cert_'];
+        if (stored) {
+            try {
+                const parsed = JSON.parse(stored);
+                if (Array.isArray(parsed) && parsed.length > 0) {
+                    setCertifications(parsed);
+                    return;
+                }
+            } catch (e) {
+                console.error('Error parsing certifications:', e);
+            }
+        }
+        setCertifications(DEFAULT_CERTIFICATIONS);
+    }, [template?.texts]);
+
+    // URLs redes sociales (siguen siendo campos independientes)
     const socialUrls = {
         facebook: template?.texts?.social_facebook_url || '#',
         instagram: template?.texts?.social_instagram_url || '#',
@@ -25,7 +105,6 @@ const ConsultingFooter = () => {
         twitter: template?.texts?.social_twitter_url || '#',
     };
 
-    // Redes sociales con checkbox de visibilidad
     const socialNetworks = [
         { id: 'facebook', label: 'Facebook', defaultUrl: socialUrls.facebook, defaultIcon: 'Facebook' },
         { id: 'instagram', label: 'Instagram', defaultUrl: socialUrls.instagram, defaultIcon: 'Instagram' },
@@ -39,61 +118,12 @@ const ConsultingFooter = () => {
         return stored === undefined ? true : stored !== 'false';
     };
 
-    // Enlaces rápidos (hasta 8)
-    const quickLinksList = [
-        { id: 'home', defaultLabel: 'Inicio', defaultUrl: '#home' },
-        { id: 'services', defaultLabel: 'Servicios', defaultUrl: '#services' },
-        { id: 'methodology', defaultLabel: 'Metodología', defaultUrl: '#methodology' },
-        { id: 'testimonials', defaultLabel: 'Casos de éxito', defaultUrl: '#testimonials' },
-        { id: 'contact', defaultLabel: 'Contacto', defaultUrl: '#contact' },
-        { id: 'extra_1', defaultLabel: 'Enlace Extra 1', defaultUrl: '#' },
-        { id: 'extra_2', defaultLabel: 'Enlace Extra 2', defaultUrl: '#' },
-        { id: 'extra_3', defaultLabel: 'Enlace Extra 3', defaultUrl: '#' },
-    ];
-
-    const shouldShowQuickLink = (idx: number) => {
-        const showKey = `show_quicklink_${idx}`;
-        const stored = template?.texts?.[showKey];
-        return stored === undefined ? idx < 5 : stored !== 'false';
-    };
-
-    // Áreas de expertise
-    const expertiseList = [
-        { id: 'expertise_1', defaultLabel: 'Estrategia Corporativa' },
-        { id: 'expertise_2', defaultLabel: 'Transformación Digital' },
-        { id: 'expertise_3', defaultLabel: 'Gestión del Talento' },
-        { id: 'expertise_4', defaultLabel: 'Finanzas Corporativas' },
-        { id: 'expertise_5', defaultLabel: 'Expansión Internacional' },
-        { id: 'expertise_6', defaultLabel: 'Innovación' },
-        { id: 'expertise_7', defaultLabel: 'Sostenibilidad' },
-        { id: 'expertise_8', defaultLabel: 'Ciberseguridad' },
-    ];
-
-    const shouldShowExpertise = (idx: number) => {
-        const showKey = `show_expertise_${idx}`;
-        const stored = template?.texts?.[showKey];
-        return stored === undefined ? idx < 5 : stored !== 'false';
-    };
-
     // Enlaces legales (siempre visibles)
     const legalLinks = [
         { id: 'terms', defaultLabel: 'Términos y condiciones', defaultUrl: 'https://kernelicepage-production.up.railway.app/terminos' },
         { id: 'privacy', defaultLabel: 'Política de privacidad', defaultUrl: 'https://kernelicepage-production.up.railway.app/privacidad' },
         { id: 'cookies', defaultLabel: 'Cookies', defaultUrl: 'https://kernelicepage-production.up.railway.app/contacto' },
     ];
-
-    // Certificaciones dinámicas
-    const getCertificationLabel = (idx: number) => {
-        const defaults: Record<number, string> = {
-            1: 'ISO 9001:2024', 2: 'Miembro de AACCP', 3: 'Certified Partners', 4: '+15 años de experiencia'
-        };
-        return template?.texts?.[`cert_${idx}`] || defaults[idx] || `Certificación ${idx}`;
-    };
-    const shouldShowCertification = (idx: number) => {
-        const showKey = `show_certification_${idx}`;
-        const stored = template?.texts?.[showKey];
-        return stored === undefined ? idx <= 4 : stored !== 'false';
-    };
 
     const getIcon = (iconName: string, className: string = s.iconSize) => {
         const Icon = iconMap[iconName];
@@ -106,10 +136,9 @@ const ConsultingFooter = () => {
         <footer id="footer" className="border-t" style={{ backgroundColor: s.footerBackground, borderColor: `${s.footerLinkColor}40` }}>
             <div className="container-custom px-4 sm:px-6 lg:px-8">
                 <div className="py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    {/* Información de la empresa */}
+                    {/* Información de la empresa (sin cambios) */}
                     <div className="space-y-4">
                         <div className="flex items-center space-x-2">
-                            {/* Logo: usa EditableImage para poder cambiarlo desde el dashboard */}
                             <div className="w-12 h-12 rounded-lg overflow-hidden flex items-center justify-center" style={{ background: `linear-gradient(to right, ${s.footerLinkHoverColor}, ${s.footerHeadingColor})` }}>
                                 <EditableImage
                                     elementId="footer_logo"
@@ -145,22 +174,20 @@ const ConsultingFooter = () => {
                         </div>
                     </div>
 
-                    {/* Enlaces rápidos */}
+                    {/* Enlaces rápidos dinámicos */}
                     <div>
                         <h3 className="font-semibold mb-4" style={{ color: s.footerHeadingColor, fontSize: footerHeadingClamp }}>
                             <EditableText elementId="footer_quick_title" defaultText="Enlaces Rápidos" tag="span" />
                         </h3>
                         <ul className="space-y-2">
-                            {quickLinksList.map((link, idx) => {
-                                if (!shouldShowQuickLink(idx)) return null;
-                                const label = template?.texts?.[`quicklink_label_${link.id}`] || link.defaultLabel;
-                                const url = template?.texts?.[`quicklink_url_${link.id}`] || link.defaultUrl;
+                            {quickLinks.map((link, idx) => {
+                                if (link.visible === false) return null;
                                 return (
-                                    <li key={link.id}>
-                                        <a href={url} className="transition-colors" style={{ color: s.footerLinkColor, fontSize: footerLinkClamp }}
+                                    <li key={link.id || idx}>
+                                        <a href={link.url} className="transition-colors" style={{ color: s.footerLinkColor, fontSize: footerLinkClamp }}
                                             onMouseEnter={(e) => e.currentTarget.style.color = s.footerLinkHoverColor}
                                             onMouseLeave={(e) => e.currentTarget.style.color = s.footerLinkColor}>
-                                            <EditableText elementId={`quicklink_label_${link.id}`} defaultText={label} tag="span" />
+                                            {link.label}
                                         </a>
                                     </li>
                                 );
@@ -168,19 +195,18 @@ const ConsultingFooter = () => {
                         </ul>
                     </div>
 
-                    {/* Áreas de Expertise */}
+                    {/* Áreas de expertise dinámicas */}
                     <div>
                         <h3 className="font-semibold mb-4" style={{ color: s.footerHeadingColor, fontSize: footerHeadingClamp }}>
                             <EditableText elementId="footer_expertise_title" defaultText="Áreas de Expertise" tag="span" />
                         </h3>
                         <ul className="space-y-2">
-                            {expertiseList.map((area, idx) => {
-                                if (!shouldShowExpertise(idx)) return null;
-                                const label = template?.texts?.[`expertise_label_${area.id}`] || area.defaultLabel;
+                            {expertise.map((item, idx) => {
+                                if (item.visible === false) return null;
                                 return (
-                                    <li key={area.id}>
+                                    <li key={item.id || idx}>
                                         <span style={{ color: s.footerTextColor, fontSize: footerTextClamp }}>
-                                            <EditableText elementId={`expertise_label_${area.id}`} defaultText={label} tag="span" />
+                                            {item.label}
                                         </span>
                                     </li>
                                 );
@@ -188,7 +214,7 @@ const ConsultingFooter = () => {
                         </ul>
                     </div>
 
-                    {/* Contacto directo */}
+                    {/* Contacto directo (sin cambios) */}
                     <div className="space-y-4">
                         <h3 className="font-semibold mb-4" style={{ color: s.footerHeadingColor, fontSize: footerHeadingClamp }}>
                             <EditableText elementId="footer_contact_title" defaultText="Contacto Directo" tag="span" />
@@ -224,7 +250,7 @@ const ConsultingFooter = () => {
 
                 <div className="border-t" style={{ borderColor: `${s.footerLinkColor}40` }}></div>
 
-                {/* Sección inferior */}
+                {/* Sección inferior (sin cambios) */}
                 <div className="py-8 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
                     <div className="text-center md:text-left">
                         <p style={{ color: s.footerTextColor, fontSize: footerTextClamp }}>
@@ -254,12 +280,12 @@ const ConsultingFooter = () => {
                 {/* Certificaciones dinámicas */}
                 <div className="pb-8 pt-4 border-t" style={{ borderColor: `${s.footerLinkColor}40` }}>
                     <div className="flex flex-wrap items-center justify-center gap-4 text-sm">
-                        {[1, 2, 3, 4, 5, 6, 7, 8].map(idx => {
-                            if (!shouldShowCertification(idx)) return null;
-                            const certLabel = getCertificationLabel(idx);
+                        {certifications.map((cert, idx) => {
+                            if (cert.visible === false) return null;
                             return (
-                                <span key={idx} className="px-3 py-1 rounded-full border" style={{ backgroundColor: `${s.footerBackground}cc`, borderColor: s.footerLinkColor, color: s.footerTextColor, fontSize: footerTextClamp }}>
-                                    <EditableText elementId={`cert_${idx}`} defaultText={certLabel} tag="span" />
+                                <span key={cert.id || idx} className="px-3 py-1 rounded-full border"
+                                    style={{ backgroundColor: `${s.footerBackground}cc`, borderColor: s.footerLinkColor, color: s.footerTextColor, fontSize: footerTextClamp }}>
+                                    {cert.label}
                                 </span>
                             );
                         })}

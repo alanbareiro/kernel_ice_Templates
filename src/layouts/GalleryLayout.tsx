@@ -52,14 +52,14 @@ export const GalleryLayout = ({
         <div className="min-h-screen bg-gradient-to-b from-white to-neutral-50 dark:from-neutral-950 dark:to-neutral-900">
             <UserHeader />
 
-            <div className="text-center pt-32 pb-16 px-4">
+            <div className="text-center pt-32 pb-8 px-4">
                 <div className="inline-flex items-center gap-2 bg-amber-500/10 px-4 py-2 rounded-full mb-6 border border-amber-500/20">
                     <Eye className="w-4 h-4 text-amber-500" />
                     <span className="text-sm font-medium text-amber-600 dark:text-amber-400">
                         Modo vista previa
                     </span>
                 </div>
-                <h1 className="text-4xl md:text-4xl lg:text-5xl font-bold mb-6">
+                <h1 className="text-4xl md:text-4xl lg:text-4xl font-bold mb-6">
                     Explora nuestras
                     <span className="bg-gradient-to-r from-primary-500 to-accent-500 bg-clip-text text-transparent ml-3">
                         plantillas
@@ -139,7 +139,7 @@ export const GalleryLayout = ({
             </div>
 
             {/* Grid de plantillas */}
-            <div className="container-custom px-4 py-12">
+            <div className="container-custom px-4 py-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {currentTemplates.map(template => (
                         <div
